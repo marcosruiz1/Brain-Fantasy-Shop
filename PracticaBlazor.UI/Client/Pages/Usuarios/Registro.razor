@@ -1,0 +1,92 @@
+﻿@page "/usuario/registro"
+@using PracticaBlazor.UI.Shared.Models
+@inject HttpClient Http
+@inject NavigationManager Navigation
+
+
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10 col-xl-9 mx-auto">
+        <div class="card flex-row my-5 border-0 shadow rounded-3 overflow-auto  cardRegistro" >
+          <div class="card-img-left d-none d-md-flex cardImg">
+            <!-- Background image for card set in CSS! -->
+          </div>
+          <div class="card-body p-4 p-sm-5">
+            <h5 class="card-title text-center mb-5 fw-light fs-5">Register</h5>
+            <EditForm Model="@_usuario" OnValidSubmit="Post">
+                <DataAnnotationsValidator />
+                
+              <div class="form-floating mb-3">
+                <InputText type="text" class="form-control" id="floatingInputUsername" placeholder="myusername" @bind-Value="_usuario.Username" required autofocus/>
+                <label for="floatingInputUsername">Username</label>
+                <ValidationMessage For="@(() => _usuario.Username)"/>   
+             </div>
+             <div class="form-floating mb-3">
+                 <InputText type="text" class="form-control" id="floatingInputNombre" placeholder="Nombre" @bind-Value="_usuario.Nombre" required autofocus/>
+                 <label  for="floatingInputNombre">First Name</label>
+                 <ValidationMessage For="@(() => _usuario.Nombre)"/>  
+            </div>
+            <div class="form-floating mb-3">
+                 <InputText type="text" class="form-control" id="floatingInputApellidos" placeholder="Apellidos" @bind-Value="_usuario.Apellidos" required autofocus/>
+                 <label for="floatingInputApellidos">Apellidos</label>
+                 <ValidationMessage For="@(() => _usuario.Apellidos)"/>    
+            </div>
+                              
+                                  
+              <div class="form-floating mb-3">
+                <InputText type="email" class="form-control" id="floatingInputEmail" placeholder="name@ejemplo.com" @bind-Value="_usuario.Email"/>
+                <label for="floatingInputEmail">Email address</label>
+                <ValidationMessage For="@(() => _usuario.Email)"/>
+              </div>
+              <div class="form-floating mb-3">
+                 <InputText type="text" class="form-control" id="floatingInputTelefono" placeholder="Teléfono" @bind-Value="_usuario.Telefono" required autofocus/>
+                 <label for="floatingInputTelefono">Teléfono</label>
+                 <ValidationMessage For="@(() => _usuario.Telefono)"/>    
+             </div>
+             <div class="form-floating mb-3">
+                 <InputText type="text" class="form-control" id="floatingInputDireccion" placeholder="Direccion" @bind-Value="_usuario.Direccion" required autofocus/>
+                 <label for="floatingInputDireccion">Direccion</label>
+                 <ValidationMessage For="@(() => _usuario.Direccion)"/>    
+             </div>
+              <hr>
+              <div class="form-floating mb-3">
+                <InputText type="password" class="form-control" id="floatingPassword" placeholder="Password" @bind-Value="_usuario.Password" />
+                <label for="floatingPassword">Password</label>
+                <ValidationMessage For="@(() => _usuario.Password)"/>      
+              </div>
+
+              <div class="form-floating mb-3">
+                <InputText type="password" class="form-control" id="floatingPasswordConfirm" placeholder="Confirm Password" @bind-Value="_usuario.ConfirmPassword"/>
+                <label for="floatingPasswordConfirm">Confirm Password</label>
+                <ValidationMessage For="@(() => _usuario.ConfirmPassword)"/>       
+              </div>
+
+              <div class="d-grid mb-2">
+                <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" type="submit">Register</button>
+              </div>
+
+              <a class="d-block text-center mt-2 small" href="/login">¿Tienes una cuenta? Inicia sesión</a>
+            </EditForm>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+@code {
+    private Usuario _usuario = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _usuario.Direccion = "";
+    }
+
+    private async Task Post()
+    {
+        
+        await Http.PostAsJsonAsync<Usuario>("/api/Usuarios/", _usuario);
+        Navigation.NavigateTo("/login");
+    }
+
+}

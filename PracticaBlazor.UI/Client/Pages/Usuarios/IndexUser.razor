@@ -1,0 +1,89 @@
+﻿@page "/usuarios"
+@using PracticaBlazor.UI.Shared.Models
+@using Microsoft.AspNetCore.Hosting;
+@inject HttpClient Http
+@inject NavigationManager Navigation
+<AuthorizeView Roles="ROLE_ADMIN">
+ <Authorized>
+       <h3>Index</h3>
+@if (_usuarios == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>Imagen</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var usuario in _usuarios)
+            {
+                <tr>
+                    <td>@usuario.Id.ToString()</td>
+                    <td>@usuario.Username</td>
+                    <td>@usuario.Email</td>
+                    <td>@usuario.Rol</td>
+                    @if (@usuario.Imagen == "default_User_Img"){
+                        <td><img src="/images/default_User_Img.png" style="width: 75px; height: 75px;"></td>
+                    }
+                    else{
+                        <td><img src="@usuario.Imagen" style="width: 75px; height: 75px;"></td>
+                    }
+                    <td>
+                        <button class="btn btn-info"
+                                @onclick="(() => Edit(usuario.Id))">
+                            Edit
+                        </button>
+                        <button class="btn btn-danger"
+                                @onclick="(() => Delete(usuario.Id))">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div>
+        <button class="btn btn-success" @onclick="Create">Añadir usuario</button>
+    </div>
+    
+}
+   </Authorized>
+   <NotAuthorized>
+        <span>No estás autorizado!</span>
+   </NotAuthorized>
+
+</AuthorizeView>
+
+@code {
+    private List<Usuario> _usuarios;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _usuarios = await Http.GetFromJsonAsync<List<Usuario>>("/api/Usuarios");
+    }
+
+    private async Task Delete(int id)
+    {
+        await Http.DeleteAsync($"/api/Usuarios/{id}");
+        _usuarios = await Http.GetFromJsonAsync<List<Usuario>>("/api/Usuarios");
+        StateHasChanged();
+    }
+    private void Edit(int id)
+    {
+        Navigation.NavigateTo($"/usuario/edit/{id}");
+    }
+    private void Create()
+    {
+        Navigation.NavigateTo("/usuario/registro");
+    }
+
+}

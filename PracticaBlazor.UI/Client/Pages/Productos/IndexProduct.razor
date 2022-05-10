@@ -1,0 +1,50 @@
+﻿@page "/productos"
+@using PracticaBlazor.UI.Shared.Models
+@inject HttpClient Http
+@inject NavigationManager Navigation
+
+<h3>Productos Shop</h3>
+
+@if (_productos == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    @foreach (var chunk in _productos.Chunk(4)){
+        <div class="card-group" style="margin-bottom: 40px;">
+        @foreach (var producto in chunk){
+            <div class="col-sm-3">
+            <div class="card" style="width: 23rem;">
+              <img src="@producto.Imagen" class="card-img-top" style="height: 18rem;" alt="...">
+              <div class="card-body">
+                  <h5 class="card-title">@producto.Nombre</h5>
+                  <div class="row">
+                      <p class="col-sm-9 card-text">@producto.Categoria</p>
+                      <h5 class="col-sm-3 card-text" style="font-size: 25px;">@producto.Precio €</h5>
+                  </div>
+           
+                <p class="card-text">@producto.Descripcion</p>
+                <button @onclick="(() => VerDetalle(producto.Id))" class="btn btn-primary">Ver detalle</button>
+              </div>
+            </div>
+            </div>
+        }
+        </div>
+    }
+    
+    
+}
+
+@code {
+    private List<Producto> _productos;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _productos = await Http.GetFromJsonAsync<List<Producto>>("/api/Productos");
+    } 
+
+    public void VerDetalle(int id){
+        Navigation.NavigateTo($"/producto/ver/{id}");
+    }
+}

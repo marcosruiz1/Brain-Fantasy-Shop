@@ -1,0 +1,71 @@
+﻿@page "/producto/edit/{id:int}"
+@using PracticaBlazor.UI.Shared.Models
+@inject HttpClient Http
+@inject NavigationManager Navigation
+<h3>Edit</h3>
+
+@if (_producto == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <EditForm Model="@_producto" OnValidSubmit="Put">
+        <div class="form-group">
+            <label>Nombre: </label>
+            <InputText class="form-control" @bind-Value="_producto.Nombre" />
+        </div>
+        <div class="form-group">
+            <label>Categoria: </label>
+            <InputSelect class="form-control" @bind-Value="_producto.Categoria">
+                @foreach (var cat in _categorias)
+                {
+                    <option value="@cat.Id">@cat.Nombre</option>
+                }
+            </InputSelect>
+        </div>
+        <div class="form-group">
+            <label>Precio: </label>
+            <InputNumber class="form-control" @bind-Value="_producto.Precio" />
+        </div>
+        <div class="form-group">
+            <label>Descripcion</label>
+            <InputTextArea class="form-control" @bind-Value="_producto.Descripcion"/>
+        </div>
+        <div class="form-group">
+            <label>Imagen: </label>
+            <InputText class="form-control" @bind-Value="_producto.Imagen"/>
+        </div>
+        <div class="form-group">
+            <input class="btn btn-success" value="Cambiar Imagen" @onclick="(() => CambiarImagen(_producto.Id))" />
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-success" value="Editar producto" />
+        </div>
+    </EditForm>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    private Producto _producto = null;
+    private List<Categoria> _categorias = new();
+    
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _producto = await Http.GetFromJsonAsync<Producto>($"/api/Productos/{Id}");
+        //Conseguir las categorías
+         _categorias = await Http.GetFromJsonAsync<List<Categoria>>("/api/Categorias");
+    }
+    private async Task Put()
+    {
+        await Http.PutAsJsonAsync<Producto>($"/api/Productos/{_producto.Id}", _producto);
+        Navigation.NavigateTo("/Productos");
+    }
+    private void CambiarImagen(int id)
+    {
+        Navigation.NavigateTo($"/producto/edit/img/{id}");
+    }
+
+}

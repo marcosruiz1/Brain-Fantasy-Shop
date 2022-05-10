@@ -1,0 +1,74 @@
+﻿<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">PracticaBlazor.UI</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="counter">
+                <i class="bi bi-arrow-counterclockwise" style="margin-right:10px;"></i>
+                <span aria-hidden="true"></span> Counter
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="fetchdata">
+                <i class="bi bi-brightness-high" style="margin-right:10px;"></i>
+                <span  aria-hidden="true"></span> Fetch data
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="productos">
+                <i class="bi bi-shop-window" style="margin-right:10px;"></i>
+                <span aria-hidden="true"></span> Catálogo
+            </NavLink>
+        </div>
+        <AuthorizeView Roles="ROLE_ADMIN">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href=""  @onclick="()=>expandirMenu= !expandirMenu">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Zona Admin
+            </NavLink>
+            @if (expandirMenu)
+            {
+                <ul class="nav flex-column">
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="/productos/admin">
+                            <i class="bi bi-cpu" style="margin-right:10px;"></i>
+                            <span aria-hidden="true"></span> Admin Prod
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="usuarios">
+                            <i class="bi bi-people" style="margin-right:10px;"></i>
+                            <span aria-hidden="true"></span> Usuarios
+                        </NavLink>
+                    </li>
+
+                </ul>
+            }
+        </div>        
+        </AuthorizeView>
+        
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+    private bool expandirMenu;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

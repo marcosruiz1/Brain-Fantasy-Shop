@@ -1,0 +1,43 @@
+﻿@inject NavigationManager Navigation
+@inject ILocalStorageService LocalStorage
+@inject AuthenticationStateProvider AuthStateProvider
+
+<AuthorizeView>
+    <Authorized>
+        <div class="dropdown">
+              <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-person-circle"></i> @context.User.Identity.Name
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><button @onclick="Perfil" class="dropdown-item"><i class="bi bi-person-lines-fill" style="margin-right:10px;"></i>Perfil</button></li>
+                <li><button @onclick="Logout" class="dropdown-item text-danger"><i class="bi bi-door-closed-fill" style="margin-right:10px;"></i>Logout</button></li>
+              </ul>
+        </div>
+        
+    </Authorized>
+    <NotAuthorized>
+        <button @onclick="Login" class="btn btn-primary" style="margin-left: 10px;">Login</button>
+        <button @onclick="Register" class="btn btn-primary" style="margin-left: 10px;">Register</button>
+    </NotAuthorized>    
+</AuthorizeView>
+
+@code {
+    void Login()
+    {
+        Navigation.NavigateTo("/login");
+    }
+    void Perfil()
+    {
+        Navigation.NavigateTo("/usuario/perfil");
+    }
+    async Task Logout()
+    {
+        await LocalStorage.RemoveItemAsync("token");
+        await AuthStateProvider.GetAuthenticationStateAsync();
+        Navigation.NavigateTo("/");
+    }
+    void Register()
+    {
+        Navigation.NavigateTo("/usuario/registro");
+    }
+}

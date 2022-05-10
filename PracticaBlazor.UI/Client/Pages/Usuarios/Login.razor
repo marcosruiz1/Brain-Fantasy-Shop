@@ -1,0 +1,64 @@
+﻿@page "/login"
+@using PracticaBlazor.UI.Shared.Models
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject ILocalStorageService LocalStorage
+@inject AuthenticationStateProvider AuthStateProvider
+@inject IToastService toastService
+@using Microsoft.AspNetCore.Authorization;
+
+
+<EditForm Model="@_user" OnSubmit="HandleLogin">
+    <DataAnnotationsValidator />
+    <div class="body">
+   <main class="form-signin">
+  
+    <div class="imgLogin">
+        <img class="mb-4" src="/images/blazorIcon.png" alt="" width="100" height="100">
+    </div>
+    
+    <h1 class="h3 mb-3 fw-normal">Inicio sesión</h1>
+
+    <div class="form-floating">
+      <InputText class="form-control"  id="floatingInput" placeholder="name@example.com" @bind-Value="_user.Username" />
+      <label for="floatingInput">Usuario</label>
+      <ValidationMessage For="@(() => _user.Username)"/>
+    </div>
+    <div class="form-floating campoPwd">
+      <InputText type="password" class="form-control" id="floatingPassword" placeholder="Password" @bind-Value="_user.Password" />
+      <label for="floatingPassword">Contraseña</label>
+      <ValidationMessage For="@(() => _user.Password)"/>
+    </div>
+    <div class="checkbox mb-3">
+      <label>
+        <input type="checkbox" value="remember-me"> Remember me
+      </label>
+    </div>
+    <button class="w-100 btn btn-lg btn-primary" value="Login" type="submit" disabled="@(!context.Validate() || !context.IsModified())">Sign in</button>
+    <p class="mt-5 mb-3 text-muted">&copy; 2022–2025</p>
+ 
+</main>
+</div>
+</EditForm>
+    
+
+@code {
+    private UsuarioDto _user = new UsuarioDto();
+
+    async Task HandleLogin()
+    {
+        var result =  await Http.PostAsJsonAsync<UsuarioDto>("/api/Auth/login", _user);
+        var token = await result.Content.ReadAsStringAsync();
+        Console.WriteLine(token);
+        if(token != string.Empty)
+        {
+            await LocalStorage.SetItemAsync("token", token);
+            await AuthStateProvider.GetAuthenticationStateAsync();
+            Navigation.NavigateTo("/");
+        }
+        else
+        {
+            toastService.ShowError("Login incorrecto");
+        }        
+    } 
+}

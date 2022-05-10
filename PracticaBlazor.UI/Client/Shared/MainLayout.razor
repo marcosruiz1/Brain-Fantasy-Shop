@@ -1,0 +1,36 @@
+﻿@inherits LayoutComponentBase
+@using Blazored.Toast.Configuration
+@using PracticaBlazor.UI.Shared.Models
+@inject HttpClient Http
+@inject NavigationManager Navigation
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+            <a href="/micarrito"><i class="bi bi-cart"></i></a>
+            
+            <LoginLogoutButton />
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+<BlazoredToasts Position="ToastPosition.BottomRight"
+                Timeout="10"
+                IconType="IconType.FontAwesome"
+                SuccessClass="success-toast-override"
+                SuccessIcon="fa fa-thumbs-up"
+                ErrorIcon="fa fa-bug">
+</BlazoredToasts>
+
+
+@code {
+
+}
