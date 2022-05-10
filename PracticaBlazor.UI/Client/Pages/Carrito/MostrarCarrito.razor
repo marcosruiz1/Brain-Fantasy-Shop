@@ -5,8 +5,13 @@
 @inject HttpClient Http
 @inject NavigationManager Navigation
 
-
-<section class="h-100 gradient-custom">
+@if (_carritosProd == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <section class="h-100 gradient-custom">
   <div class="container py-5">
     <div class="row d-flex justify-content-center my-4">
       <div class="col-md-8">
@@ -15,14 +20,14 @@
             <h5 class="mb-0">Cart - 2 items</h5>
           </div>
           <div class="card-body">
-              @foreach (var producto in _carritosUser)
+              @for (var i = 0; i < _carritosProd.Count; i++)
               {
                 <!-- Single item -->
                 <div class="row">
                   <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
                     <!-- Image -->
                     <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
-                      <img src="@producto.Imagen"
+                      <img src="@_carritosProd[i].Imagen"
                         class="w-100" alt="Blue Jeans Jacket" />
                       <a href="#!">
                         <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
@@ -33,7 +38,7 @@
 
                   <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
                     <!-- Data -->
-                    <p><strong>@producto.Nombre</strong></p>
+                    <p><strong>@_carritosProd[i].Nombre</strong></p>
                     <p>Color: blue</p>
                     <p>Size: M</p>
                     <button type="button" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
@@ -56,8 +61,8 @@
                       </button>
 
                       <div class="form-outline">
-                        <input id="form1" min="0" name="quantity" value="1" type="number" class="form-control" />
-                        <label class="form-label" for="form1">Quantity</label>
+                        <input id="form1" min="0" name="quantity" value="@(_carritosUser[i].numProductos)" type="number" class="form-control" />
+                        <label class="form-label" for="form1">Cantidad</label>
                       </div>
 
                       <button class="btn btn-primary px-3 ms-2"
@@ -69,14 +74,14 @@
 
                     <!-- Price -->
                     <p class="text-start text-md-center">
-                      <strong>@producto.Precio €</strong>
+                      <strong>@_carritosProd[i].Precio €</strong>
                     </p>
                     <!-- Price -->
                   </div>
                 </div>
                 <!-- Single item -->
 
-                <hr class="my-4" />         
+                <hr class="my-4" />
               }
            
           </div>
@@ -142,10 +147,15 @@
     </div>
   </div>
 </section>
+}
+
+
 
 @code {
-    private List<Producto> _carritosUser;
-    private Carrito carritoActual;
+    private List<Producto> _carritosProd;
+    private List<Carrito> _carritosUser = new();
+    private Carrito carritoActual = new();
+    private int index = 0;
 
     [CascadingParameter] 
     Task<AuthenticationState> authenticationStateTask { get; set; }
@@ -160,7 +170,8 @@
 
         if(userId != null)
         {
-            _carritosUser = await Http.GetFromJsonAsync<List<Producto>>($"/api/Carritos/User/{userId}");
+            _carritosUser = await Http.GetFromJsonAsync<List<Carrito>>($"/api/Carritos/User/{userId}");
+            _carritosProd = await Http.GetFromJsonAsync<List<Producto>>($"/api/Carritos/Prod/{userId}");
         }
         
     }

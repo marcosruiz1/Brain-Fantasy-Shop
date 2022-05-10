@@ -43,22 +43,36 @@ namespace PracticaBlazor.UI.Server.Controllers
             return carrito;
         }
 
-        // GET: api/Carritos/User
-        [HttpGet("User/{id}")]
+        // GET: api/Carritos/Prod
+        [HttpGet("Prod/{id}")]
         public async Task<ActionResult<List<Producto>>> GetCarritoProductos(int id)
         {
-            List<Carrito> userCarritos = (List<Carrito>)_context.Carrito.Where(u => u.idUsuario == id);
+            List<Carrito> userCarritos = _context.Carrito.Where(u => u.idUsuario == id).ToList();
             List<Producto> productosCarrito = new();
 
             if (userCarritos.Count > 0)
             {
                 foreach (var carrito in userCarritos)
                 {
-                    productosCarrito.Add((Producto)_context.Producto.Where(u => u.Id == carrito.idProducto));
+                    productosCarrito.Add(_context.Producto.Where(u => u.Id == carrito.idProducto).FirstOrDefault());
                 }
             }
 
             return productosCarrito;
+        }
+
+        // GET: api/Carritos/User
+        [HttpGet("User/{id}")]
+        public async Task<ActionResult<List<Carrito>>> GetCarritoUser(int id)
+        {
+            List<Carrito> userCarritos = _context.Carrito.Where(u => u.idUsuario == id).ToList();
+
+            if (userCarritos == null)
+            {
+                return NotFound();
+            }
+
+            return userCarritos;
         }
 
         // PUT: api/Carritos/5
