@@ -11,6 +11,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
 using PracticaBlazor.UI.Server.Tools;
+using Microsoft.AspNetCore.Identity;
+using PracticaBlazor.UI.Shared.Models.Email;
 
 namespace PracticaBlazor.UI.Server.Controllers
 {
@@ -21,11 +23,13 @@ namespace PracticaBlazor.UI.Server.Controllers
         public static Usuario user = new Usuario();
         private readonly IConfiguration _configuration;
         private readonly AppDbContext _context;
+        private readonly IEmailSender _emailSender;
 
-        public AuthController(IConfiguration configuration, AppDbContext context)
+        public AuthController(IConfiguration configuration, AppDbContext context, IEmailSender emailSender)
         {
             _configuration = configuration;
             _context = context;
+            _emailSender = emailSender;
 
         }
 
@@ -38,7 +42,7 @@ namespace PracticaBlazor.UI.Server.Controllers
             Usuario user = await _context.Usuario.Where(u => u.Username == request.Username && u.Password == request.Password).FirstOrDefaultAsync();
             if (user != null)
             {
-                token = CreateToken(request, user.Rol, user.Id);
+                token = CreateToken(user);
             }
             return Ok(token);
 
@@ -61,13 +65,13 @@ namespace PracticaBlazor.UI.Server.Controllers
         }
 
 
-        private string CreateToken(UsuarioDto user, string role, int id)
+        private string CreateToken(Usuario user)
         {
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.NameIdentifier, id.ToString()),
-                new Claim(ClaimTypes.Role, role),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Role, user.Rol),
 
             };
 
@@ -85,6 +89,66 @@ namespace PracticaBlazor.UI.Server.Controllers
 
             return jwt;
         }
+
+
+        //FORGOT PASSWORD
+        [HttpPost("enviarEmail")]
+        public async Task<ActionResult<ForgotPassword>> ForgotPassword(ForgotPassword forgotPasswordModel)
+        {
+            string message;
+            /*if (!ModelState.IsValid)
+                return View(forgotPasswordModel);*/
+            Console.WriteLine("sadsad");
+            var user = _context.Usuario.Where(u => u.Email == forgotPasswordModel.Email).FirstOrDefault();
+            /*if (user == null)
+                return RedirectToAction(nameof(ForgotPasswordConfirmation));*/
+            var token = CreateToken(user);
+            var resetUrl = $"{Request.Headers["origin"]}/Account/reset-password?token={token}";
+            message = $@"<p>Please click the below link to reset your password, the link will be valid for 1 day:</p>
+                            <p><a href=""{resetUrl}"">{resetUrl}</a></p>";
+ 
+            var emailCompleto = new Message(new string[] { user.Email }, "Reset password token", message);
+            await _emailSender.SendEmailAsync(emailCompleto);
+            user.ResetToken = token;
+            user.ResetTokenExpires = DateTime.UtcNow.AddDays(1);
+            _context.Usuario.Update(user);
+            _context.SaveChanges();
+            return Ok();
+        }
+
+        //RESET PASSWORD
+        [HttpPost("resetPassword")]
+        public async Task<ActionResult<ResetPassword>> ResetPassword(ResetPassword model)
+        {
+            var account = getAccountByResetToken(model.Token);
+            if(account != null)
+            {
+                // update password and remove reset token
+                model.Password = Utilities.Encrypt(model.Password);
+                account.Password = model.Password;
+                account.ResetToken = null;
+                account.ResetTokenExpires = null;
+                _context.Usuario.Update(account);
+                _context.SaveChanges();
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
+
+                         
+        }
+
+        private Usuario getAccountByResetToken(string token)
+        {
+            var account = _context.Usuario.SingleOrDefault(x =>
+                x.ResetToken == token && x.ResetTokenExpires > DateTime.UtcNow);
+            return account; 
+            
+        }
+        
+
 
 
     }

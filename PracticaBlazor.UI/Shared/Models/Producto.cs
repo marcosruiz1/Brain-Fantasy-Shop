@@ -35,5 +35,13 @@ namespace PracticaBlazor.UI.Shared.Models
             Imagen = imagen;
             Reseñas = reseñas;
         }
+        public Producto(string nombre, int categoria, int precio, string? descripcion, string imagen)
+        {
+            Nombre = nombre;
+            Categoria = categoria;
+            Precio = precio;
+            Descripcion = descripcion;
+            Imagen = imagen;
+        }
     }
 }

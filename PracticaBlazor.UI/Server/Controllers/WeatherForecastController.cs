@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PracticaBlazor.UI.Shared;
+using PracticaBlazor.UI.Shared.Models.Email;
 
 namespace PracticaBlazor.UI.Server.Controllers
 {
@@ -13,16 +14,21 @@ namespace PracticaBlazor.UI.Server.Controllers
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
 
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly IEmailSender _emailSender;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+
+        public WeatherForecastController(IEmailSender emailSender)
         {
-            _logger = logger;
+ 
+            _emailSender = emailSender;
         }
 
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
+            var rng = new Random();
+            var message = new Message(new string[] { "marcos.ruiz16@iesdoctorbalmis.com" }, "Test email", "This is the content from our email.");
+            _emailSender.SendEmail(message);
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),

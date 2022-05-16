@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,7 @@ namespace PracticaBlazor.UI.Server.Controllers
         }
 
         // GET: api/Carritos
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<List<Carrito>>> GetCarrito()
         {
@@ -30,6 +32,7 @@ namespace PracticaBlazor.UI.Server.Controllers
         }
 
         // GET: api/Carritos/5
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<Carrito>> GetCarrito(int id)
         {
@@ -44,6 +47,7 @@ namespace PracticaBlazor.UI.Server.Controllers
         }
 
         // GET: api/Carritos/Prod
+        [Authorize]
         [HttpGet("Prod/{id}")]
         public async Task<ActionResult<List<Producto>>> GetCarritoProductos(int id)
         {
@@ -62,6 +66,7 @@ namespace PracticaBlazor.UI.Server.Controllers
         }
 
         // GET: api/Carritos/User
+        [Authorize]
         [HttpGet("User/{id}")]
         public async Task<ActionResult<List<Carrito>>> GetCarritoUser(int id)
         {
@@ -77,6 +82,7 @@ namespace PracticaBlazor.UI.Server.Controllers
 
         // PUT: api/Carritos/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCarrito(int id, Carrito carrito)
         {
@@ -108,6 +114,7 @@ namespace PracticaBlazor.UI.Server.Controllers
 
         // POST: api/Carritos
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Carrito>> PostCarrito(Carrito carrito)
         {
@@ -118,6 +125,7 @@ namespace PracticaBlazor.UI.Server.Controllers
         }
 
         // DELETE: api/Carritos/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCarrito(int id)
         {
@@ -128,6 +136,39 @@ namespace PracticaBlazor.UI.Server.Controllers
             }
 
             _context.Carrito.Remove(carrito);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        // DELETE: api/Carritos/prod/5
+        [Authorize]
+        [HttpDelete("prod/{id}")]
+        public async Task<IActionResult> DeleteCarritoProd(int id)
+        {
+            List<Carrito> carrito = _context.Carrito.Where(u => u.idProducto == id).ToList();
+            if (carrito == null)
+            {
+                return NotFound();
+            }
+
+            _context.Carrito.RemoveRange(carrito);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+        // DELETE: api/Carritos/user/5
+        [Authorize]
+        [HttpDelete("user/{id}")]
+        public async Task<IActionResult> DeleteCarritoUser(int id)
+        {
+            List<Carrito> carrito = _context.Carrito.Where(u => u.idUsuario == id).ToList();
+            if (carrito == null)
+            {
+                return NotFound();
+            }
+
+            _context.Carrito.RemoveRange(carrito);
             await _context.SaveChangesAsync();
 
             return NoContent();

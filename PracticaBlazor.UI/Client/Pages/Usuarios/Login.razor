@@ -34,6 +34,9 @@
         <input type="checkbox" value="remember-me"> Remember me
       </label>
     </div>
+    <div class="form-group">
+        <a @onclick="ForgotPassword">Forgot Password</a>
+    </div>
     <button class="w-100 btn btn-lg btn-primary" value="Login" type="submit" disabled="@(!context.Validate() || !context.IsModified())">Sign in</button>
     <p class="mt-5 mb-3 text-muted">&copy; 2022–2025</p>
  
@@ -60,5 +63,9 @@
         {
             toastService.ShowError("Login incorrecto");
         }        
-    } 
+    }
+    public void ForgotPassword()
+    {
+        Navigation.NavigateTo("/Account/ForgotPassword");
+    }
 }

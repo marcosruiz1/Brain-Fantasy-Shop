@@ -41,11 +41,11 @@ else
                     <p><strong>@_carritosProd[i].Nombre</strong></p>
                     <p>Color: blue</p>
                     <p>Size: M</p>
-                    <button type="button" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
+                    <button type="button" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip" 
                       title="Remove item">
                       <i class="fas fa-trash"></i>
                     </button>
-                    <button type="button" class="btn btn-danger btn-sm mb-2" data-mdb-toggle="tooltip"
+                    <button type="button" class="btn btn-danger btn-sm mb-2" data-mdb-toggle="tooltip" @onclick="( () =>DeleteProdCarrito(_carritosUser[i-1].Id))"
                       title="Move to the wish list">
                       <i class="fas fa-heart"></i>
                     </button>
@@ -173,8 +173,18 @@ else
             _carritosUser = await Http.GetFromJsonAsync<List<Carrito>>($"/api/Carritos/User/{userId}");
             _carritosProd = await Http.GetFromJsonAsync<List<Producto>>($"/api/Carritos/Prod/{userId}");
         }
-        
+
     }
+
+    public async Task DeleteProdCarrito(int idCarrito)
+    {
+        Console.WriteLine(idCarrito);
+        await Http.DeleteAsync($"/api/Carritos/{idCarrito}");
+        _carritosUser = await Http.GetFromJsonAsync<List<Carrito>>($"/api/Carritos/User/{userId}");
+        _carritosProd = await Http.GetFromJsonAsync<List<Producto>>($"/api/Carritos/Prod/{userId}");
+        StateHasChanged();
+    }
+
 
 
 }

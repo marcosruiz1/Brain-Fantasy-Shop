@@ -73,6 +73,7 @@ else
 
     private async Task Delete(int id)
     {
+        await Http.DeleteAsync($"/api/Carritos/user/{id}");
         await Http.DeleteAsync($"/api/Usuarios/{id}");
         _usuarios = await Http.GetFromJsonAsync<List<Usuario>>("/api/Usuarios");
         StateHasChanged();

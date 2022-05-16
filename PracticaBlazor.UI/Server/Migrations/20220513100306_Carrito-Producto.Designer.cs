@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PracticaBlazor.UI.Server.Data;
 
@@ -11,9 +12,10 @@ using PracticaBlazor.UI.Server.Data;
 namespace PracticaBlazor.UI.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220513100306_Carrito-Producto")]
+    partial class CarritoProducto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,6 +32,9 @@ namespace PracticaBlazor.UI.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int?>("ProductoId")
+                        .HasColumnType("int");
+
                     b.Property<int>("idProducto")
                         .HasColumnType("int");
 
@@ -40,6 +45,8 @@ namespace PracticaBlazor.UI.Server.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductoId");
 
                     b.ToTable("Carrito");
                 });
@@ -189,6 +196,15 @@ namespace PracticaBlazor.UI.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Usuario");
+                });
+
+            modelBuilder.Entity("PracticaBlazor.UI.Shared.Models.Carrito", b =>
+                {
+                    b.HasOne("PracticaBlazor.UI.Shared.Models.Producto", "Producto")
+                        .WithMany()
+                        .HasForeignKey("ProductoId");
+
+                    b.Navigation("Producto");
                 });
 
             modelBuilder.Entity("PracticaBlazor.UI.Shared.Models.ProductoVIP", b =>

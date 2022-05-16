@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PracticaBlazor.UI.Shared.Models.Dto.Producto;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -17,6 +18,8 @@ namespace PracticaBlazor.UI.Shared.Models
         public int idUsuario { get; set; }
         [Required]
         public int idProducto { get; set; }
+
         public int numProductos { get; set; } = 1;
     }
 }
+  

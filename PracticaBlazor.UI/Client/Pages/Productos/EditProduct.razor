@@ -61,7 +61,7 @@ else
     private async Task Put()
     {
         await Http.PutAsJsonAsync<Producto>($"/api/Productos/{_producto.Id}", _producto);
-        Navigation.NavigateTo("/Productos");
+        Navigation.NavigateTo("/productos/admin");
     }
     private void CambiarImagen(int id)
     {

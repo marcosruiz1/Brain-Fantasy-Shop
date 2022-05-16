@@ -13,5 +13,6 @@ namespace PracticaBlazor.UI.Server.Data
         public virtual DbSet<Categoria> Categoria { get; set; }
         public virtual DbSet<Usuario> Usuario { get; set; }
         public virtual DbSet<Carrito> Carrito { get; set; }
+        public virtual DbSet<ProductoVIP> ProductoVIP { get; set; }
     }
 }

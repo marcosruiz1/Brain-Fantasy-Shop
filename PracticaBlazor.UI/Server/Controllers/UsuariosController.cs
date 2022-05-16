@@ -7,12 +7,14 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PracticaBlazor.UI.Server.Data;
 using PracticaBlazor.UI.Server.Tools;
 using PracticaBlazor.UI.Shared.Models;
 using PracticaBlazor.UI.Shared.Models.Dto.Usuario;
+using PracticaBlazor.UI.Shared.Models.Email;
 
 namespace PracticaBlazor.UI.Server.Controllers
 {
@@ -178,6 +180,7 @@ namespace PracticaBlazor.UI.Server.Controllers
 
         // POST: api/Usuarios
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "ROLE_ADMIN")]
         [HttpPost]
         public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
         {
@@ -202,6 +205,7 @@ namespace PracticaBlazor.UI.Server.Controllers
         }
 
         // DELETE: api/Usuarios/5
+        [Authorize(Roles = "ROLE_ADMIN")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUsuario(int id)
         {
@@ -217,7 +221,8 @@ namespace PracticaBlazor.UI.Server.Controllers
             return NoContent();
         }
 
-        [HttpGet("getMe"), Authorize]
+        [HttpGet("getMe")]
+        [Authorize]
         public ActionResult<Usuario> GetMe()
         {
             string username = HttpContext.User.FindFirstValue(ClaimTypes.Name);
@@ -230,6 +235,8 @@ namespace PracticaBlazor.UI.Server.Controllers
         {
             return _context.Usuario.Any(e => e.Id == id);
         }
+
+        
 
 
     }

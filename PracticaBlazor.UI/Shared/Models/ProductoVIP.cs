@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PracticaBlazor.UI.Shared.Models
 {
-    public class ProductosVIP
+    public class ProductoVIP
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -19,6 +19,8 @@ namespace PracticaBlazor.UI.Shared.Models
         public int Precio { get; set; }
         public string? Descripcion { get; set; }
         public string Imagen { get; set; }
-        public string? Reseñas { get; set; }
+
+        public int IdUser { get; set; }
+        public Usuario Usuario { get; set; }
     }
 }

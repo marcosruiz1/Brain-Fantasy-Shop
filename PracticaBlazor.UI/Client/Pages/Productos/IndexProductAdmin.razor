@@ -81,6 +81,7 @@
 
     private async Task Delete(int id)
     {
+        await Http.DeleteAsync($"/api/Carritos/prod/{id}");
         await Http.DeleteAsync($"/api/Productos/{id}");
         _productos = await Http.GetFromJsonAsync<List<Producto>>("/api/Productos");
         StateHasChanged();
