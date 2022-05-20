@@ -1,0 +1,269 @@
+﻿@page "/micarrito"
+@using PracticaBlazor.UI.Shared.Models
+@using System.Security.Claims
+@using System.Text.Json
+@inject HttpClient Http
+@inject NavigationManager Navigation
+
+@using Syncfusion.Pdf
+@using Syncfusion.Pdf.Grid;
+@using Syncfusion.Drawing;
+@using Syncfusion.Pdf.Graphics;
+@inject Microsoft.JSInterop.IJSRuntime JS
+@using System.IO;
+@using System.Data
+
+@if (_carritosProd == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <section class="h-100 gradient-custom">
+  <div class="container py-5">
+    <div class="row d-flex justify-content-center my-4">
+      <div class="col-md-8">
+        <div class="card mb-4">
+          <div class="card-header py-3">
+            <h5 class="mb-0">Cart - 2 items</h5>
+          </div>
+          <div class="card-body">
+              @for (var i = 0; i < _carritosProd.Count; i++)
+              {
+                <!-- Single item -->
+                <div class="row">
+                  <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
+                    <!-- Image -->
+                    <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
+                      <img src="@_carritosProd[i].Imagen"
+                        class="w-100" alt="Blue Jeans Jacket" />
+                      <a href="#!">
+                        <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
+                      </a>
+                    </div>
+                    <!-- Image -->
+                  </div>
+
+                  <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
+                    <!-- Data -->
+                    <p><strong>@_carritosProd[i].Nombre</strong></p>
+                    <p>Color: blue</p>
+                    <p>Size: M</p>
+                    <button type="button" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip" 
+                      title="Remove item">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                    <button type="button" class="btn btn-danger btn-sm mb-2" data-mdb-toggle="tooltip" @onclick="( () =>DeleteProdCarrito(_carritosUser[i].Id))"
+                      title="Delete">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                    <!-- Data -->
+                  </div>
+
+                  <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                    <!-- Quantity -->
+                    <div class="d-flex mb-4" style="max-width: 300px">
+                      <button class="btn btn-primary px-3 me-2"
+                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                        <i class="fas fa-minus"></i>
+                      </button>
+
+                      <div class="form-outline">
+                        <input id="form1" min="0" name="quantity" value="@(_carritosUser[i].numProductos)" type="number" class="form-control" />
+                        <label class="form-label" for="form1">Cantidad</label>
+                      </div>
+
+                      <button class="btn btn-primary px-3 ms-2"
+                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                        <i class="fas fa-plus"></i>
+                      </button>
+                    </div>
+                    <!-- Quantity -->
+
+                    <!-- Price -->
+                    <p class="text-start text-md-center">
+                      <strong>@_carritosProd[i].Precio €</strong>
+                    </p>
+                    <!-- Price -->
+                  </div>
+                </div>
+                <!-- Single item -->
+
+                <hr class="my-4" />
+              }
+           
+          </div>
+        </div>
+        <div class="card mb-4">
+          <div class="card-body">
+            <p><strong>Expected shipping delivery</strong></p>
+            <p class="mb-0">12.10.2020 - 14.10.2020</p>
+          </div>
+        </div>
+        <div class="card mb-4 mb-lg-0">
+          <div class="card-body">
+            <p><strong>We accept</strong></p>
+            <img class="me-2" width="45px"
+              src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
+              alt="Visa" />
+            <img class="me-2" width="45px"
+              src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg"
+              alt="American Express" />
+            <img class="me-2" width="45px"
+              src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
+              alt="Mastercard" />
+            <img class="me-2" width="45px"
+              src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce/includes/gateways/paypal/assets/images/paypal.webp"
+              alt="PayPal acceptance mark" />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <div class="card-header py-3">
+            <h5 class="mb-0">Summary</h5>
+          </div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                Products
+                <span>$53.98</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                Shipping
+                <span>Gratis</span>
+              </li>
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                <div>
+                  <strong>Total amount</strong>
+                  <strong>
+                    <p class="mb-0">(including VAT)</p>
+                  </strong>
+                </div>
+                <span><strong>$53.98</strong></span>
+              </li>
+            </ul>
+
+            <button type="button" class="btn btn-primary btn-lg btn-block" @onclick="@ExportToPdf">
+              Go to checkout
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+
+
+@code {
+    private List<Producto> _carritosProd;
+    private List<Carrito> _carritosUser = new();
+    private Carrito carritoActual = new();
+    private int index = 0;
+    private int precioTotal = 0;
+
+    [CascadingParameter] 
+    Task<AuthenticationState> authenticationStateTask { get; set; }
+    private string userId;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        //GET user Id
+        var authState = await authenticationStateTask;
+        userId = authState.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+        if(userId != null)
+        {
+            _carritosUser = await Http.GetFromJsonAsync<List<Carrito>>($"/api/Carritos/User/{userId}");
+            _carritosProd = await Http.GetFromJsonAsync<List<Producto>>($"/api/Carritos/Prod/{userId}");
+        }
+
+    }
+
+    public async Task DeleteProdCarrito(int idCarrito)
+    {
+        Console.WriteLine(idCarrito);
+        await Http.DeleteAsync($"/api/Carritos/{idCarrito}");
+        _carritosUser = await Http.GetFromJsonAsync<List<Carrito>>($"/api/Carritos/User/{userId}");
+        _carritosProd = await Http.GetFromJsonAsync<List<Producto>>($"/api/Carritos/Prod/{userId}");
+        StateHasChanged();
+    }
+
+    void ExportToPdf()
+    {
+        int paragraphAfterSpacing = 8;
+        int cellMargin = 8;
+        PdfDocument pdfDocument = new PdfDocument();
+        //Add Page to the PDF document.
+        PdfPage page = pdfDocument.Pages.Add();
+
+        //Create a new font.
+        PdfStandardFont font = new PdfStandardFont(PdfFontFamily.TimesRoman, 16);
+
+        //Create a text element to draw a text in PDF page.
+        PdfTextElement title = new PdfTextElement("Factura pedido", font, PdfBrushes.Black);
+        PdfLayoutResult result = title.Draw(page, new PointF(0, 0));
+
+
+        PdfStandardFont contentFont = new PdfStandardFont(PdfFontFamily.TimesRoman, 12);
+        PdfTextElement content = new PdfTextElement("Aquí muestro una prueba de una factura generada en pdf.", contentFont, PdfBrushes.Black);
+        PdfLayoutFormat format = new PdfLayoutFormat();
+        format.Layout = PdfLayoutType.Paginate;
+
+        //Draw a text to the PDF document.
+        result = content.Draw(page, new RectangleF(0, result.Bounds.Bottom + paragraphAfterSpacing, page.GetClientSize().Width, page.GetClientSize().Height), format);
+
+        //Create a PdfGrid.
+        PdfGrid pdfGrid = new PdfGrid();
+        pdfGrid.Style.CellPadding.Left = cellMargin;
+        pdfGrid.Style.CellPadding.Right = cellMargin;
+        //Create a DataTable.
+        DataTable dataTable = new DataTable();
+        dataTable.Columns.Add("ID");
+        dataTable.Columns.Add("Name");
+        dataTable.Columns.Add("Precio");
+        foreach(var producto in _carritosProd)
+        {
+            precioTotal += producto.Precio;
+            dataTable.Rows.Add(new object[] { producto.Id, producto.Nombre, producto.Precio });
+        }
+
+        //Assign data source.
+        pdfGrid.DataSource = dataTable;
+        //Create PDF grid build style settings instance.
+        PdfGridBuiltinStyleSettings settings = new PdfGridBuiltinStyleSettings();
+        settings.ApplyStyleForBandedColumns = true;
+        settings.ApplyStyleForBandedRows = true;
+        settings.ApplyStyleForFirstColumn = true;
+        settings.ApplyStyleForHeaderRow = true;
+        settings.ApplyStyleForLastColumn = true;
+        settings.ApplyStyleForLastRow = true;
+        //Apply built-in table style
+        pdfGrid.ApplyBuiltinStyle(PdfGridBuiltinStyle.GridTable3, settings);           
+        //Draw grid to the page of PDF document.
+        result = pdfGrid.Draw(page, new Syncfusion.Drawing.PointF(0, result.Bounds.Bottom + paragraphAfterSpacing));
+
+
+        content = new PdfTextElement($"Precio{Environment.NewLine} Total = {precioTotal} €", contentFont, PdfBrushes.Black);
+        //Draw a text to the PDF document.
+        result = content.Draw(page, new RectangleF(0, result.Bounds.Bottom + paragraphAfterSpacing, page.GetClientSize().Width, page.GetClientSize().Height), format);
+
+
+        MemoryStream memoryStream = new MemoryStream();
+
+        // Save the PDF document.
+        pdfDocument.Save(memoryStream);
+
+        // Download the PDF document
+        JS.SaveAs("Factura.pdf", memoryStream.ToArray());
+
+    }
+
+
+
+}

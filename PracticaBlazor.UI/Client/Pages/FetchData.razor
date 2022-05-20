@@ -2,6 +2,14 @@
 @using PracticaBlazor.UI.Shared
 @inject HttpClient Http
 
+@using PracticaBlazor.UI.Shared.Models
+@using Syncfusion.Pdf
+@using Syncfusion.Pdf.Grid;
+@using Syncfusion.Drawing;
+@using Syncfusion.Pdf.Graphics;
+@inject Microsoft.JSInterop.IJSRuntime JS
+@using System.IO;
+
 <PageTitle>Weather forecast</PageTitle>
 
 <h1>Weather forecast</h1>
@@ -35,6 +43,9 @@ else
             }
         </tbody>
     </table>
+    <button type="button" class="btn btn-primary btn-lg btn-block">
+              Go to checkout
+            </button>
 }
 
 @code {
@@ -44,4 +55,5 @@ else
     {
         forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
     }
+
 }

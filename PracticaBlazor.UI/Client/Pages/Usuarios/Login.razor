@@ -8,64 +8,45 @@
 @using Microsoft.AspNetCore.Authorization;
 
 
-<EditForm Model="@_user" OnSubmit="HandleLogin">
-    <DataAnnotationsValidator />
-    <div class="body">
-   <main class="form-signin">
-  
-    <div class="imgLogin">
-        <img class="mb-4" src="/images/blazorIcon.png" alt="" width="100" height="100">
+<div id="account-login" class="container">
+  <ul class="breadcrumb">
+        <li><a href="/"><i class="fa fa-home"></i></a></li>
+        <li><a href="/login">Account</a></li>
+        <li><span>Login</span></li>
+      </ul>
+      <div class="row">
+                <div id="content" class="col-sm-12">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="well" data-match-height="items-well" style="height: 413px;">
+            <h2>New Customer</h2>
+            <p><strong>Register</strong></p>
+            <p>By creating an account you will be able to shop faster, be up to date on an order's status, and keep track of the orders you have previously made.</p>
+            <a href="/usuario/registro" class="btn btn-primary">Continue</a></div>
+        </div>
+        <div class="col-sm-6">
+          <div class="well" data-match-height="items-well" style="height: 413px;">
+            <h2>Returning Customer</h2>
+            <p><strong>I am a returning customer</strong></p>
+            <EditForm Model="@_user" OnSubmit="HandleLogin">
+                <DataAnnotationsValidator />
+              <div class="form-group">
+                <label class="control-label" for="input-username">Username</label>
+                <InputText type="text" name="username" @bind-Value="_user.Username" placeholder="Username" id="input-username" class="form-control"/>
+                <ValidationMessage For="@(() => _user.Username)"/>
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="input-password">Password</label>
+                <InputText  type="password" name="password" @bind-Value="_user.Password" placeholder="Password" id="input-password" class="form-control"/>
+                <ValidationMessage For="@(() => _user.Password)"/>
+                <a @onclick="ForgotPassword">Forgotten Password</a></div>
+              <input type="submit" value="Login" class="btn btn-primary" disabled="@(!context.Validate() || !context.IsModified())">
+            </EditForm>
+          </div>
+        </div>
+      </div>
+      </div>
     </div>
-    
-    <h1 class="h3 mb-3 fw-normal">Inicio sesión</h1>
-
-    <div class="form-floating">
-      <InputText class="form-control"  id="floatingInput" placeholder="name@example.com" @bind-Value="_user.Username" />
-      <label for="floatingInput">Usuario</label>
-      <ValidationMessage For="@(() => _user.Username)"/>
-    </div>
-    <div class="form-floating campoPwd">
-      <InputText type="password" class="form-control" id="floatingPassword" placeholder="Password" @bind-Value="_user.Password" />
-      <label for="floatingPassword">Contraseña</label>
-      <ValidationMessage For="@(() => _user.Password)"/>
-    </div>
-    <div class="checkbox mb-3">
-      <label>
-        <input type="checkbox" value="remember-me"> Remember me
-      </label>
-    </div>
-    <div class="form-group">
-        <a @onclick="ForgotPassword">Forgot Password</a>
-    </div>
-    <button class="w-100 btn btn-lg btn-primary" value="Login" type="submit" disabled="@(!context.Validate() || !context.IsModified())">Sign in</button>
-    <p class="mt-5 mb-3 text-muted">&copy; 2022–2025</p>
- 
-</main>
 </div>
-</EditForm>
-    
 
-@code {
-    private UsuarioDto _user = new UsuarioDto();
 
-    async Task HandleLogin()
-    {
-        var result =  await Http.PostAsJsonAsync<UsuarioDto>("/api/Auth/login", _user);
-        var token = await result.Content.ReadAsStringAsync();
-        Console.WriteLine(token);
-        if(token != string.Empty)
-        {
-            await LocalStorage.SetItemAsync("token", token);
-            await AuthStateProvider.GetAuthenticationStateAsync();
-            Navigation.NavigateTo("/");
-        }
-        else
-        {
-            toastService.ShowError("Login incorrecto");
-        }        
-    }
-    public void ForgotPassword()
-    {
-        Navigation.NavigateTo("/Account/ForgotPassword");
-    }
-}

@@ -4,89 +4,112 @@
 @inject NavigationManager Navigation
 
 
-
-  <div class="container">
+<div id="account-register" class="container">
+    <ul class="breadcrumb">
+        <li><a href="/"><i class="fa fa-home"></i></a></li>
+        <li><a href="/usuario/registro">Account</a></li>
+        <li><span>Register</span></li>
+    </ul>
     <div class="row">
-      <div class="col-lg-10 col-xl-9 mx-auto">
-        <div class="card flex-row my-5 border-0 shadow rounded-3 overflow-auto  cardRegistro" >
-          <div class="card-img-left d-none d-md-flex cardImg">
-            <!-- Background image for card set in CSS! -->
-          </div>
-          <div class="card-body p-4 p-sm-5">
-            <h5 class="card-title text-center mb-5 fw-light fs-5">Register</h5>
+        <div id="content" class="col-sm-12">
+            <p>If you already have an account with us, please login at the <a href="/login">login page</a>.</p>
             <EditForm Model="@_usuario" OnValidSubmit="Post">
                 <DataAnnotationsValidator />
-                
-              <div class="form-floating mb-3">
-                <InputText type="text" class="form-control" id="floatingInputUsername" placeholder="myusername" @bind-Value="_usuario.Username" required autofocus/>
-                <label for="floatingInputUsername">Username</label>
-                <ValidationMessage For="@(() => _usuario.Username)"/>   
-             </div>
-             <div class="form-floating mb-3">
-                 <InputText type="text" class="form-control" id="floatingInputNombre" placeholder="Nombre" @bind-Value="_usuario.Nombre" required autofocus/>
-                 <label  for="floatingInputNombre">First Name</label>
-                 <ValidationMessage For="@(() => _usuario.Nombre)"/>  
-            </div>
-            <div class="form-floating mb-3">
-                 <InputText type="text" class="form-control" id="floatingInputApellidos" placeholder="Apellidos" @bind-Value="_usuario.Apellidos" required autofocus/>
-                 <label for="floatingInputApellidos">Apellidos</label>
-                 <ValidationMessage For="@(() => _usuario.Apellidos)"/>    
-            </div>
-                              
-                                  
-              <div class="form-floating mb-3">
-                <InputText type="email" class="form-control" id="floatingInputEmail" placeholder="name@ejemplo.com" @bind-Value="_usuario.Email"/>
-                <label for="floatingInputEmail">Email address</label>
-                <ValidationMessage For="@(() => _usuario.Email)"/>
-              </div>
-              <div class="form-floating mb-3">
-                 <InputText type="text" class="form-control" id="floatingInputTelefono" placeholder="Teléfono" @bind-Value="_usuario.Telefono" required autofocus/>
-                 <label for="floatingInputTelefono">Teléfono</label>
-                 <ValidationMessage For="@(() => _usuario.Telefono)"/>    
-             </div>
-             <div class="form-floating mb-3">
-                 <InputText type="text" class="form-control" id="floatingInputDireccion" placeholder="Direccion" @bind-Value="_usuario.Direccion" required autofocus/>
-                 <label for="floatingInputDireccion">Direccion</label>
-                 <ValidationMessage For="@(() => _usuario.Direccion)"/>    
-             </div>
-              <hr>
-              <div class="form-floating mb-3">
-                <InputText type="password" class="form-control" id="floatingPassword" placeholder="Password" @bind-Value="_usuario.Password" />
-                <label for="floatingPassword">Password</label>
-                <ValidationMessage For="@(() => _usuario.Password)"/>      
-              </div>
+                <fieldset id="account">
+                    <legend>Your Personal Details</legend>
+                    <div class="form-group required" style="display:  none ;">
+                        <label class="col-sm-2 control-label">Customer Group</label>
+                        <div class="col-sm-10">
+                            <div class="radio">
+                                <input type="radio" name="customer_group_id" value="1" checked="checked" id="customer_group_id1"><label for="customer_group_id1">
 
-              <div class="form-floating mb-3">
-                <InputText type="password" class="form-control" id="floatingPasswordConfirm" placeholder="Confirm Password" @bind-Value="_usuario.ConfirmPassword"/>
-                <label for="floatingPasswordConfirm">Confirm Password</label>
-                <ValidationMessage For="@(() => _usuario.ConfirmPassword)"/>       
-              </div>
+                                    Default
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-username">Username</label>
+                        <div class="col-sm-10">
+                            <InputText  type="text" name="username"  placeholder="User Name" id="input-username" @bind-Value="_usuario.Username" class="form-control"/>
+                            <ValidationMessage For="@(() => _usuario.Username)"/>
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-firstname">First Name</label>
+                        <div class="col-sm-10">
+                            <InputText  type="text" name="firstname"  placeholder="First Name" id="input-firstname" @bind-Value="_usuario.Nombre" class="form-control"/>
+                            <ValidationMessage For="@(() => _usuario.Nombre)"/>
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-lastname">Last Name</label>
+                        <div class="col-sm-10">
+                            <InputText  type="text" name="lastname" @bind-Value="_usuario.Apellidos" placeholder="Last Name" id="input-lastname" class="form-control"/>
+                            <ValidationMessage For="@(() => _usuario.Apellidos)"/> 
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-email">E-Mail</label>
+                        <div class="col-sm-10">
+                            <InputText type="email" name="email" @bind-Value="_usuario.Email" placeholder="E-Mail" id="input-email" class="form-control"/>
+                            <ValidationMessage For="@(() => _usuario.Email)"/>
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-telephone">Telephone</label>
+                        <div class="col-sm-10">
+                            <InputText type="tel" name="telephone" @bind-Value="_usuario.Telefono" placeholder="Telephone" id="input-telephone" class="form-control"/>
+                            <ValidationMessage For="@(() => _usuario.Telefono)"/> 
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Your Password</legend>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-password">Password</label>
+                        <div class="col-sm-10">
+                            <InputText  type="password" name="password" @bind-Value="_usuario.Password" placeholder="Password" id="input-password" class="form-control"/>
+                            <ValidationMessage For="@(() => _usuario.Password)"/>   
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-confirm">Password Confirm</label>
+                        <div class="col-sm-10">
+                            <InputText type="password" name="confirm" @bind-Value="_usuario.ConfirmPassword" placeholder="Password Confirm" id="input-confirm" class="form-control"/>
+                            <ValidationMessage For="@(() => _usuario.ConfirmPassword)"/> 
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Newsletter</legend>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Subscribe</label>
+                        <div class="col-sm-10">
+                            <input type="radio" name="newsletter" value="1" id="newsletter1"><label class="radio-inline" for="newsletter1">
 
-              <div class="d-grid mb-2">
-                <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" type="submit">Register</button>
-              </div>
+                                Yes
+                            </label>
+                            <input type="radio" name="newsletter" value="0" checked="checked" id="newsletter0"><label class="radio-inline" for="newsletter0">
 
-              <a class="d-block text-center mt-2 small" href="/login">¿Tienes una cuenta? Inicia sesión</a>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <div class="buttons">
+                    <div class="pull-right">
+                        I have read and agree to the <a href="https://livedemo00-opencart.template-help.com/opencart_prod-23516/index.php?route=information/information/agree&amp;information_id=3" class="agree"><b>Privacy Policy</b></a>
+                        <input type="checkbox" name="agree" value="1" id="agree1"><label for="agree1"></label>
+                        &nbsp;
+                        <input type="submit" value="Continue" class="btn btn-primary">
+                    </div>
+                </div>
             </EditForm>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
+</div>
 
-@code {
-    private Usuario _usuario = new();
 
-    protected override async Task OnInitializedAsync()
-    {
-        _usuario.Direccion = "";
-    }
 
-    private async Task Post()
-    {
-        
-        await Http.PostAsJsonAsync<Usuario>("/api/Usuarios/", _usuario);
-        Navigation.NavigateTo("/login");
-    }
-
-}

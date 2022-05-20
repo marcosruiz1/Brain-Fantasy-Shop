@@ -11,40 +11,40 @@
 }
 else
 {
-    @foreach (var chunk in _productos.Chunk(4)){
+    @foreach (var chunk in _productos.Chunk(4))
+    {
         <div class="card-group" style="margin-bottom: 40px;">
-        @foreach (var producto in chunk){
-            <div class="col-sm-3">
-            <div class="card" style="width: 23rem;">
-              <img src="@producto.Imagen" class="card-img-top" style="height: 18rem;" alt="...">
-              <div class="card-body">
-                  <h5 class="card-title">@producto.Nombre</h5>
-                  <div class="row">
-                      <p class="col-sm-9 card-text">@producto.Categoria</p>
-                      <h5 class="col-sm-3 card-text" style="font-size: 25px;">@producto.Precio €</h5>
-                  </div>
-           
-                <p class="card-text">@producto.Descripcion</p>
-                <button @onclick="(() => VerDetalle(producto.Id))" class="btn btn-primary">Ver detalle</button>
-              </div>
-            </div>
-            </div>
-        }
+            @foreach (var producto in chunk)
+            {
+                <div class="col-sm-3">
+                    <div class="product-thumb transition  options ">
+                        <div class="image">
+                            <a class="lazy lazy-loaded" href="/producto/ver/@producto.Id" style="padding-bottom: 100%">
+                                <img  alt="@producto.Nombre" title="@producto.Nombre" class="img-primary" data-src="@producto.Imagen" src="@producto.Imagen"/>
+                                <img  alt="@producto.Nombre" title="@producto.Nombre" class="img-secondary" data-src="@producto.Imagen" src="@producto.Imagen"/>
+                            </a>
+                        </div>
+                        <div class="caption">
+                            <div class="price">
+                                $120.00
+                            </div>
+                            <div class="name"><a @onclick="(() => VerDetalle(producto.Id))">@producto.Nombre</a></div>
+                            <div class="description">@producto.Descripcion</div>
+                            <div class="button-group">
+                                <button type="button" class="product-btn cart-btn" data-toggle="tooltip" title="" onclick="ajaxAdd($(this),50);" data-original-title="Add to Cart">
+                                    <i class="linearicons-cart"></i>
+                                </button>
+                                <button type="button" class="product-btn" data-toggle="tooltip" title="" onclick="wishlist.add('50');" data-original-title="Add to Wish List"><i class="linearicons-heart"></i></button>
+                                <button type="button" class="product-btn" data-toggle="tooltip" title="" onclick="compare.add('50');" data-original-title="Compare this Product"><i class="linearicons-tab"></i></button>
+                                <button type="button" data-rel="details" class="product-btn quickview" data-toggle="tooltip" title="" @onclick="(() => VerDetalle(producto.Id))" data-original-title="Quick View"><i class="linearicons-eye"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     }
-    
-    
+
+
 }
 
-@code {
-    private List<Producto> _productos;
-
-    protected override async Task OnInitializedAsync()
-    {
-        _productos = await Http.GetFromJsonAsync<List<Producto>>("/api/Productos");
-    } 
-
-    public void VerDetalle(int id){
-        Navigation.NavigateTo($"/producto/ver/{id}");
-    }
-}

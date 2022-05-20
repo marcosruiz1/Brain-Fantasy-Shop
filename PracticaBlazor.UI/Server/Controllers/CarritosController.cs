@@ -65,6 +65,7 @@ namespace PracticaBlazor.UI.Server.Controllers
             return productosCarrito;
         }
 
+
         // GET: api/Carritos/User
         [Authorize]
         [HttpGet("User/{id}")]

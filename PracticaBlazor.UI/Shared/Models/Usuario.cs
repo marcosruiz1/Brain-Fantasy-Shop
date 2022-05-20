@@ -38,7 +38,6 @@ namespace PracticaBlazor.UI.Shared.Models
         public string? Direccion { get; set; }
         public string? Rol { get; set; } = "ROLE_VISUALIZAR";
         public string? Imagen { get; set; } = "default_User_Img";
-        public bool VIP { get; set; } = false;
         public List<ProductoVIP>? ProductosVIP { get; set; }
         //TokenPassword
         public string? ResetToken { get; set; }

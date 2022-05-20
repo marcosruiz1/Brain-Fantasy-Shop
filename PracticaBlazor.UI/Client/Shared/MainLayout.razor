@@ -5,20 +5,12 @@
 @inject NavigationManager Navigation
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+
 
     <main>
-        <div class="top-row px-4">
-            <a href="/micarrito"><i class="bi bi-cart"></i></a>
-            
-            <LoginLogoutButton />
-        </div>
-
-        <article class="content px-4">
+            <Header/>
             @Body
-        </article>
+            <Footer/>
     </main>
 </div>
 

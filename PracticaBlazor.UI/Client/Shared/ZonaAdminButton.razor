@@ -1,0 +1,47 @@
+﻿@inject NavigationManager Navigation
+@inject ILocalStorageService LocalStorage
+@inject AuthenticationStateProvider AuthStateProvider
+
+<AuthorizeView Context="abajo"  Roles="ROLE_ADMIN,ROLE_COMPLETO">
+    <Authorized>
+    <li class="dropdown">
+        <a href="https://livedemo00-opencart.template-help.com/opencart_52995/index.php?route=account/account" title="Zona Admin" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="oi oi-list-rich"></i>
+            <span>Zona Admin</span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-left">
+            <AuthorizeView Roles="ROLE_ADMIN">
+
+            <li>
+                <button @onclick="AdminUsuarios" class="dropdown-item"><i class="bi bi-people" style="margin-right:10px;"></i>Usuarios</button>
+            </li>
+            </AuthorizeView>
+            <li>
+                <button @onclick="AdminProductos" class="dropdown-item"><i class="bi bi-cpu" style="margin-right:10px;"></i>Productos</button>
+            </li>
+        </ul>
+    </li>
+    </Authorized>
+</AuthorizeView>
+
+
+@code {
+    void AdminProductos()
+    {
+        Navigation.NavigateTo("/productos/admin");
+    }
+    void AdminUsuarios()
+    {
+        Navigation.NavigateTo("/usuarios");
+    }
+    async Task Logout()
+    {
+        await LocalStorage.RemoveItemAsync("token");
+        await AuthStateProvider.GetAuthenticationStateAsync();
+        Navigation.NavigateTo("/");
+    }
+    void Register()
+    {
+        Navigation.NavigateTo("/usuario/registro");
+    }
+}
