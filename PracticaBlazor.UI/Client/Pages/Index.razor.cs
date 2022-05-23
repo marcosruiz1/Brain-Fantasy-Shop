@@ -26,6 +26,7 @@ namespace PracticaBlazor.UI.Client.Pages
     {
         private List<Producto> _productos;
         private List<Producto> _productosNew = new();
+
         protected override async Task OnInitializedAsync()
         {
             _productos = await Http.GetFromJsonAsync<List<Producto>>("/api/Productos");
@@ -34,5 +35,7 @@ namespace PracticaBlazor.UI.Client.Pages
             _productosNew.Add(_productos[_productos.Count-2]);
             _productosNew.Add(_productos[_productos.Count-3]);
         }
+       
+
     }
 }

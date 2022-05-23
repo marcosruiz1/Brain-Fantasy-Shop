@@ -19,20 +19,45 @@ using Blazored.LocalStorage;
 using Blazored.Toast;
 using Blazored.Toast.Services;
 using PracticaBlazor.UI.Shared.Models;
+using System.Security.Claims;
 
 namespace PracticaBlazor.UI.Client.Pages.Productos
 {
     public partial class IndexProduct
     {
+        [Parameter]
+        public int Nombre { get; set; }
         private List<Producto> _productos;
+        AuthenticationState authState;
+        private string userId = "";
+        //User
+        [CascadingParameter]
+        Task<AuthenticationState> authenticationStateTask { get; set; }
         protected override async Task OnInitializedAsync()
         {
             _productos = await Http.GetFromJsonAsync<List<Producto>>("/api/Productos");
+            authState = await authenticationStateTask;
+            if (authState.User.Identity.IsAuthenticated)
+            {
+                userId = authState.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            }
         }
 
         public void VerDetalle(int id)
         {
             Navigation.NavigateTo($"/producto/ver/{id}");
+        }
+
+        public async Task CombrobarCarrito(int id)
+        {
+            if (userId == null)
+            {
+                Navigation.NavigateTo("/login");
+            }
+            else
+            {
+                await CarroService.AgregarCarrito(id, authState);
+            }
         }
     }
 }

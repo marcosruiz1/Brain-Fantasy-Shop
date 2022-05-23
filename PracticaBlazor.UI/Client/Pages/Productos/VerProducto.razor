@@ -1,10 +1,12 @@
 ﻿@page "/producto/ver/{id:int}"
 @using PracticaBlazor.UI.Shared.Models
+@using PracticaBlazor.UI.Shared.Models.Carro
 @using PracticaBlazor.UI.Shared.Models.Dto
 @using System.Security.Claims
 @using PracticaBlazor.UI.Shared.Models.Dto.Producto
 @inject HttpClient Http
 @inject NavigationManager Navigation
+@inject ICarroService CarroService
 
 
 <div id="product-product" class="container">

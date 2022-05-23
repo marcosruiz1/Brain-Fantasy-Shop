@@ -1,17 +1,18 @@
-﻿@page "/usuarios"
+﻿@page "/usuarios/admin"
 @using PracticaBlazor.UI.Shared.Models
 @using Microsoft.AspNetCore.Hosting;
 @inject HttpClient Http
 @inject NavigationManager Navigation
 <AuthorizeView Roles="ROLE_ADMIN">
  <Authorized>
-       <h3>Index</h3>
+     <div class="container">
 @if (_usuarios == null)
 {
     <p><em>Cargando...</em></p>
 }
 else
 {
+    <h1>INDEX ADMIN USER</h1>
     <table class="table">
         <thead>
             <tr>
@@ -56,11 +57,14 @@ else
     </div>
     
 }
+</div>
    </Authorized>
    <NotAuthorized>
-        <span>No estás autorizado!</span>
+        @{
+            Navigation.NavigateTo("/login");
+        }
    </NotAuthorized>
-
+   
 </AuthorizeView>
 
 @code {

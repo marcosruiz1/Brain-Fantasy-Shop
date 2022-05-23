@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using PracticaBlazor.UI.Shared.Models.Email;
 using PracticaBlazor.UI.Shared.Models;
+using PracticaBlazor.UI.Shared.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using PracticaBlazor.UI.Shared.Models.Carro;
 
 var builder = WebApplication.CreateBuilder(args);
 var emailConfig = builder.Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
@@ -31,6 +33,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
                  });
 builder.Services.AddSingleton(emailConfig);
 builder.Services.AddScoped<IEmailSender, EmailSender>();
+//builder.Services.AddScoped<ICarroService, CarroService>();
+builder.Services.AddHttpClient<ICarroService, CarroService>();
+
 
 
 var app = builder.Build();

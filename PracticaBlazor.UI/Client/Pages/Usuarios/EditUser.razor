@@ -55,7 +55,7 @@ else
     private async Task Put()
     {
         await Http.PutAsJsonAsync<Usuario>($"/api/Usuarios/{_usuario.Id}", _usuario);
-        Navigation.NavigateTo("/usuarios");
+        Navigation.NavigateTo("/usuarios/admin");
     }
 
 }

@@ -4,68 +4,74 @@
 @inject NavigationManager Navigation
 
 
-<AuthorizeView Roles="ROLE_ADMIN">
- <Authorized>
-    <h3>Index</h3>
-    @if (_productos == null)
-    {
-        <p><em>Cargando...</em></p>
-    }
-    else
-    {
-        <div class="form-group">
-            <input class="form-control" type="text" placeholder="Filter..."
-                   @bind="Filter"
-                   @bind:event="oninput">
-        </div>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Nombre</th>
-                    <th>Categoria</th>
-                    <th>Precio</th>
-                    <th>Descripcion</th>
-                    <th>Imagen</th>
-                    <th>Reseñas</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var producto in _productos)
-                {
-                    if (!IsVisible(producto))
-                    continue;
-                    <tr>
-                        <td>@producto.Id.ToString()</td>
-                        <td>@producto.Nombre</td>
-                        <td>@producto.Categoria</td>
-                        <td>@producto.Precio</td>
-                        <td>@producto.Descripcion</td>
-                        <td><img src="@producto.Imagen" style="width: 75px; height: 75px;"></td>
-                        <td>@producto.Reseñas</td>
-                        <td>
-                            <button class="btn btn-info"
+<AuthorizeView Roles="ROLE_ADMIN, ROLE_COMPLETO">
+    <Authorized>
+
+        <div class="container">
+
+            @if (_productos == null)
+            {
+                <p><em>Cargando...</em></p>
+            }
+            else
+            {
+                <h1>INDEX PRODUCTOS ADMIN</h1>
+                <div class="form-group">
+                    <input class="form-control" type="text" placeholder="Filter..."
+                       @bind="Filter"
+                       @bind:event="oninput">
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Nombre</th>
+                            <th>Categoria</th>
+                            <th>Precio</th>
+                            <th>Descripcion</th>
+                            <th>Imagen</th>
+                            <th>Reseñas</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var producto in _productos)
+                        {
+                            if (!IsVisible(producto))
+                                continue;
+                            <tr>
+                                <td>@producto.Id.ToString()</td>
+                                <td>@producto.Nombre</td>
+                                <td>@producto.Categoria</td>
+                                <td>@producto.Precio</td>
+                                <td>@producto.Descripcion</td>
+                                <td><img src="@producto.Imagen" style="width: 75px; height: 75px;"></td>
+                                <td>@producto.Reseñas</td>
+                                <td>
+                                    <button class="btn btn-info"
                                     @onclick="(() => Edit(producto.Id))">
-                                Edit
-                            </button>
-                            <button class="btn btn-danger"
+                                        Edit
+                                    </button>
+                                    <button class="btn btn-danger"
                                     @onclick="(() => Delete(producto.Id))">
-                                Delete
-                            </button>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        <div>
-            <button class="btn btn-success" @onclick="Create">Añadir productos</button>
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div>
+                    <button class="btn btn-success" @onclick="Create">Añadir productos</button>
+                </div>
+            }
         </div>
-    }
-   </Authorized>
-   <NotAuthorized>
-        <span>No estás autorizado!</span>
-   </NotAuthorized>
+    </Authorized>
+    <NotAuthorized>
+        @{
+            Navigation.NavigateTo("/login");
+        }
+    </NotAuthorized>
 
 </AuthorizeView>
 
@@ -96,14 +102,14 @@
     }
     public bool IsVisible(Producto producto)
     {
-    if (string.IsNullOrEmpty(Filter))
-        return true;
- 
-    if (producto.Nombre.Contains(Filter, StringComparison.OrdinalIgnoreCase))
-        return true;
+        if (string.IsNullOrEmpty(Filter))
+            return true;
 
- 
-    return false;
+        if (producto.Nombre.Contains(Filter, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+
+        return false;
     }
 
 }

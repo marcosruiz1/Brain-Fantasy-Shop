@@ -23,39 +23,56 @@ using PracticaBlazor.UI.Shared.Models;
 
 namespace PracticaBlazor.UI.Client.Shared
 {
-    public partial class Header
+    public partial class Header : IDisposable
     {
+        private string searchContent = "";
         private int totalCarrito = 0;
-        private List<Carrito> _carritosUser = new();
-
+        public int TotalCarrito
+        {
+            get => totalCarrito;
+            set
+            {
+                totalCarrito = value;
+                InvokeAsync(() => StateHasChanged());
+            }
+        }
+        AuthenticationState authState;
         [CascadingParameter]
         Task<AuthenticationState> authenticationStateTask { get; set; }
-        private string userId;
 
         protected override async Task OnInitializedAsync()
         {
+            authState = await authenticationStateTask;
+            CarroService.CarritoChanged += CarroService_CarritoChanged;
 
-            //GET user Id
-            var authState = await authenticationStateTask;
-            if (authState.User.Identity.IsAuthenticated)
-            {
-                userId = authState.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-                if (userId != null)
-                {
-                    _carritosUser = await Http.GetFromJsonAsync<List<Carrito>>($"/api/Carritos/User/{userId}");
-                }
-                foreach (var carrito in _carritosUser)
-                {
-                    totalCarrito += carrito.numProductos;
-                }
-            }
-            
-
+            totalCarrito = await CarroService.ContadorCarrito(authState);
         }
+
+        private void CarroService_CarritoChanged()
+        {
+            this.StateHasChanged();
+        }
+
         void Carrito()
         {
             Navigation.NavigateTo("/micarrito");
+        }
+
+        void Search()
+        {
+            Navigation.NavigateTo($"/productos/{searchContent}");
+        }
+        private void OnInputEvent(ChangeEventArgs changeEvent)
+        {
+            searchContent = (string)changeEvent.Value;
+        }
+
+        private bool _disposed = false;
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _disposed = true;
+            CarroService.CarritoChanged -= CarroService_CarritoChanged;
         }
     }
 }

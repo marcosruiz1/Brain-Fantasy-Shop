@@ -2,7 +2,7 @@
 @inject ILocalStorageService LocalStorage
 @inject AuthenticationStateProvider AuthStateProvider
 
-<AuthorizeView Context="abajo"  Roles="ROLE_ADMIN,ROLE_COMPLETO">
+<AuthorizeView Context="Main"  Roles="ROLE_ADMIN,ROLE_COMPLETO">
     <Authorized>
     <li class="dropdown">
         <a href="https://livedemo00-opencart.template-help.com/opencart_52995/index.php?route=account/account" title="Zona Admin" class="dropdown-toggle" data-toggle="dropdown">
@@ -32,7 +32,7 @@
     }
     void AdminUsuarios()
     {
-        Navigation.NavigateTo("/usuarios");
+        Navigation.NavigateTo("/usuarios/admin");
     }
     async Task Logout()
     {

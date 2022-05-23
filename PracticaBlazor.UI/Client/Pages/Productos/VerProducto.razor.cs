@@ -23,6 +23,7 @@ using System.Security.Claims;
 using PracticaBlazor.UI.Shared.Models.Dto.Producto;
 using PracticaBlazor.UI.Shared.Models;
 
+
 namespace PracticaBlazor.UI.Client.Pages.Productos
 {
     public partial class VerProducto
@@ -33,22 +34,27 @@ namespace PracticaBlazor.UI.Client.Pages.Productos
         private Producto _producto = new();
         private List<Categoria> _categorias = new();
         private ProductoCarritoDto _productoCarrito = new();
+       
+
         //User
         [CascadingParameter]
         Task<AuthenticationState> authenticationStateTask { get; set; }
-
         private string userId = "";
-        //Carrito
+        private int totalProductos = 0;
         private List<Carrito> _carritos = new();
         private Carrito _carritoActual = new();
         private bool _comprobador = false;
+        AuthenticationState authState;
+
+        [CascadingParameter]
+        public Header Layout { get; set; }
         protected override async Task OnInitializedAsync()
         {
             _producto = await Http.GetFromJsonAsync<Producto>($"/api/Productos/{Id}");
             //GET categorías
             _categorias = await Http.GetFromJsonAsync<List<Categoria>>("/api/Categorias");
             //GET user Id
-            var authState = await authenticationStateTask;
+            authState = await authenticationStateTask;
             if (authState.User.Identity.IsAuthenticated)
             {
                 userId = authState.User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -57,31 +63,15 @@ namespace PracticaBlazor.UI.Client.Pages.Productos
 
         public async Task CombrobarCarrito()
         {
-            _carritos = await Http.GetFromJsonAsync<List<Carrito>>("/api/Carritos");
-            if (_carritos.Count > 0)
+            if(userId == null)
             {
-                foreach (var carrito in _carritos)
-                {
-                    if (carrito.idProducto == Id && carrito.idUsuario == Int32.Parse(userId))
-                    {
-                        //Actualiza el carrito
-                        carrito.numProductos++;
-                        await Http.PutAsJsonAsync<Carrito>($"/api/Carritos/{carrito.Id}", carrito);
-                        _comprobador = true;
-                    }
-                }
+                Navigation.NavigateTo("/login");
             }
-
-            if (!_comprobador)
+            else
             {
-                _carritoActual.idProducto = Id;
-                _carritoActual.idUsuario = Int32.Parse(userId);
-                await Http.PostAsJsonAsync<Carrito>($"/api/Carritos/", _carritoActual);
+                await CarroService.AgregarCarrito(Id, authState);
             }
-        }
-
-        public void RellenarProducto()
-        {
+            
         }
     }
 }

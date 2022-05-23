@@ -4,15 +4,19 @@
 @inject HttpClient Http
 @inject NavigationManager Navigation
 
+
 <div class="page">
 
 
     <main>
             <Header/>
+            <CascadingValue Value="this">
             @Body
+            </CascadingValue>
             <Footer/>
     </main>
 </div>
+
 
 <BlazoredToasts Position="ToastPosition.BottomRight"
                 Timeout="10"
