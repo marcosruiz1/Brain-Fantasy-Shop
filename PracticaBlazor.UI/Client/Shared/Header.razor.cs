@@ -27,6 +27,7 @@ namespace PracticaBlazor.UI.Client.Shared
     {
         private string searchContent = "";
         private int totalCarrito = 0;
+        private Producto selectedProduct;
         public int TotalCarrito
         {
             get => totalCarrito;
@@ -73,6 +74,20 @@ namespace PracticaBlazor.UI.Client.Shared
             if (_disposed) return;
             _disposed = true;
             CarroService.CarritoChanged -= CarroService_CarritoChanged;
+        }
+
+        //Buscador
+        private void HandleSearch(Producto product)
+        {
+            if (product == null) return;
+            selectedProduct = product;
+            Navigation.NavigateTo($"/producto/ver/{selectedProduct.Id}");
+        }
+
+        private async Task<IEnumerable<Producto>> SearchProduct(string searchText)
+        {
+            var response = await ProductoService.SearchProducto(searchText);
+            return response;
         }
     }
 }

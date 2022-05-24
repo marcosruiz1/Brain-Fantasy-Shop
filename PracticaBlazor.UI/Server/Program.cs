@@ -11,6 +11,7 @@ using PracticaBlazor.UI.Shared.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PracticaBlazor.UI.Shared.Models.Carro;
+using PracticaBlazor.UI.Shared.Models.Services.ProductoService;
 
 var builder = WebApplication.CreateBuilder(args);
 var emailConfig = builder.Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
@@ -35,6 +36,7 @@ builder.Services.AddSingleton(emailConfig);
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 //builder.Services.AddScoped<ICarroService, CarroService>();
 builder.Services.AddHttpClient<ICarroService, CarroService>();
+builder.Services.AddHttpClient<IProductoService, ProductoService>();
 
 
 

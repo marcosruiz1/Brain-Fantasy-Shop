@@ -93,10 +93,7 @@ namespace PracticaBlazor.UI.Shared.Models.Carro
         }
 
         public int TotalArticulos()
-        {
-            // código para determinar número de artículos, que si esto estuviera hecho con localstorage, sería simplemente el .length del array donde tuvieras los artículos
-            // pero que así te va a tocar mirar en el servidor
-            
+        {          
             return _numCarrito;
         }
 

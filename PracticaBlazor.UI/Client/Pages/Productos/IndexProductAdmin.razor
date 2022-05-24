@@ -7,11 +7,15 @@
 <AuthorizeView Roles="ROLE_ADMIN, ROLE_COMPLETO">
     <Authorized>
 
-        <div class="container">
+        <div class="container containerPers">
 
             @if (_productos == null)
             {
-                <p><em>Cargando...</em></p>
+                <div id="app" class="d-flex justify-content-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
             }
             else
             {

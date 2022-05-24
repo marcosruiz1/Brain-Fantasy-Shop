@@ -48,7 +48,7 @@ namespace PracticaBlazor.UI.Client.Pages.Productos
 
         [CascadingParameter]
         public Header Layout { get; set; }
-        protected override async Task OnInitializedAsync()
+        protected override async Task OnParametersSetAsync()
         {
             _producto = await Http.GetFromJsonAsync<Producto>($"/api/Productos/{Id}");
             //GET categorías

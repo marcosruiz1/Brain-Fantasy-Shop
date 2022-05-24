@@ -5,58 +5,64 @@
 @inject NavigationManager Navigation
 <AuthorizeView Roles="ROLE_ADMIN">
  <Authorized>
-     <div class="container">
-@if (_usuarios == null)
-{
-    <p><em>Cargando...</em></p>
-}
-else
-{
-    <h1>INDEX ADMIN USER</h1>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Rol</th>
-                <th>Imagen</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var usuario in _usuarios)
+     <div class="container ">
+            @if (_usuarios == null)
             {
-                <tr>
-                    <td>@usuario.Id.ToString()</td>
-                    <td>@usuario.Username</td>
-                    <td>@usuario.Email</td>
-                    <td>@usuario.Rol</td>
-                    @if (@usuario.Imagen == "default_User_Img"){
-                        <td><img src="/images/default_User_Img.png" style="width: 75px; height: 75px;"></td>
-                    }
-                    else{
-                        <td><img src="@usuario.Imagen" style="width: 75px; height: 75px;"></td>
-                    }
-                    <td>
-                        <button class="btn btn-info"
-                                @onclick="(() => Edit(usuario.Id))">
-                            Edit
-                        </button>
-                        <button class="btn btn-danger"
-                                @onclick="(() => Delete(usuario.Id))">
-                            Delete
-                        </button>
-                    </td>
-                </tr>
+        <div id="app" class="d-flex justify-content-center">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
             }
-        </tbody>
-    </table>
-    <div>
-        <button class="btn btn-success" @onclick="Create">Añadir usuario</button>
-    </div>
-    
-}
+            else
+            {
+        <h1>INDEX ADMIN USER</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Rol</th>
+                    <th>Imagen</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                        @foreach (var usuario in _usuarios)
+                        {
+                        <tr>
+                            <td>@usuario.Id.ToString()</td>
+                            <td>@usuario.Username</td>
+                            <td>@usuario.Email</td>
+                            <td>@usuario.Rol</td>
+                                @if (@usuario.Imagen == "default_User_Img")
+                                {
+                                    <td><img src="/images/default_User_Img.png" style="width: 75px; height: 75px;"></td>
+                                }
+                                else
+                                {
+                                    <td><img src="@usuario.Imagen" style="width: 75px; height: 75px;"></td>
+                                }
+                            <td>
+                                <button class="btn btn-info"
+                                @onclick="(() => Edit(usuario.Id))">
+                                    Edit
+                                </button>
+                                <button class="btn btn-danger"
+                                @onclick="(() => Delete(usuario.Id))">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                        }
+            </tbody>
+        </table>
+        <div>
+            <button class="btn btn-success" @onclick="Create">Añadir usuario</button>
+        </div>
+
+            }
 </div>
    </Authorized>
    <NotAuthorized>
@@ -64,7 +70,7 @@ else
             Navigation.NavigateTo("/login");
         }
    </NotAuthorized>
-   
+
 </AuthorizeView>
 
 @code {

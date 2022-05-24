@@ -18,12 +18,10 @@ namespace PracticaBlazor.UI.Server.Controllers
     public class ProductosController : ControllerBase
     {
         private readonly AppDbContext _context;
-        private readonly IWebHostEnvironment _host;
 
-        public ProductosController(AppDbContext context, IWebHostEnvironment host)
+        public ProductosController(AppDbContext context)
         {
             _context = context;
-            _host = host;
         }
 
         // GET: api/Productos
@@ -106,6 +104,14 @@ namespace PracticaBlazor.UI.Server.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpGet("Search/{searchText}")]
+        public async Task<ActionResult<List<Producto>>> SearchProducts(string searchText)
+        {
+            return await _context.Producto
+                .Where(p => p.Nombre.Contains(searchText) || p.Descripcion.Contains(searchText))
+                .ToListAsync();
         }
 
         private bool ProductoExists(int id)

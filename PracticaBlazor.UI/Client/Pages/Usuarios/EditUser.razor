@@ -3,11 +3,16 @@
 @inject HttpClient Http
 @inject NavigationManager Navigation
 
+<div class="container ">
 <h3>Edit User</h3>
 
 @if (_usuario == null)
 {
-    <p><em>Cargando...</em></p>
+    <div id="app" class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
 }
 else
 {
@@ -21,30 +26,31 @@ else
             <InputSelect class="form-control" @bind-Value="_usuario.Rol">
                 @foreach (var rol in _roles)
                 {
-                    <option value="@rol">@rol.ToString()</option>
+                <option value="@rol">@rol.ToString()</option>
                 }
-            </InputSelect>
-        </div>
-        <div class="form-group">
-            <label>Email: </label>
-            <InputText class="form-control" @bind-Value="_usuario.Email" />
-        </div>
- 
-        <div class="form-group">
-            <label>Imagen: </label>
-            <InputText class="form-control" @bind-Value="_usuario.Imagen"/>
-        </div>
-        <div class="form-group">
-            <input type="submit" class="btn btn-success" value="Editar Usuario" />
-        </div>
-    </EditForm>
+        </InputSelect>
+    </div>
+    <div class="form-group">
+        <label>Email: </label>
+        <InputText class="form-control" @bind-Value="_usuario.Email" />
+    </div>
+
+    <div class="form-group">
+        <label>Imagen: </label>
+        <InputText class="form-control" @bind-Value="_usuario.Imagen" />
+    </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-success" value="Editar Usuario" />
+    </div>
+</EditForm>
 }
+</div>
 
 @code {
     [Parameter]
     public int Id { get; set; }
     private Usuario _usuario = null;
-    private List<string> _roles = new(){"ROLE_VISUALIZAR","ROLE_COMPLETO","ROLE_ADMIN"};
+    private List<string> _roles = new() { "ROLE_VISUALIZAR", "ROLE_COMPLETO", "ROLE_ADMIN" };
 
 
     protected override async Task OnInitializedAsync()

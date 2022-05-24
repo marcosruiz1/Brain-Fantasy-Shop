@@ -6,7 +6,7 @@
 @inject NavigationManager Navigation
 @inject ICarroService CarroService
 
-<div  class="container">
+<div  class="container containerPers">
     <ul class="breadcrumb">
         <li><a href="/"><i class="fa fa-home"></i></a></li>
         <li><a href="/productos">Catálogo</a></li>
@@ -14,7 +14,11 @@
 
 @if (_productos == null)
 {
-    <p><em>Cargando...</em></p>
+    <div id="app" class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
 }
 else
 {

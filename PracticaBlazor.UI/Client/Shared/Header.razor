@@ -1,10 +1,13 @@
-﻿@using PracticaBlazor.UI.Shared.Models
+﻿@using Blazored.Typeahead
+@using PracticaBlazor.UI.Shared.Models
 @using System.Security.Claims
 @using System.Text.Json
 @using PracticaBlazor.UI.Shared.Models.Carro
+@using PracticaBlazor.UI.Shared.Models.Services.ProductoService
 @inject HttpClient Http
 @inject NavigationManager Navigation
 @inject ICarroService CarroService
+@inject IProductoService ProductoService
 
 
 <header>
@@ -32,13 +35,25 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 fl-left">
-                    <div id="search" class="search">
-                        <input type="text" name="search" @bind="@searchContent" @oninput="OnInputEvent"/>
-                        <button type="button" class="button-search">
-                            <span>Search</span><i class="linearicons-magnifier"></i>
-                        </button>
+                    <BlazoredTypeahead SearchMethod="@SearchProduct"
+                                       TValue="Producto"
+                                       TItem="Producto"
+                                       Value="selectedProduct"
+                                       ValueChanged="HandleSearch"
+                                       ValueExpression="@(() => selectedProduct)"
+                                       placeholder="Search...">
+                        <SelectedTemplate>
+                            @context.Nombre
+                        </SelectedTemplate>
+                        <ResultTemplate>
+                            @context.Nombre
+                        </ResultTemplate>
 
-                    </div>
+                        <NotFoundTemplate>
+                            Sorry, there weren't any products found.
+                        </NotFoundTemplate>
+                    </BlazoredTypeahead>
+                    
                 </div>
             </div>
         </div>
@@ -57,26 +72,28 @@
                         <a class="toggle linearicons-cog2" href="#"></a>
                         <ul class="toggle_cont toggle_menu">
                             <li><a href="/"><i class="linearicons-home icon2" data-toggle="tooltip" title="" data-original-title="Home"></i><span>Home</span></a></li>
-                            <li><a href="/productos"><i class="bi bi-shop-window" data-toggle="tooltip" title="" data-original-title="Catálogo"></i><span>Catálogo</span></a></li>   
+                            <li><a href="/productos"><i class="bi bi-shop-window" data-toggle="tooltip" title="" data-original-title="Catálogo"></i><span>Catálogo</span></a></li>
                             <li><a href="https://livedemo00-opencart.template-help.com/opencart_prod-23516/index.php?route=account/wishlist" id="wishlist-total"><i class="linearicons-star" data-toggle="tooltip" title="" data-original-title="Wish List (0)"></i><span>Wish List (0)</span></a></li>
-                            <ZonaAdminButton/>
-                            <LoginLogoutButton/>
+                            <ZonaAdminButton />
+                            <LoginLogoutButton />
 
                         </ul>
                     </nav>
                     <div class="box-cart" data-match-height="items-header" style="height: 60px;">
                         <div id="cart" class="cart toggle-wrap">
                             <button type="button" @onclick="Carrito" class="toggle">
-                                
-                                <span id="cart-total"  class="cart-total">
-                                    
-                                        @*@TotalCarrito*@
-                                    @CarroService.TotalArticulos()
-                                    
-                                     <b>$0.00</b> <em>item(s)
 
-                                    </em></span>
-                            </button>                            
+                                <span id="cart-total" class="cart-total">
+
+                                    @*@TotalCarrito*@
+                                    @CarroService.TotalArticulos()
+
+                                    <b>$0.00</b> <em>
+                                        item(s)
+
+                                    </em>
+                                </span>
+                            </button>
                         </div>
                     </div>
                 </div>

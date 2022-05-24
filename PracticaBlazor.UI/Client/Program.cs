@@ -6,6 +6,7 @@ using Blazored.LocalStorage;
 using Blazored.Toast;
 using PracticaBlazor.UI.Shared.Models.Carro;
 using PracticaBlazor.UI.Client.Shared;
+using PracticaBlazor.UI.Shared.Models.Services.ProductoService;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -18,5 +19,7 @@ builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddBlazoredToast();
 builder.Services.AddScoped<ICarroService, CarroService>();
 builder.Services.AddScoped<Header>();
+builder.Services.AddScoped<IProductoService, ProductoService>();
+
 
 await builder.Build().RunAsync();

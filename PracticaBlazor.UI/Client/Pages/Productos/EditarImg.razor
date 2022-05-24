@@ -3,24 +3,30 @@
 @inject HttpClient Http
 @inject NavigationManager Navigation
 
+<div class="container ">
 <h3>Editar Imágen</h3>
 
 @if (_producto == null)
 {
-    <p><em>Cargando...</em></p>
+    <div id="app" class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
 }
 else
 {
     <EditForm Model="@_producto" OnValidSubmit="Put">
         <div class="form-group">
             <label>Imagen: </label>
-            <InputFile OnChange="@OnFileChange" multiple="false" accept="images/jpeg"/>
+            <InputFile OnChange="@OnFileChange" multiple="false" accept="images/jpeg" />
         </div>
         <div class="form-group">
             <input type="submit" class="btn btn-success" value="Editar producto" />
         </div>
     </EditForm>
 }
+</div>
 @code {
     [Parameter]
     public int Id { get; set; }
