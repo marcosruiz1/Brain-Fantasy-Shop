@@ -18,24 +18,26 @@ using PracticaBlazor.UI.Client.Shared;
 using Blazored.LocalStorage;
 using Blazored.Toast;
 using Blazored.Toast.Services;
+using PracticaBlazor.UI.Client.Services.ComentarioService;
 using PracticaBlazor.UI.Shared.Models;
+using Microsoft.AspNetCore.Hosting;
 using System.Security.Claims;
 
-namespace PracticaBlazor.UI.Client.Pages.Productos
+namespace PracticaBlazor.UI.Client.Pages.Usuarios
 {
-    public partial class IndexProduct
+    public partial class IndexUser
     {
-        [Parameter]
-        public int Nombre { get; set; }
-        private List<Producto> _productos;
+        private List<Usuario> _usuarios;
+
+        //User
         AuthenticationState authState;
         private string userId = "";
-        //User
         [CascadingParameter]
         Task<AuthenticationState> authenticationStateTask { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
-            _productos = await Http.GetFromJsonAsync<List<Producto>>("/api/Productos");
+            _usuarios = await Http.GetFromJsonAsync<List<Usuario>>("/api/Usuarios");
             authState = await authenticationStateTask;
             if (authState.User.Identity.IsAuthenticated)
             {
@@ -43,22 +45,24 @@ namespace PracticaBlazor.UI.Client.Pages.Productos
             }
         }
 
-
-        public void VerDetalle(int id)
+        private async Task Delete(int id)
         {
-            Navigation.NavigateTo($"/producto/ver/{id}");
+            await Http.DeleteAsync($"/api/Carritos/user/{id}");
+            await ComentarioService.BorrarComentarioUser(id);
+            await Http.DeleteAsync($"/api/Usuarios/{id}");
+            _usuarios = await Http.GetFromJsonAsync<List<Usuario>>("/api/Usuarios");
+            toastService.ShowSuccess("Usuario eliminado");
+            StateHasChanged();
         }
 
-        public async Task CombrobarCarrito(int id)
+        private void Edit(int id)
         {
-            if (userId == null)
-            {
-                Navigation.NavigateTo("/login");
-            }
-            else
-            {
-                await CarroService.AgregarCarrito(id, authState);
-            }
+            Navigation.NavigateTo($"/usuario/edit/{id}");
+        }
+
+        private void Create()
+        {
+            Navigation.NavigateTo("/usuario/registro");
         }
     }
 }

@@ -31,8 +31,8 @@ namespace PracticaBlazor.UI.Client.Pages.Productos
         [Parameter]
         public int Id { get; set; }
 
-        private Producto _producto = new();
-        private List<Categoria> _categorias = new();
+        private Producto _producto;
+        
         private ProductoCarritoDto _productoCarrito = new();
        
 
@@ -40,19 +40,28 @@ namespace PracticaBlazor.UI.Client.Pages.Productos
         [CascadingParameter]
         Task<AuthenticationState> authenticationStateTask { get; set; }
         private string userId = "";
-        private int totalProductos = 0;
-        private List<Carrito> _carritos = new();
-        private Carrito _carritoActual = new();
-        private bool _comprobador = false;
         AuthenticationState authState;
+        
+        //Comentario 
+        private Comentario _comentario = new();
+        private List<Comentario> _comentarios = new();
+        private List<Usuario> _usuarios = new();
 
-        [CascadingParameter]
-        public Header Layout { get; set; }
+        //Categoria
+        private string _categoria;
+        private List<Categoria> _categorias = new();
         protected override async Task OnParametersSetAsync()
         {
             _producto = await Http.GetFromJsonAsync<Producto>($"/api/Productos/{Id}");
+
+            //GET comentarios
+            _comentarios = await ComentarioService.ComentariosProducto(Id);
+            _usuarios = await ComentarioService.ComentariosUser(Id);
+
             //GET categorías
             _categorias = await Http.GetFromJsonAsync<List<Categoria>>("/api/Categorias");
+            _categoria = await CategoriaService.GetCategoriaNombre(_producto.Categoria);
+
             //GET user Id
             authState = await authenticationStateTask;
             if (authState.User.Identity.IsAuthenticated)
@@ -63,13 +72,33 @@ namespace PracticaBlazor.UI.Client.Pages.Productos
 
         public async Task CombrobarCarrito()
         {
-            if(userId == null)
-            {
-                Navigation.NavigateTo("/login");
+            if(authState.User.Identity.IsAuthenticated)
+            {              
+                await CarroService.AgregarCarrito(Id, authState);
             }
             else
             {
-                await CarroService.AgregarCarrito(Id, authState);
+                Navigation.NavigateTo("/login");
+            }
+            
+        }
+
+        private async Task CrearComentario()
+        {
+            if (authState.User.Identity.IsAuthenticated)
+            {
+                _comentario.fecha = DateTime.Now;
+                _comentario.idProducto = Id;
+                _comentario.idUsuario = Convert.ToInt32(userId);
+                await ComentarioService.AgregarComentario(_comentario);
+                toastService.ShowSuccess("Comentario añadido");
+                _comentarios =  await ComentarioService.ComentariosProducto(Id);
+                _usuarios = await ComentarioService.ComentariosUser(Id);
+                StateHasChanged();
+            }
+            else
+            {
+                Navigation.NavigateTo("/login");
             }
             
         }

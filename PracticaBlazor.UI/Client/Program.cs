@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using PracticaBlazor.UI.Client;
 using Blazored.LocalStorage;
 using Blazored.Toast;
-using PracticaBlazor.UI.Shared.Models.Carro;
 using PracticaBlazor.UI.Client.Shared;
-using PracticaBlazor.UI.Shared.Models.Services.ProductoService;
+using PracticaBlazor.UI.Client.Services.CarroService;
+using PracticaBlazor.UI.Client.Services.ProductoService;
+using PracticaBlazor.UI.Client.Services.ComentarioService;
+using PracticaBlazor.UI.Client.Services.CategoriaService;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -18,8 +20,12 @@ builder.Services.AddAuthorizationCore();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddBlazoredToast();
 builder.Services.AddScoped<ICarroService, CarroService>();
-builder.Services.AddScoped<Header>();
 builder.Services.AddScoped<IProductoService, ProductoService>();
+builder.Services.AddScoped<IComentarioService, ComentarioService>();
+builder.Services.AddScoped<IComentarioService, ComentarioService>();
+builder.Services.AddScoped<ICategoriaService, CategoriaService>();
+
+
 
 
 await builder.Build().RunAsync();

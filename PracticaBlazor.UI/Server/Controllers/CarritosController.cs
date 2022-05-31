@@ -51,7 +51,7 @@ namespace PracticaBlazor.UI.Server.Controllers
         [HttpGet("Prod/{id}")]
         public async Task<ActionResult<List<Producto>>> GetCarritoProductos(int id)
         {
-            List<Carrito> userCarritos = _context.Carrito.Where(u => u.idUsuario == id).ToList();
+            List<Carrito> userCarritos = await _context.Carrito.Where(u => u.idUsuario == id).ToListAsync();
             List<Producto> productosCarrito = new();
 
             if (userCarritos.Count > 0)
@@ -71,7 +71,7 @@ namespace PracticaBlazor.UI.Server.Controllers
         [HttpGet("User/{id}")]
         public async Task<ActionResult<List<Carrito>>> GetCarritoUser(int id)
         {
-            List<Carrito> userCarritos = _context.Carrito.Where(u => u.idUsuario == id).ToList();
+            List<Carrito> userCarritos = await _context.Carrito.Where(u => u.idUsuario == id).ToListAsync();
 
             if (userCarritos == null)
             {

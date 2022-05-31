@@ -45,6 +45,7 @@ namespace PracticaBlazor.UI.Client.Pages.CarritoCompra
             //GET user Id
             authState = await authenticationStateTask;
             userId = authState.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
             if (userId != null)
             {
                 _carritosUser = await CarroService.GetCarritoUser(Convert.ToInt32(userId));

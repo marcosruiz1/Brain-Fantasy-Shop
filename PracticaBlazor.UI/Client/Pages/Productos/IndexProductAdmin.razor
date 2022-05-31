@@ -1,7 +1,10 @@
 ﻿@page "/productos/admin"
+@using PracticaBlazor.UI.Client.Services.ComentarioService
 @using PracticaBlazor.UI.Shared.Models
 @inject HttpClient Http
 @inject NavigationManager Navigation
+@inject IComentarioService ComentarioService
+@inject IToastService toastService
 
 
 <AuthorizeView Roles="ROLE_ADMIN, ROLE_COMPLETO">
@@ -81,7 +84,7 @@
 
 
 @code {
-    private List<Producto> _productos;
+    private List<Producto>? _productos;
     public string Filter { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -92,8 +95,11 @@
     private async Task Delete(int id)
     {
         await Http.DeleteAsync($"/api/Carritos/prod/{id}");
+        await Http.DeleteAsync($"/api/Comentarios/prod/{id}");
+        await ComentarioService.BorrarComentarioProducto(id);
         await Http.DeleteAsync($"/api/Productos/{id}");
         _productos = await Http.GetFromJsonAsync<List<Producto>>("/api/Productos");
+        toastService.ShowSuccess("Producto eliminado");
         StateHasChanged();
     }
     private void Edit(int id)
