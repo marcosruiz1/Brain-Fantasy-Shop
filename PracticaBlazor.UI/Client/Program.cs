@@ -9,6 +9,7 @@ using PracticaBlazor.UI.Client.Services.CarroService;
 using PracticaBlazor.UI.Client.Services.ProductoService;
 using PracticaBlazor.UI.Client.Services.ComentarioService;
 using PracticaBlazor.UI.Client.Services.CategoriaService;
+using PracticaBlazor.UI.Client.Services.UsuarioService;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -24,6 +25,8 @@ builder.Services.AddScoped<IProductoService, ProductoService>();
 builder.Services.AddScoped<IComentarioService, ComentarioService>();
 builder.Services.AddScoped<IComentarioService, ComentarioService>();
 builder.Services.AddScoped<ICategoriaService, CategoriaService>();
+builder.Services.AddScoped<ICategoriaService, CategoriaService>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
 
 

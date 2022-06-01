@@ -60,7 +60,10 @@ namespace PracticaBlazor.UI.Server.Controllers
                     user.Password = Utilities.Encrypt(user.Password);
                 }
             }
-            return Ok(user);
+            _context.Usuario.Add(user);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetUsuario", new { id = user.Id }, user);
         }
 
 

@@ -45,7 +45,6 @@ namespace PracticaBlazor.UI.Client.Shared
         {
             authState = await authenticationStateTask;
             CarroService.CarritoChanged += CarroService_CarritoChanged;
-
             totalCarrito = await CarroService.ContadorCarrito(authState);
         }
 

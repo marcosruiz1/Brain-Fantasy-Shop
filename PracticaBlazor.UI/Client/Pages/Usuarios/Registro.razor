@@ -1,7 +1,10 @@
 ﻿@page "/usuario/registro"
 @using PracticaBlazor.UI.Shared.Models
+@using PracticaBlazor.UI.Client.Services.UsuarioService
 @inject HttpClient Http
 @inject NavigationManager Navigation
+@inject IUsuarioService UsuarioService
+@inject IToastService toastService
 
 
 <div id="account-register" class="container containerPers">
@@ -103,7 +106,7 @@
                         I have read and agree to the <a href="https://livedemo00-opencart.template-help.com/opencart_prod-23516/index.php?route=information/information/agree&amp;information_id=3" class="agree"><b>Privacy Policy</b></a>
                         <input type="checkbox" name="agree" value="1" id="agree1"><label for="agree1"></label>
                         &nbsp;
-                        <input type="submit" value="Continue" class="btn btn-primary">
+                        <input type="submit"  value="Registrarse" class="btn btn-primary" >
                     </div>
                 </div>
             </EditForm>

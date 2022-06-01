@@ -280,8 +280,7 @@ else
                         </div>
                         <div class="tab-pane product-reviews" id="tab-review">
                             <EditForm Model="@_comentario" OnValidSubmit="CrearComentario">
-
-
+                                <DataAnnotationsValidator />
                                 <div class="form-group">
                                     <div class="review-form-title">
                                         <h3 class="product-section_title close-tab">Write a review</h3>
@@ -289,7 +288,12 @@ else
                                     <InputTextArea @bind-Value="_comentario.Mensaje" />
                                 </div>
                                 <div class="form-group">
-                                    <input type="submit" class="btn btn-success" value="Agregar mensaje" disabled="@(!context.Validate() || !context.IsModified())" />
+                                    @if (_comprobarComentario)
+                                    {
+                                        <input type="submit" class="btn btn-primary" value="Agregar mensaje" disabled="@(!context.Validate() || !context.IsModified())" />
+                                    }else{
+                                        <input type="submit" class="btn btn-primary" value="Agregar mensaje" disabled />
+                                    }            
                                 </div>
                                 <hr>
                             </EditForm>

@@ -30,12 +30,27 @@ namespace PracticaBlazor.UI.Client.Pages
         protected override async Task OnInitializedAsync()
         {
             _productos = await Http.GetFromJsonAsync<List<Producto>>("/api/Productos");
-            Console.WriteLine(_productos[1]);
-            _productosNew.Add(_productos[_productos.Count-1]);
-            _productosNew.Add(_productos[_productos.Count-2]);
-            _productosNew.Add(_productos[_productos.Count-3]);
+            switch (_productos.Count)
+            {
+                case 1:
+                    _productosNew.Add(_productos[0]);
+                    break;
+                case 2:
+                    _productosNew.Add(_productos[_productos.Count - 1]);
+                    _productosNew.Add(_productos[_productos.Count - 2]);
+                    break;
+                case 3:
+                    _productosNew.Add(_productos[_productos.Count - 1]);
+                    _productosNew.Add(_productos[_productos.Count - 2]);
+                    _productosNew.Add(_productos[_productos.Count - 3]);
+                    break;
+            }
         }
-       
+        public void VerDetalle(int id)
+        {
+            Navigation.NavigateTo($"/producto/ver/{id}");
+        }
+
 
     }
 }

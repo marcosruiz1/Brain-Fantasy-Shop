@@ -46,28 +46,33 @@ namespace PracticaBlazor.UI.Client.Pages.Productos
         private Comentario _comentario = new();
         private List<Comentario> _comentarios = new();
         private List<Usuario> _usuarios = new();
+        private bool _comprobarComentario = false;
 
         //Categoria
         private string _categoria;
         private List<Categoria> _categorias = new();
         protected override async Task OnParametersSetAsync()
         {
-            _producto = await Http.GetFromJsonAsync<Producto>($"/api/Productos/{Id}");
-
-            //GET comentarios
-            _comentarios = await ComentarioService.ComentariosProducto(Id);
-            _usuarios = await ComentarioService.ComentariosUser(Id);
-
-            //GET categorías
-            _categorias = await Http.GetFromJsonAsync<List<Categoria>>("/api/Categorias");
-            _categoria = await CategoriaService.GetCategoriaNombre(_producto.Categoria);
-
             //GET user Id
             authState = await authenticationStateTask;
             if (authState.User.Identity.IsAuthenticated)
             {
                 userId = authState.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             }
+
+            //GET Producto
+            _producto = await Http.GetFromJsonAsync<Producto>($"/api/Productos/{Id}");
+
+            //GET comentarios
+            _comentarios = await ComentarioService.ComentariosProducto(Id);
+            _usuarios = await ComentarioService.ComentariosUser(Id);
+            _comprobarComentario = await ComentarioService.ComprobarComentario(Convert.ToInt32(userId), Id);
+
+            //GET categorías
+            _categorias = await Http.GetFromJsonAsync<List<Categoria>>("/api/Categorias");
+            _categoria = await CategoriaService.GetCategoriaNombre(_producto.Categoria);
+
+            
         }
 
         public async Task CombrobarCarrito()
@@ -94,6 +99,8 @@ namespace PracticaBlazor.UI.Client.Pages.Productos
                 toastService.ShowSuccess("Comentario añadido");
                 _comentarios =  await ComentarioService.ComentariosProducto(Id);
                 _usuarios = await ComentarioService.ComentariosUser(Id);
+                _comentario.Mensaje = "";
+                _comprobarComentario = await ComentarioService.ComprobarComentario(Convert.ToInt32(userId), Id);
                 StateHasChanged();
             }
             else

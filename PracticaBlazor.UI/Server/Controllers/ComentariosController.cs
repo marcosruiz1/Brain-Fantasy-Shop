@@ -58,6 +58,18 @@ namespace PracticaBlazor.UI.Server.Controllers
             return  await _context.Comentario.Where(u => u.idProducto == id).ToListAsync();
         }
 
+        // GET: api/Comentarios/comprobar/{idUser}/{idProducto}
+        [HttpGet("comprobar/{idUser}/{idProducto}")]
+        public async Task<ActionResult<bool>> ComprobarComentario(int idUser, int idProducto)
+        {
+            Comentario comentario =  _context.Comentario.Where(u => u.idProducto == idProducto && u.idUsuario == idUser).FirstOrDefault();
+            if (comentario is null)
+            {
+                return true;
+            }
+            else return false;
+        }
+
         // GET: api/Comentarios/User
         [HttpGet("User/{id}")]
         public async Task<ActionResult<List<Usuario>>> GetComentarioUser(int id)

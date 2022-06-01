@@ -32,9 +32,8 @@ namespace PracticaBlazor.UI.Shared.Models
         [EmailAddress]
         public string Email { get; set; }
         [Required]
-        [RegularExpression("([1-9][0-9]*)", ErrorMessage = "Count must be a natural number")]
+        [RegularExpression("([1-9][0-9]*)", ErrorMessage = "Tiene que ser un número natural")]
         public string Telefono { get; set; }
-        [Required]
         public string? Direccion { get; set; }
         public string? Rol { get; set; } = "ROLE_VISUALIZAR";
         public string? Imagen { get; set; } = "default_User_Img";

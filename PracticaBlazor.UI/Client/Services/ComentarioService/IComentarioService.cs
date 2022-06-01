@@ -8,6 +8,7 @@ namespace PracticaBlazor.UI.Client.Services.ComentarioService
         Task AgregarComentario(Comentario comentario);
         Task<List<Comentario>> ComentariosProducto(int id);
         Task<List<Usuario>> ComentariosUser(int id);
+        Task<bool> ComprobarComentario(int idUser, int idProducto);
         Task BorrarComentarioProducto(int id);
         Task BorrarComentarioUser(int id);
     }

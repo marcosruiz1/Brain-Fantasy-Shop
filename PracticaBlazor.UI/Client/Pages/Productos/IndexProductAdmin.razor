@@ -22,7 +22,7 @@
             }
             else
             {
-                <h1>INDEX PRODUCTOS ADMIN</h1>
+                <h1>INDEX ADMIN PRODUCTOS</h1>
                 <div class="form-group">
                     <input class="form-control" type="text" placeholder="Filter..."
                        @bind="Filter"
@@ -59,7 +59,7 @@
                                     @onclick="(() => Edit(producto.Id))">
                                         Edit
                                     </button>
-                                    <button class="btn btn-danger"
+                                    <button class="delBoton btn-danger"
                                     @onclick="(() => Delete(producto.Id))">
                                         Delete
                                     </button>

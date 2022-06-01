@@ -32,8 +32,10 @@ namespace PracticaBlazor.UI.Client.Pages.Usuarios
 
         private async Task Post()
         {
-            await Http.PostAsJsonAsync("/api/Usuarios/", _usuario);
+            Console.WriteLine("HOLASDASDASD");
+            await UsuarioService.RegistrarUsuario(_usuario);
             Navigation.NavigateTo("/login");
+
         }
     }
 }

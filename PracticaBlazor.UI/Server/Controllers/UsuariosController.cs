@@ -182,7 +182,7 @@ namespace PracticaBlazor.UI.Server.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize(Roles = "ROLE_ADMIN")]
         [HttpPost]
-        public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
+        public async Task<ActionResult<Usuario>> PostUsuarioAdmin(Usuario usuario)
         {
             var usernameExists = _context.Usuario.Where(u => u.Username == usuario.Username).FirstOrDefault();
             var emailExists = _context.Usuario.Where(u => u.Email == usuario.Email).FirstOrDefault();
@@ -202,6 +202,33 @@ namespace PracticaBlazor.UI.Server.Controllers
 
             return CreatedAtAction("GetUsuario", new { id = usuario.Id }, usuario);
             
+        }
+
+        // POST: api/Usuarios/register
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost("register")]
+        public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
+        {
+            var usernameExists = _context.Usuario.Where(u => u.Username == usuario.Username).FirstOrDefault();
+            var emailExists = _context.Usuario.Where(u => u.Email == usuario.Email).FirstOrDefault();
+
+            if (usernameExists == null)
+            {
+                if (emailExists == null)
+                {
+                    usuario.Rol = "ROLE_VISUALIZAR";
+                    usuario.Imagen = "default_User_Img";
+                    usuario.Password = Utilities.Encrypt(usuario.Password);
+
+                    _context.Usuario.Add(usuario);
+                    await _context.SaveChangesAsync();
+
+                    return CreatedAtAction("GetUsuario", new { id = usuario.Id }, usuario);
+                }
+                else return null;
+            }
+            else return null;
+
         }
 
         // DELETE: api/Usuarios/5

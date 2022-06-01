@@ -18,3 +18,7 @@
     background: #d9534f;
     text-decoration: none;
 }
+
+.contraseñaInput {
+    height: 45px;
+}

@@ -41,7 +41,7 @@
                                        Value="selectedProduct"
                                        ValueChanged="HandleSearch"
                                        ValueExpression="@(() => selectedProduct)"
-                                       placeholder="Search...">
+                                       placeholder="Buscar...">
                         <SelectedTemplate>
                             @context.Nombre
                         </SelectedTemplate>
@@ -50,7 +50,7 @@
                         </ResultTemplate>
 
                         <NotFoundTemplate>
-                            Sorry, there weren't any products found.
+                            No se encontraron productos.
                         </NotFoundTemplate>
                     </BlazoredTypeahead>
                     

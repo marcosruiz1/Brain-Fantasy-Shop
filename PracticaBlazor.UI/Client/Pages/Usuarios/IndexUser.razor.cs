@@ -28,6 +28,7 @@ namespace PracticaBlazor.UI.Client.Pages.Usuarios
     public partial class IndexUser
     {
         private List<Usuario> _usuarios;
+        public string Filter { get; set; }
 
         //User
         AuthenticationState authState;
@@ -63,6 +64,18 @@ namespace PracticaBlazor.UI.Client.Pages.Usuarios
         private void Create()
         {
             Navigation.NavigateTo("/usuario/registro");
+        }
+
+        public bool IsVisible(Usuario usuario)
+        {
+            if (string.IsNullOrEmpty(Filter))
+                return true;
+
+            if (usuario.Username.Contains(Filter, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+
+            return false;
         }
     }
 }

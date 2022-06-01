@@ -29,6 +29,12 @@ namespace PracticaBlazor.UI.Client.Services.ComentarioService
 
         }
 
+        public async Task<bool> ComprobarComentario(int idUser,int idProducto)
+        {
+            return await Http.GetFromJsonAsync<bool>($"/api/Comentarios/comprobar/{idUser}/{idProducto}");
+
+        }
+
         public async Task BorrarComentarioProducto(int id)
         {
               await Http.DeleteAsync($"/api/Comentarios/prod/{id}");
@@ -37,5 +43,8 @@ namespace PracticaBlazor.UI.Client.Services.ComentarioService
         {
             await Http.DeleteAsync($"/api/Comentarios/user/{id}");
         }
+
+
+       
     }
 }

@@ -14,6 +14,7 @@ using PracticaBlazor.UI.Client.Services.CarroService;
 using PracticaBlazor.UI.Client.Services.ProductoService;
 using PracticaBlazor.UI.Client.Services.CategoriaService;
 using PracticaBlazor.UI.Client.Services.ComentarioService;
+using PracticaBlazor.UI.Client.Services.UsuarioService;
 
 var builder = WebApplication.CreateBuilder(args);
 var emailConfig = builder.Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
@@ -40,6 +41,7 @@ builder.Services.AddHttpClient<ICarroService, CarroService>();
 builder.Services.AddHttpClient<IProductoService, ProductoService>();
 builder.Services.AddHttpClient<IComentarioService, ComentarioService>();
 builder.Services.AddHttpClient<ICategoriaService, CategoriaService>();
+builder.Services.AddHttpClient<IUsuarioService, UsuarioService>();
 
 
 
