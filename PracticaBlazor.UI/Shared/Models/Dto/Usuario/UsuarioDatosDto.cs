@@ -21,7 +21,6 @@ namespace PracticaBlazor.UI.Shared.Models.Dto.Usuario
         [Required]
         [RegularExpression("([1-9][0-9]*)", ErrorMessage = "Count must be a natural number")]
         public string Telefono { get; set; }
-        [Required]
         public string? Direccion { get; set; }
 
     }

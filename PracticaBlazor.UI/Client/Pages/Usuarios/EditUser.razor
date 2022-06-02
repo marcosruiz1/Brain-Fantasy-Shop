@@ -4,46 +4,73 @@
 @inject NavigationManager Navigation
 
 <div class="container ">
-<h3>Edit User</h3>
+    <h1>EDITAR USUARIO</h1>
 
-@if (_usuario == null)
-{
-    <div id="app" class="d-flex justify-content-center">
-        <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
+    @if (_usuario == null)
+    {
+        <div id="app" class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
         </div>
-    </div>
-}
-else
-{
-    <EditForm Model="@_usuario" OnValidSubmit="Put">
-        <div class="form-group">
-            <label>Usuario: </label>
-            <InputText class="form-control" @bind-Value="_usuario.Username" />
+    }
+    else
+    {
+        <EditForm Model="@_usuario" OnValidSubmit="Put">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <label>Usuario: </label>
+                <InputText class="inputPersonalizado" @bind-Value="_usuario.Username" />
+            </div>
+            <div class="form-group">
+                <label>Rol: </label>
+                <InputSelect class="inputPersonalizado" @bind-Value="_usuario.Rol">
+                    @foreach (var rol in _roles)
+                    {
+                    <option value="@rol">@rol.ToString()</option>
+                    }
+            </InputSelect>
         </div>
         <div class="form-group">
-            <label>Rol: </label>
-            <InputSelect class="form-control" @bind-Value="_usuario.Rol">
-                @foreach (var rol in _roles)
+            <label>Email: </label>
+            <InputText class="inputPersonalizado" @bind-Value="_usuario.Email" />
+        </div>
+        <div class="form-group">
+            <label>Nombre: </label>
+            <InputText class="inputPersonalizado" @bind-Value="_usuario.Nombre" />
+        </div>
+        <div class="form-group">
+            <label>Apellidos: </label>
+            <InputText class="inputPersonalizado" @bind-Value="_usuario.Apellidos" />
+        </div>
+        <div class="form-group">
+            <label>Direccion: </label>
+            <InputText class="inputPersonalizado" @bind-Value="_usuario.Direccion" />
+        </div>
+        <div class="form-group">
+            <label>Telefono: </label>
+            <InputText class="inputPersonalizado" @bind-Value="_usuario.Telefono" />
+        </div>
+
+        <div class="form-group">
+            <label>Imagen: </label><br>
+            @if (@_usuario.Imagen == "default_User_Img")
                 {
-                <option value="@rol">@rol.ToString()</option>
-                }
-        </InputSelect>
-    </div>
-    <div class="form-group">
-        <label>Email: </label>
-        <InputText class="form-control" @bind-Value="_usuario.Email" />
-    </div>
+                    <img src="/images/default_User_Img.png" style="width: 450px; height: 400px; margin-bottom:10px;">
 
-    <div class="form-group">
-        <label>Imagen: </label>
-        <InputText class="form-control" @bind-Value="_usuario.Imagen" />
-    </div>
-    <div class="form-group">
-        <input type="submit" class="btn btn-success" value="Editar Usuario" />
-    </div>
-</EditForm>
-}
+                }
+                else
+                {
+                    <img src="@_usuario.Imagen" style="width: 450px; height: 400px; margin-bottom:10px;">
+                }
+
+                <InputFile OnChange="@OnFileChange" multiple="false" accept="images/jpeg" />
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-success" value="Editar Usuario" />
+            </div>
+        </EditForm>
+    }
 </div>
 
 @code {
@@ -62,6 +89,19 @@ else
     {
         await Http.PutAsJsonAsync<Usuario>($"/api/Usuarios/{_usuario.Id}", _usuario);
         Navigation.NavigateTo("/usuarios/admin");
+    }
+
+    private async Task OnFileChange(InputFileChangeEventArgs ev)
+    {
+        //get the file
+        var file = ev.File;
+
+        //read that file in a byte array
+        var buffer = new byte[file.Size];
+        await file.OpenReadStream(1512000).ReadAsync(buffer);
+
+        //convert byte array to base 64 string
+        _usuario.Imagen = $"data:image/png;base64,{Convert.ToBase64String(buffer)}";
     }
 
 }

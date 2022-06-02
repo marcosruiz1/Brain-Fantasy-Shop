@@ -15,5 +15,10 @@ namespace PracticaBlazor.UI.Client.Services.ProductoService
         {
             return await Http.GetFromJsonAsync<List<Producto>>($"/api/Productos/Search/{searchText}");
         }
+
+        public async Task CrearProducto(Producto producto)
+        {
+            await Http.PostAsJsonAsync($"api/Productos/", producto);
+        }
     }
 }

@@ -106,8 +106,8 @@ namespace PracticaBlazor.UI.Server.Controllers
                 return RedirectToAction(nameof(ForgotPasswordConfirmation));*/
             var token = CreateToken(user);
             var resetUrl = $"{Request.Headers["origin"]}/Account/reset-password?token={token}";
-            message = $@"<p>Please click the below link to reset your password, the link will be valid for 1 day:</p>
-                            <p><a href=""{resetUrl}"">{resetUrl}</a></p>";
+            message = $@"Please click the below link to reset your password, the link will be valid for 1 day:
+                            {resetUrl}";
  
             var emailCompleto = new Message(new string[] { user.Email }, "Reset password token", message);
             await _emailSender.SendEmailAsync(emailCompleto);

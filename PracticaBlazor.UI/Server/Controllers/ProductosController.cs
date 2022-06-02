@@ -79,7 +79,7 @@ namespace PracticaBlazor.UI.Server.Controllers
 
         // POST: api/Productos
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [Authorize(Roles = "ROLE_ADMIN")]
+        [Authorize(Roles = "ROLE_ADMIN, ROLE_COMPLETO")]
         [HttpPost]
         public async Task<ActionResult<Producto>> PostProducto(Producto producto)
         {      

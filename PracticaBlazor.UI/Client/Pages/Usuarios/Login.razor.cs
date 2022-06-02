@@ -27,7 +27,7 @@ namespace PracticaBlazor.UI.Client.Pages.Usuarios
         private UsuarioDto _user = new UsuarioDto();
         async Task HandleLogin()
         {
-            var result = await Http.PostAsJsonAsync<UsuarioDto>("/api/Auth/login", _user);
+            var result = await Http.PostAsJsonAsync("/api/Auth/login", _user);
             var token = await result.Content.ReadAsStringAsync();
             Console.WriteLine(token);
             if (token != string.Empty)

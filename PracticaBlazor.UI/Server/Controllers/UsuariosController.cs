@@ -66,7 +66,6 @@ namespace PracticaBlazor.UI.Server.Controllers
 
             try
             {
-                usuario.Password = Utilities.Encrypt(usuario.Password);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -159,7 +158,6 @@ namespace PracticaBlazor.UI.Server.Controllers
                 usuario.Email = userDatos.Email;
                 usuario.Telefono = userDatos.Telefono;
                 usuario.Direccion = userDatos.Direccion;
-                usuario.Password = Utilities.Encrypt(usuario.Password);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)

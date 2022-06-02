@@ -4,52 +4,53 @@
 @inject NavigationManager Navigation
 
 <div class="container ">
-<h3>Edit</h3>
+    <h1>EDITAR PRODUCTO</h1>
 
-@if (_producto == null)
-{
-    <div id="app" class="d-flex justify-content-center">
-        <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
+    @if (_producto == null)
+    {
+        <div id="app" class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
         </div>
-    </div>
-}
-else
-{
-    <EditForm Model="@_producto" OnValidSubmit="Put">
-        <div class="form-group">
-            <label>Nombre: </label>
-            <InputText class="form-control" @bind-Value="_producto.Nombre" />
+    }
+    else
+    {
+        <EditForm Context="Main" Model="@_producto" OnValidSubmit="Put">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <label>Nombre: </label>
+                <InputText class="inputPersonalizado" @bind-Value="_producto.Nombre" />
+            </div>
+            <div class="form-group">
+                <label>Categoria: </label>
+                <InputSelect class="inputPersonalizado" @bind-Value="_producto.Categoria">
+                    @foreach (var cat in _categorias)
+                    {
+                    <option value="@cat.Id">@cat.Nombre</option>
+                    }
+            </InputSelect>
         </div>
         <div class="form-group">
-            <label>Categoria: </label>
-            <InputSelect class="form-control" @bind-Value="_producto.Categoria">
-                @foreach (var cat in _categorias)
-                {
-                <option value="@cat.Id">@cat.Nombre</option>
-                }
-        </InputSelect>
-    </div>
-    <div class="form-group">
-        <label>Precio: </label>
-        <InputNumber class="form-control" @bind-Value="_producto.Precio" />
-    </div>
-    <div class="form-group">
-        <label>Descripcion</label>
-        <InputTextArea class="form-control" @bind-Value="_producto.Descripcion" />
-    </div>
-    <div class="form-group">
-        <label>Imagen: </label>
-        <InputText class="form-control" @bind-Value="_producto.Imagen" />
-    </div>
-    <div class="form-group">
-        <input class="btn btn-success" value="Cambiar Imagen" @onclick="(() => CambiarImagen(_producto.Id))" />
-    </div>
-    <div class="form-group">
-        <input type="submit" class="btn btn-success" value="Editar producto" />
-    </div>
-</EditForm>
-}
+            <label>Precio: </label>
+            <InputNumber class="inputPersonalizado" @bind-Value="_producto.Precio" />
+        </div>
+        <div class="form-group">
+            <label>Descripcion</label>
+            <InputTextArea class="inputPersonalizado" @bind-Value="_producto.Descripcion" />
+        </div>
+
+        <div class="form-group">
+            <label>Imagen: </label><br>
+            <img src="@_producto.Imagen" style="width: 450px; height: 400px; margin-bottom:10px;">
+            <InputFile OnChange="@OnFileChange" multiple="false" accept="images/jpeg" />          
+        </div>
+
+        <div class="form-group">
+            <input type="submit" class="btn btn-success" style="margin-top:15px;" value="Editar producto" />
+        </div>
+    </EditForm>
+    }
 </div>
 
 
@@ -74,6 +75,18 @@ else
     private void CambiarImagen(int id)
     {
         Navigation.NavigateTo($"/producto/edit/img/{id}");
+    }
+    private async Task OnFileChange(InputFileChangeEventArgs ev)
+    {
+        //get the file
+        var file = ev.File;
+
+        //read that file in a byte array
+        var buffer = new byte[file.Size];
+        await file.OpenReadStream(1512000).ReadAsync(buffer);
+
+        //convert byte array to base 64 string
+        _producto.Imagen = $"data:image/png;base64,{Convert.ToBase64String(buffer)}";
     }
 
 }

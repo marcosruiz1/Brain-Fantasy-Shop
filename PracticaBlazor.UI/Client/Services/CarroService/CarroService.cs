@@ -87,6 +87,30 @@ namespace PracticaBlazor.UI.Client.Services.CarroService
             CarritoChanged?.Invoke();
         }
 
+        public async Task AumentarNumCarrito(Carrito carrito, AuthenticationState authState)
+        {
+            carrito.numProductos++;
+            await Http.PutAsJsonAsync($"/api/Carritos/{carrito.Id}", carrito);
+            _numCarrito = await ContadorCarrito(authState);
+            CarritoChanged?.Invoke();
+        }
+
+        public async Task DisminuirNumCarrito(Carrito carrito, AuthenticationState authState)
+        {
+            if(carrito.numProductos == 1)
+            {
+                await BorrarCarrito(carrito.Id, authState);
+            }
+            else if(carrito.numProductos > 1)
+            {
+                carrito.numProductos = carrito.numProductos - 1;
+                await Http.PutAsJsonAsync($"/api/Carritos/{carrito.Id}", carrito);
+            }
+            _numCarrito = await ContadorCarrito(authState);
+            CarritoChanged?.Invoke();
+
+        }
+
         public int TotalArticulos()
         {
             return _numCarrito;

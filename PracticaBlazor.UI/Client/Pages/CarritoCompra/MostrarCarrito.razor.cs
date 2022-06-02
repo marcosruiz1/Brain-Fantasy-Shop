@@ -48,8 +48,7 @@ namespace PracticaBlazor.UI.Client.Pages.CarritoCompra
 
             if (userId != null)
             {
-                _carritosUser = await CarroService.GetCarritoUser(Convert.ToInt32(userId));
-                _carritosProd = await CarroService.GetCarritoProd(Convert.ToInt32(userId));
+                await GetCarritos();
             }
             precioTotal = await CarroService.CalcularPrecioCarrito(_carritosProd, _carritosUser);
         }
@@ -58,12 +57,35 @@ namespace PracticaBlazor.UI.Client.Pages.CarritoCompra
         {
 
             await CarroService.BorrarCarrito(idCarrito, authState);
-            _carritosUser = await CarroService.GetCarritoUser(Convert.ToInt32(userId));
-            _carritosProd = await CarroService.GetCarritoProd(Convert.ToInt32(userId));
+            await GetCarritos();
+
+        }
+
+        public async Task DisminuirCarrito(Carrito carrito)
+        {
+            await CarroService.DisminuirNumCarrito(carrito, authState);
+            if(carrito.numProductos == 1)
+            {
+                await GetCarritos();
+            }
+            await ActualizarProducto();
+        }
+        public async Task AumentarCarrito(Carrito carrito)
+        {
+            await CarroService.AumentarNumCarrito(carrito, authState);
+            await ActualizarProducto();
+        }
+
+        private async Task ActualizarProducto()
+        {
             precioTotal = await CarroService.CalcularPrecioCarrito(_carritosProd, _carritosUser);
             StateHasChanged();
         }
-
+        private async Task GetCarritos()
+        {
+            _carritosUser = await CarroService.GetCarritoUser(Convert.ToInt32(userId));
+            _carritosProd = await CarroService.GetCarritoProd(Convert.ToInt32(userId));
+        }
         void ExportToPdf()
         {
             int paragraphAfterSpacing = 8;

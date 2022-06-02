@@ -37,7 +37,6 @@
                             <th>Precio</th>
                             <th>Descripcion</th>
                             <th>Imagen</th>
-                            <th>Reseñas</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -53,7 +52,6 @@
                                 <td>@producto.Precio</td>
                                 <td>@producto.Descripcion</td>
                                 <td><img src="@producto.Imagen" style="width: 75px; height: 75px;"></td>
-                                <td>@producto.Reseñas</td>
                                 <td>
                                     <button class="btn btn-info"
                                     @onclick="(() => Edit(producto.Id))">

@@ -22,3 +22,33 @@
 .contraseñaInput {
     height: 45px;
 }
+
+.inputPersonalizado {
+    display: block;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #dfdfdf;
+    color: #888;
+    font-size: 12px;
+    font-weight: 300;
+    height: 35px;
+    line-height: 15px;
+    padding: 10px 6px 10px 10px;
+    outline: none;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    -moz-transition: 0.3s all ease;
+    -o-transition: 0.3s all ease;
+    -webkit-transition: 0.3s all ease;
+    transition: 0.3s all ease;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
