@@ -32,7 +32,7 @@ namespace PracticaBlazor.UI.Client.Pages.Productos
             if(_producto.Imagen != null)
             {
                 await ProductoService.CrearProducto(_producto);
-                Navigation.NavigateTo("/productos");
+                Navigation.NavigateTo("/productos/admin");
             }
             else
             {

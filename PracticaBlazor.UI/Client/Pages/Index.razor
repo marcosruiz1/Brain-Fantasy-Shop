@@ -148,10 +148,10 @@
                                                                         </div>
                                                                         <div class="caption">
                                                                             <div class="price">
-                                                                                $120.00
+                                                                                @producto.Precio €
                                                                             </div>
                                                                             <div class="name"><a href="/producto/ver/@producto.Id">@producto.Nombre</a></div>
-                                                                            <div class="description">@producto.Descripcion</div>
+                                                                            <div class="description">@producto.Descripcion.Substring(0,70)...</div>
                                                                             <div class="button-group">
                                                                                 <button type="button" class="product-btn cart-btn" data-toggle="tooltip" title="" onclick="ajaxAdd($(this),50);" data-original-title="Add to Cart">
                                                                                     <i class="linearicons-cart"></i>

@@ -54,6 +54,7 @@ namespace PracticaBlazor.UI.Client.Services.CarroService
 
         public async Task AgregarCarrito(int id, AuthenticationState authState)
         {
+            userId = authState.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             // código para añadir el artículo
             List<Carrito> carritos = await Http.GetFromJsonAsync<List<Carrito>>("/api/Carritos");
             if (carritos.Count > 0)

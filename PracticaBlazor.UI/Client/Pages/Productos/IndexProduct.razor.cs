@@ -51,14 +51,15 @@ namespace PracticaBlazor.UI.Client.Pages.Productos
 
         public async Task CombrobarCarrito(int id)
         {
-            if (userId == null)
-            {
-                Navigation.NavigateTo("/login");
-            }
-            else
+            if (authState.User.Identity.IsAuthenticated)
             {
                 await CarroService.AgregarCarrito(id, authState);
             }
+            else
+            {            
+                Navigation.NavigateTo("/login");
+            }
+
         }
     }
 }

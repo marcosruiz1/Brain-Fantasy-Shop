@@ -39,7 +39,7 @@ namespace PracticaBlazor.UI.Client.Pages
                     _productosNew.Add(_productos[_productos.Count - 1]);
                     _productosNew.Add(_productos[_productos.Count - 2]);
                     break;
-                case 3:
+                default:
                     _productosNew.Add(_productos[_productos.Count - 1]);
                     _productosNew.Add(_productos[_productos.Count - 2]);
                     _productosNew.Add(_productos[_productos.Count - 3]);
