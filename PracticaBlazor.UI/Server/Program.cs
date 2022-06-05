@@ -15,6 +15,7 @@ using PracticaBlazor.UI.Client.Services.ProductoService;
 using PracticaBlazor.UI.Client.Services.CategoriaService;
 using PracticaBlazor.UI.Client.Services.ComentarioService;
 using PracticaBlazor.UI.Client.Services.UsuarioService;
+using PracticaBlazor.UI.Client.Services.ProductoVIPService;
 
 var builder = WebApplication.CreateBuilder(args);
 var emailConfig = builder.Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
@@ -42,7 +43,8 @@ builder.Services.AddHttpClient<IProductoService, ProductoService>();
 builder.Services.AddHttpClient<IComentarioService, ComentarioService>();
 builder.Services.AddHttpClient<ICategoriaService, CategoriaService>();
 builder.Services.AddHttpClient<IUsuarioService, UsuarioService>();
-
+builder.Services.AddHttpClient<IProductoService, ProductoService>();
+builder.Services.AddHttpClient<IProductoVIPService, ProductoVIPService>();
 
 
 var app = builder.Build();

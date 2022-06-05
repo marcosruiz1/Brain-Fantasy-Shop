@@ -10,49 +10,38 @@
 <div class="container ">
     <h1>CREAR PRODUCTO</h1>
 
-    @if (_producto == null)
-    {
-        <div id="app" class="d-flex justify-content-center">
-            <div class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
+    <EditForm Model="@_producto" OnValidSubmit="Post">
+        <DataAnnotationsValidator />
+        <div class="form-group">
+            <label>Nombre: </label>
+            <InputText class="inputPersonalizado" @bind-Value="_producto.Nombre" />
         </div>
-    }
-    else
-    {
-        <EditForm Model="@_producto" OnValidSubmit="Post">
-            <DataAnnotationsValidator />
-            <div class="form-group">
-                <label>Nombre: </label>
-                <InputText  class="inputPersonalizado" @bind-Value="_producto.Nombre" />
-            </div>
-            <div class="form-group">
-                <label>Categoria: </label>
-                <InputSelect class="inputPersonalizado" @bind-Value="_producto.Categoria">
-                    @foreach (var cat in _categorias)
-                    {
+        <div class="form-group">
+            <label>Categoria: </label>
+            <InputSelect class="inputPersonalizado" @bind-Value="_producto.Categoria">
+                @foreach (var cat in _categorias)
+                {
                     <option value="@cat.Id">@cat.Nombre</option>
-                    }
-                </InputSelect>
-            </div>
-            <div class="form-group">
-                <label>Precio: </label>
-                <InputNumber @bind-Value="_producto.Precio" />
-            </div>
-            <div class="form-group">
-                <label>Descripcion</label>
-                <InputTextArea @bind-Value="_producto.Descripcion" />
-            </div>
-            <div class="form-group">
-                <label>Imagen: </label>
-                <InputFile OnChange="@OnFileChange" multiple="false" accept="images/jpeg" />
-            </div>
-            <div class="form-group">
-                <input type="submit" class="btn btn-success" value="Agregar producto" />
-            </div>
+                }
+            </InputSelect>
+        </div>
+        <div class="form-group">
+            <label>Precio: </label>
+            <InputNumber @bind-Value="_producto.Precio" />
+        </div>
+        <div class="form-group">
+            <label>Descripcion</label>
+            <InputTextArea @bind-Value="_producto.Descripcion" />
+        </div>
+        <div class="form-group">
+            <label>Imagen: </label>
+            <InputFile OnChange="@OnFileChange" multiple="false" accept="images/jpeg" />
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-success" value="Agregar producto" />
+        </div>
 
     </EditForm>
-    }
 </div>
 
 

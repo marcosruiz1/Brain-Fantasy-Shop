@@ -1,0 +1,41 @@
+﻿@page "/productosVIP/registro"
+@using PracticaBlazor.UI.Client.Services.ProductoVIPService
+
+@inject IProductoVIPService ProductoVIPService
+@inject NavigationManager Navigation
+
+
+<div class="container">
+    <h1>Registrar Producto VIP</h1>
+    <EditForm Model="@_productoVIPs" OnValidSubmit="Post">
+        <DataAnnotationsValidator />
+        <div class="form-group">
+            <label>Nombre: </label>
+            <InputText class="inputPersonalizado" @bind-Value="_productoVIPs.Nombre" />
+        </div>
+        <div class="form-group">
+            <label>Precio Mínimo: </label>
+            <InputNumber @bind-Value="_productoVIPs.PrecioMin" />
+        </div>
+        <div class="form-group">
+            <label>Precio Máximo: </label>
+            <InputNumber @bind-Value="_productoVIPs.PrecioMax" />
+        </div>       
+        <div class="form-group">
+            <label>Descripción:</label>
+            <InputTextArea @bind-Value="_productoVIPs.Descripcion" />
+        </div>
+        <div class="form-group">
+            <label>Imagen: </label>
+            <InputFile OnChange="@OnFileChange" multiple="false" accept="images/jpeg" />
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-success" value="Agregar producto" />
+        </div>
+
+    </EditForm>
+
+</div>
+
+
+

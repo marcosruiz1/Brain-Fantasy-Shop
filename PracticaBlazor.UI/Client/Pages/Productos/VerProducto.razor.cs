@@ -58,6 +58,7 @@ namespace PracticaBlazor.UI.Client.Pages.Productos
             if (authState.User.Identity.IsAuthenticated)
             {
                 userId = authState.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                _comprobarComentario = await ComentarioService.ComprobarComentario(Convert.ToInt32(userId), Id);
             }
 
             //GET Producto
@@ -66,7 +67,7 @@ namespace PracticaBlazor.UI.Client.Pages.Productos
             //GET comentarios
             _comentarios = await ComentarioService.ComentariosProducto(Id);
             _usuarios = await ComentarioService.ComentariosUser(Id);
-            _comprobarComentario = await ComentarioService.ComprobarComentario(Convert.ToInt32(userId), Id);
+            
 
             //GET categorías
             _categorias = await Http.GetFromJsonAsync<List<Categoria>>("/api/Categorias");
@@ -92,6 +93,7 @@ namespace PracticaBlazor.UI.Client.Pages.Productos
         {
             if (authState.User.Identity.IsAuthenticated)
             {
+
                 _comentario.fecha = DateTime.Now;
                 _comentario.idProducto = Id;
                 _comentario.idUsuario = Convert.ToInt32(userId);

@@ -16,9 +16,10 @@ namespace PracticaBlazor.UI.Shared.Models
         [Required]
         public string Nombre { get; set; }
         public int Categoria { get; set; }
-        public int Precio { get; set; }
+        public decimal Precio { get; set; }
         public string? Descripcion { get; set; }
         public string Imagen { get; set; }
+        public bool IsVIP { get; set; } = false;
         public string? Reseñas { get; set; }
 
         public Producto()

@@ -17,6 +17,11 @@ namespace PracticaBlazor.UI.Client.Services.CategoriaService
             return categoria.Nombre;
         }
 
+        public async Task<List<Categoria>> GetCategoriaas()
+        {
+            return await Http.GetFromJsonAsync<List<Categoria>>($"/api/Categorias");
+        }
+
 
     }
 }

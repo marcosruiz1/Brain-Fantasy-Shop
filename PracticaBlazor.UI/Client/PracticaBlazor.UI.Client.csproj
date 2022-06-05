@@ -186,7 +186,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\ProductosVIP\" />
     <Folder Include="wwwroot\css\bootstrap\" />
   </ItemGroup>
 

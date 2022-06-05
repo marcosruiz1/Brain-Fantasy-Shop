@@ -6,57 +6,65 @@
 @inject NavigationManager Navigation
 @inject ICarroService CarroService
 
-<div  class="container containerPers">
+<div class="container containerPers">
     <ul class="breadcrumb">
         <li><a href="/"><i class="fa fa-home"></i></a></li>
         <li><a href="/productos">Catálogo</a></li>
-      </ul>
+    </ul>
 
-@if (_productos == null)
-{
-    <div id="app" class="d-flex justify-content-center">
-        <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-    </div>
-}
-else
-{
-    @foreach (var chunk in _productos.Chunk(4))
+    @if (_productos == null)
     {
-        <div class="card-group" style="margin-bottom: 40px;">
-            @foreach (var producto in chunk)
-            {
-                <div class="col-sm-3">
-                    <div class="product-thumb transition  options ">
-                        <div class="image">
-                            <a class="lazy lazy-loaded" href="/producto/ver/@producto.Id" style="padding-bottom: 100%">
-                                <img  alt="@producto.Nombre" title="@producto.Nombre" class="img-primary" data-src="@producto.Imagen" src="@producto.Imagen"/>
-                                <img  alt="@producto.Nombre" title="@producto.Nombre" class="img-secondary" data-src="@producto.Imagen" src="@producto.Imagen"/>
-                            </a>
-                        </div>
-                        <div class="caption">
-                            <div class="price">
-                                @producto.Precio €
+        <div id="app" class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    }
+    else
+    {
+        @foreach (var chunk in _productos.Chunk(4))
+        {
+            <div class="card-group" style="margin-bottom: 40px;">
+                @foreach (var producto in chunk)
+                {
+                    <div class="col-sm-3">
+                        <div class="product-thumb transition  options ">
+                            <div class="image">
+                                <a class="lazy lazy-loaded" href="/producto/ver/@producto.Id" style="padding-bottom: 100%">
+                                    <img alt="@producto.Nombre" title="@producto.Nombre" class="img-primary" data-src="@producto.Imagen" src="@producto.Imagen" />
+                                    <img alt="@producto.Nombre" title="@producto.Nombre" class="img-secondary" data-src="@producto.Imagen" src="@producto.Imagen" />
+                                </a>
                             </div>
-                            <div class="name"><a @onclick="(() => VerDetalle(producto.Id))">@producto.Nombre</a></div>
-                            <div class="description">@producto.Descripcion.Substring(0,70)...</div>
-                            <div class="button-group">
-                                <button type="button" class="product-btn cart-btn" data-toggle="tooltip" title="" @onclick="(() => CombrobarCarrito(producto.Id))" data-original-title="Add to Cart">
-                                    <i class="linearicons-cart"></i>
-                                </button>
-                                <button type="button" class="product-btn" data-toggle="tooltip" title="" onclick="wishlist.add('50');" data-original-title="Add to Wish List"><i class="linearicons-heart"></i></button>
-                                <button type="button" class="product-btn" data-toggle="tooltip" title="" onclick="compare.add('50');" data-original-title="Compare this Product"><i class="linearicons-tab"></i></button>
-                                <button type="button" data-rel="details" class="product-btn quickview" data-toggle="tooltip" title="" @onclick="(() => VerDetalle(producto.Id))" data-original-title="Quick View"><i class="linearicons-eye"></i></button>
+                            <div class="caption">
+                                <div class="price">
+                                    @producto.Precio €
+                                </div>
+                                <div class="name"><a @onclick="(() => VerDetalle(producto.Id))">@producto.Nombre</a></div>
+                                @if (@producto.Descripcion.Length < 50)
+                                {
+                                    <div class="description">@producto.Descripcion</div>
+                                }
+                                else
+                                {
+                                    <div class="description">@producto.Descripcion.Substring(0,70)...</div>
+                                }
+                                
+                                <div class="button-group">
+                                    <button type="button" class="product-btn cart-btn" data-toggle="tooltip" title="" @onclick="(() => CombrobarCarrito(producto.Id))" data-original-title="Add to Cart">
+                                        <i class="linearicons-cart"></i>
+                                    </button>
+                                    <button type="button" class="product-btn" data-toggle="tooltip" title="" onclick="wishlist.add('50');" data-original-title="Add to Wish List"><i class="linearicons-heart"></i></button>
+                                    <button type="button" class="product-btn" data-toggle="tooltip" title="" onclick="compare.add('50');" data-original-title="Compare this Product"><i class="linearicons-tab"></i></button>
+                                    <button type="button" data-rel="details" class="product-btn quickview" data-toggle="tooltip" title="" @onclick="(() => VerDetalle(producto.Id))" data-original-title="Quick View"><i class="linearicons-eye"></i></button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            }
-        </div>
+                }
+            </div>
+        }
+
+
     }
-
-
-}
 </div>
 

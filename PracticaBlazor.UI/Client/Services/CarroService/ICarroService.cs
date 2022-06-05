@@ -12,7 +12,7 @@ namespace PracticaBlazor.UI.Client.Services.CarroService
         Task BorrarCarrito(int idCarrito, AuthenticationState authState);
         int TotalArticulos();
         Task<int> ContadorCarrito(AuthenticationState authState);
-        Task<int> CalcularPrecioCarrito(List<Producto> carritosProd, List<Carrito> carritosUser);
+        Task<decimal> CalcularPrecioCarrito(List<Producto> carritosProd, List<Carrito> carritosUser);
         Task<List<Carrito>> GetCarritoUser(int userId);
         Task<List<Producto>> GetCarritoProd(int userId);
         Task DisminuirNumCarrito(Carrito carrito, AuthenticationState authState);

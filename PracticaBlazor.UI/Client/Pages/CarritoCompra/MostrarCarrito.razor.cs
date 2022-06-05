@@ -34,7 +34,7 @@ namespace PracticaBlazor.UI.Client.Pages.CarritoCompra
     {
         private List<Producto> _carritosProd = new();
         private List<Carrito> _carritosUser = new();
-        private int precioTotal = 0;
+        private decimal precioTotal = 0;
         [CascadingParameter]
         Task<AuthenticationState> authenticationStateTask { get; set; }
         AuthenticationState authState;

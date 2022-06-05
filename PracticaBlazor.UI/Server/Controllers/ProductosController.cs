@@ -47,7 +47,7 @@ namespace PracticaBlazor.UI.Server.Controllers
 
         // PUT: api/Productos/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [Authorize(Roles = "ROLE_ADMIN")]
+        [Authorize(Roles = "ROLE_ADMIN, , ROLE_COMPLETO")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProducto(int id, Producto producto)
         {
@@ -90,7 +90,7 @@ namespace PracticaBlazor.UI.Server.Controllers
         }
 
         // DELETE: api/Productos/5
-        [Authorize(Roles = "ROLE_ADMIN")]
+        [Authorize(Roles = "ROLE_ADMIN, , ROLE_COMPLETO")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProducto(int id)
         {

@@ -38,6 +38,7 @@
                             <th>Descripcion</th>
                             <th>Imagen</th>
                             <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -50,13 +51,22 @@
                                 <td>@producto.Nombre</td>
                                 <td>@producto.Categoria</td>
                                 <td>@producto.Precio</td>
-                                <td>@producto.Descripcion.Substring(0,40)...</td>
+                                @if(@producto.Descripcion.Length < 50){
+                                    <td>@producto.Descripcion</td>
+                                }
+                                else
+                                {
+                                    <td>@producto.Descripcion.Substring(0,50)...</td>
+                                }
                                 <td><img src="@producto.Imagen" style="width: 75px; height: 75px;"></td>
                                 <td>
                                     <button class="btn btn-info"
                                     @onclick="(() => Edit(producto.Id))">
                                         Edit
                                     </button>
+                                    
+                                </td>
+                                <td>
                                     <button class="delBoton btn-danger"
                                     @onclick="(() => Delete(producto.Id))">
                                         Delete

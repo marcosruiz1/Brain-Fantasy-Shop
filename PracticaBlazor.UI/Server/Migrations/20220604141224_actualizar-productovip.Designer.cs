@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PracticaBlazor.UI.Server.Data;
 
@@ -11,9 +12,10 @@ using PracticaBlazor.UI.Server.Data;
 namespace PracticaBlazor.UI.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220604141224_actualizar-productovip")]
+    partial class actualizarproductovip
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,15 +110,12 @@ namespace PracticaBlazor.UI.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsVIP")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Precio")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("Precio")
+                        .HasColumnType("int");
 
                     b.Property<string>("Reseñas")
                         .HasColumnType("nvarchar(max)");
@@ -126,7 +125,7 @@ namespace PracticaBlazor.UI.Server.Migrations
                     b.ToTable("Producto");
                 });
 
-            modelBuilder.Entity("PracticaBlazor.UI.Shared.Models.ProductoVIPs", b =>
+            modelBuilder.Entity("PracticaBlazor.UI.Shared.Models.ProductoVIP", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -138,11 +137,7 @@ namespace PracticaBlazor.UI.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Estado")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("IdUsuario")
+                    b.Property<int>("IdUser")
                         .HasColumnType("int");
 
                     b.Property<string>("Imagen")
@@ -153,15 +148,20 @@ namespace PracticaBlazor.UI.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("PrecioMax")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("PrecioMax")
+                        .HasColumnType("int");
 
-                    b.Property<decimal>("PrecioMin")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("PrecioMin")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UsuarioId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductoVIPs");
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("ProductoVIP");
                 });
 
             modelBuilder.Entity("PracticaBlazor.UI.Shared.Models.Usuario", b =>
@@ -214,6 +214,18 @@ namespace PracticaBlazor.UI.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Usuario");
+                });
+
+            modelBuilder.Entity("PracticaBlazor.UI.Shared.Models.ProductoVIP", b =>
+                {
+                    b.HasOne("PracticaBlazor.UI.Shared.Models.Usuario", null)
+                        .WithMany("ProductosVIP")
+                        .HasForeignKey("UsuarioId");
+                });
+
+            modelBuilder.Entity("PracticaBlazor.UI.Shared.Models.Usuario", b =>
+                {
+                    b.Navigation("ProductosVIP");
                 });
 #pragma warning restore 612, 618
         }

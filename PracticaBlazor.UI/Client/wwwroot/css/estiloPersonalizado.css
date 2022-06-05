@@ -52,3 +52,13 @@
     -moz-appearance: none;
     appearance: none;
 }
+
+.productosVIPdiv {
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+}
+
+.tamañoFont {
+    font-size: 15px;
+}

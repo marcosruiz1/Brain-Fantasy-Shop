@@ -41,9 +41,9 @@ namespace PracticaBlazor.UI.Client.Services.CarroService
             }
             return _numCarrito;
         }
-        public async Task<int> CalcularPrecioCarrito(List<Producto> carritosProd, List<Carrito> carritosUser)
+        public async Task<decimal> CalcularPrecioCarrito(List<Producto> carritosProd, List<Carrito> carritosUser)
         {
-            int totalPrecio = 0;
+            decimal totalPrecio = 0;
             for (int i = 0; i < carritosProd.Count; i++)
             {
                 totalPrecio += carritosProd[i].Precio * carritosUser[i].numProductos;
@@ -76,9 +76,9 @@ namespace PracticaBlazor.UI.Client.Services.CarroService
                 _carritoActual.idProducto = id;
                 _carritoActual.idUsuario = Int32.Parse(userId);
                 await Http.PostAsJsonAsync($"/api/Carritos/", _carritoActual);
-                _comprobador = false;
             }
             _numCarrito = await ContadorCarrito(authState);
+            _comprobador = false;
             CarritoChanged?.Invoke();
         }
         public async Task BorrarCarrito(int idCarrito, AuthenticationState authState)

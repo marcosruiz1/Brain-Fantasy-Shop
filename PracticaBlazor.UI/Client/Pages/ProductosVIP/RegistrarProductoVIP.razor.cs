@@ -21,47 +21,47 @@ using Blazored.Toast.Services;
 using PracticaBlazor.UI.Shared.Models;
 using System.Security.Claims;
 
-namespace PracticaBlazor.UI.Client.Pages.Productos
+namespace PracticaBlazor.UI.Client.Pages.ProductosVIP
 {
-    public partial class IndexProduct
+    public partial class RegistrarProductoVIP
     {
-        [Parameter]
-        public int Nombre { get; set; }
-        private List<Producto> _productos;
-        
+        private ProductoVIPs _productoVIPs = new();
+
         //User
         [CascadingParameter]
         Task<AuthenticationState> authenticationStateTask { get; set; }
         AuthenticationState authState;
         private string userId = "";
 
+
         protected override async Task OnInitializedAsync()
         {
-            _productos = await Http.GetFromJsonAsync<List<Producto>>("/api/Productos");
             authState = await authenticationStateTask;
             if (authState.User.Identity.IsAuthenticated)
             {
                 userId = authState.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             }
         }
-
-
-        public void VerDetalle(int id)
-        {
-            Navigation.NavigateTo($"/producto/ver/{id}");
-        }
-
-        public async Task CombrobarCarrito(int id)
+        public async Task Post()
         {
             if (authState.User.Identity.IsAuthenticated)
             {
-                await CarroService.AgregarCarrito(id, authState);
-            }
-            else
-            {            
-                Navigation.NavigateTo("/login");
+                _productoVIPs.IdUsuario = Convert.ToInt32(userId);
+                await ProductoVIPService.AgregarProductoVIP(_productoVIPs);
+                Navigation.NavigateTo("/productosVIP/usuario");
             }
 
         }
+        private async Task OnFileChange(InputFileChangeEventArgs ev)
+        {
+            //get the file
+            var file = ev.File;
+            //read that file in a byte array
+            var buffer = new byte[file.Size];
+            await file.OpenReadStream(1512000).ReadAsync(buffer);
+            //convert byte array to base 64 string
+            _productoVIPs.Imagen = $"data:image/png;base64,{Convert.ToBase64String(buffer)}";
+        }
     }
+ 
 }
