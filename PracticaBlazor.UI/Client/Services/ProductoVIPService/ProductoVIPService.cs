@@ -12,9 +12,9 @@ namespace PracticaBlazor.UI.Client.Services.ProductoVIPService
             this.Http = Http;
         }
 
-        public Task ActualizarProducto(ProductoVIPs productoVIP)
+        public async Task ActualizarProducto(ProductoVIPs productoVIP)
         {
-            throw new NotImplementedException();
+            await Http.PutAsJsonAsync($"/api/ProductosVIPs/{productoVIP.Id}", productoVIP);
         }
 
         public async Task AgregarProductoVIP(ProductoVIPs productoVIP)
@@ -45,6 +45,21 @@ namespace PracticaBlazor.UI.Client.Services.ProductoVIPService
         public async Task<List<ProductoVIPs>> ProductosVIPEspera()
         {
             return await Http.GetFromJsonAsync<List<ProductoVIPs>>($"/api/ProductosVIPs/espera");
+        }
+
+        public async Task<List<ProductoVIPs>> ProductosVIPAdmitidosUser(int id)
+        {
+            return await Http.GetFromJsonAsync<List<ProductoVIPs>>($"/api/ProductosVIPs/admitidos/{id}");
+        }
+
+        public async Task<List<ProductoVIPs>> ProductosVIPDenegadosUser(int id)
+        {
+            return await Http.GetFromJsonAsync<List<ProductoVIPs>>($"/api/ProductosVIPs/denegados/{id}");
+        }
+
+        public async Task<List<ProductoVIPs>> ProductosVIPEsperaUser(int id)
+        {
+            return await Http.GetFromJsonAsync<List<ProductoVIPs>>($"/api/ProductosVIPs/espera/{id}");
         }
     }
 }

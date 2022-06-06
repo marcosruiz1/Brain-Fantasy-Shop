@@ -19,6 +19,7 @@ using Blazored.LocalStorage;
 using Blazored.Toast;
 using Blazored.Toast.Services;
 using PracticaBlazor.UI.Shared.Models;
+using System.Security.Claims;
 
 namespace PracticaBlazor.UI.Client.Pages.ProductosVIP
 {
@@ -28,13 +29,24 @@ namespace PracticaBlazor.UI.Client.Pages.ProductosVIP
         private List<ProductoVIPs> _productoAdmitido;
         private List<ProductoVIPs> _productoDenegado;
 
-        protected override async Task OnParametersSetAsync()
+        //USER
+        [CascadingParameter]
+        Task<AuthenticationState> authenticationStateTask { get; set; }
+        AuthenticationState authState;
+        private string userId;
+
+        protected override async Task OnInitializedAsync()
         {
-            _productosEspera = await ProductoVIPService.ProductosVIPEspera();
-            _productoAdmitido = await ProductoVIPService.ProductosVIPAdmitidos();
-            _productoDenegado = await ProductoVIPService.ProductosVIPDenegados();
 
-
+            authState = await authenticationStateTask;
+            if (authState.User.Identity.IsAuthenticated)
+            {
+                userId = authState.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                _productosEspera = await ProductoVIPService.ProductosVIPEsperaUser(Convert.ToInt32(userId));
+                _productoAdmitido = await ProductoVIPService.ProductosVIPAdmitidosUser(Convert.ToInt32(userId));
+                _productoDenegado = await ProductoVIPService.ProductosVIPDenegadosUser(Convert.ToInt32(userId));
+            }
+            
         }
         public void CrearProductoVIP()
         {

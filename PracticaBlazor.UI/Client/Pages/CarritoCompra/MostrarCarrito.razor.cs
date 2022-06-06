@@ -35,21 +35,22 @@ namespace PracticaBlazor.UI.Client.Pages.CarritoCompra
         private List<Producto> _carritosProd = new();
         private List<Carrito> _carritosUser = new();
         private decimal precioTotal = 0;
+
+        //USER
         [CascadingParameter]
         Task<AuthenticationState> authenticationStateTask { get; set; }
         AuthenticationState authState;
-
         private string userId;
+
         protected override async Task OnInitializedAsync()
         {
-            //GET user Id
             authState = await authenticationStateTask;
-            userId = authState.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-            if (userId != null)
+            if (authState.User.Identity.IsAuthenticated)
             {
+                userId = authState.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 await GetCarritos();
             }
+
             precioTotal = await CarroService.CalcularPrecioCarrito(_carritosProd, _carritosUser);
         }
 

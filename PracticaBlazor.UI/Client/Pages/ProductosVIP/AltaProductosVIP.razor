@@ -1,9 +1,11 @@
 ﻿@page "/productosVIP/alta"
 @using PracticaBlazor.UI.Client.Services.CategoriaService
+@using PracticaBlazor.UI.Client.Services.ProductoService
 @using PracticaBlazor.UI.Client.Services.ProductoVIPService
 @inject IProductoVIPService ProductoVIPService
 @inject NavigationManager Navigation
 @inject ICategoriaService CategoriaService
+@inject IProductoService ProductoService
 
 
 
@@ -37,6 +39,7 @@
                     
                     <div id="@collapsed" class="collapse" aria-labelledby="@head" data-parent="#accordion">
                         <EditForm Model="@_producto" Context="formContext">
+                            <DataAnnotationsValidator />
                         <div class="card-body">
                             <div class="form-group">
                                 <div class="productosVIPdiv">
@@ -62,7 +65,7 @@
                                         <InputSelect class="inputPersonalizado" @bind-Value="_producto.Categoria">
                                             @foreach (var cat in _categorias)
                                             {
-                                                <option value="@cat.Id">@cat.Nombre</option>
+                                                <option value="@cat.Id" selected>@cat.Nombre</option>
                                             }
                                         </InputSelect>
                                         <label style="margin-left:10px;">Precio Definitivo: </label>
@@ -80,8 +83,9 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary" @onclick="@(() => Aceptar(formContext))">Aceptar</button>
-                    <button type="submit" class="btn btn-primary btn-danger" @onclick="@(() => Denegar(formContext))">Denegar</button>
+                    <button type="submit" class="btn btn-primary" disabled="@(!formContext.Validate())"  @onclick="( () =>Aceptar(formContext, _productosEspera[index] ))" >Aceptar</button>
+                    <button type="submit" class="btn btn-primary" @onclick="( () =>Denegar(formContext, _productosEspera[index] ))">Denegar</button>
+                    
                     
                 </div>
                 </EditForm>
@@ -109,24 +113,69 @@
             @for (var i = 0; i < _productoAdmitido.Count; i++)
             {
                 int index = i;
-                string head = "heading" + index;
-                string collapsed = "collapse" + index;
+                string head = "heading" + (index+10000);
+                string collapsed = "collapse" + (index+10000);
 
                 <div class="card">
                     <div class="card-header" id="@head">
                         <h5 class="mb-0">
                             <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#@collapsed" aria-expanded="false" aria-controls="@collapsed">
-                                Collapsible Group Item #1
+                                @_productoAdmitido[index].Nombre
                             </button>
                         </h5>
                     </div>
-
+                    
                     <div id="@collapsed" class="collapse" aria-labelledby="@head" data-parent="#accordion">
+                        <EditForm Model="@_producto" Context="formContext">
+                            <DataAnnotationsValidator />
                         <div class="card-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                            <div class="form-group">
+                                <div class="productosVIPdiv">
+                                    <div>
+                                        <label class="tamañoFont">Nombre: </label>
+                                        <label class="tamañoFont" style="font-weight: bold;">@_productoAdmitido[index].Nombre</label>
+                                    </div>
+                                    <div>
+                                        <label>Precio Min: </label>
+                                        <label class="tamañoFont" style="font-weight: bold;">@_productoAdmitido[index].PrecioMin €</label>
+                                        <label style="margin-left:10px;">Precio Max: </label>
+                                        <label class="tamañoFont" style="font-weight: bold;">@_productoAdmitido[index].PrecioMax €</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="productosVIPdiv">
+                                    <div>
+                                        <img style="width: 300px; height: 300px;" alt="@_productoAdmitido[index].Imagen" title="@_productoAdmitido[index].Imagen" class="img-primary" data-src="@_productoAdmitido[index].Imagen" src="@_productoAdmitido[index].Imagen" />
+                                    </div>
+                                    <div>
+                                        <label>Categoría: </label>
+                                        <InputSelect class="inputPersonalizado" @bind-Value="_producto.Categoria">
+                                            @foreach (var cat in _categorias)
+                                            {
+                                                <option value="@cat.Id" selected>@cat.Nombre</option>
+                                            }
+                                        </InputSelect>
+                                        <label style="margin-left:10px;">Precio Definitivo: </label>
+                                        <InputNumber @bind-Value="_producto.Precio" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <div>
+                            <label class="tamañoFont">Descripción: </label>
+                        </div>
+                        <div>
+                            <label class="tamañoFont" style="font-weight: bold;">@_productoAdmitido[index].Descripcion</label>
                         </div>
                     </div>
+                    
+                    
                 </div>
+                </EditForm>
+            </div>           
+        </div>
 
 
             }
@@ -152,25 +201,61 @@
             @for (var i = 0; i < _productoDenegado.Count; i++)
             {
                 int index = i;
-                string head = "heading" + index;
-                string collapsed = "collapse" + index;
+                string head = "heading" + (index+100000);
+                string collapsed = "collapse" + (index+100000);
 
                 <div class="card">
                     <div class="card-header" id="@head">
                         <h5 class="mb-0">
                             <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#@collapsed" aria-expanded="false" aria-controls="@collapsed">
-                                Collapsible Group Item #1
+                                @_productoDenegado[index].Nombre
                             </button>
                         </h5>
                     </div>
-
+                    
                     <div id="@collapsed" class="collapse" aria-labelledby="@head" data-parent="#accordion">
                         <div class="card-body">
-                            <div>
+                            <div class="form-group">
+                                <div class="productosVIPdiv">
+                                    <div>
+                                        <label class="tamañoFont">Nombre: </label>
+                                        <label class="tamañoFont" style="font-weight: bold;">@_productoDenegado[index].Nombre</label>
+                                    </div>
+                                    <div>
+                                        <label>Precio Min: </label>
+                                        <label class="tamañoFont" style="font-weight: bold;">@_productoDenegado[index].PrecioMin €</label>
+                                        <label style="margin-left:10px;">Precio Max: </label>
+                                        <label class="tamañoFont" style="font-weight: bold;">@_productoDenegado[index].PrecioMax €</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="productosVIPdiv">
+                                    <div>
+                                        <img style="width: 300px; height: 300px;" alt="@_productoDenegado[index].Imagen" title="@_productoDenegado[index].Imagen" class="img-primary" data-src="@_productoDenegado[index].Imagen" src="@_productoDenegado[index].Imagen" />
+                                    </div>
+                                    <div>
+                                        <label>Categoría: </label>
+                                        <label>@_productoDenegado[index].Categoria</label>
+                                        <label style="margin-left:10px;">Precio Definitivo: </label>
+                                        <label>@_productoDenegado[index].PrecioFinal</label>
                             </div>
                         </div>
+
                     </div>
+                    <div class="form-group">
+                        <div>
+                            <label class="tamañoFont">Descripción: </label>
+                        </div>
+                        <div>
+                            <label class="tamañoFont" style="font-weight: bold;">@_productoDenegado[index].Descripcion</label>
+                        </div>
+                    </div>
+                    
+                    
                 </div>
+            </div>           
+        </div>
 
 
             }

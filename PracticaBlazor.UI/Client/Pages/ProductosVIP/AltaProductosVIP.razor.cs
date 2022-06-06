@@ -19,6 +19,7 @@ using Blazored.LocalStorage;
 using Blazored.Toast;
 using Blazored.Toast.Services;
 using PracticaBlazor.UI.Shared.Models;
+using System.Security.Claims;
 
 namespace PracticaBlazor.UI.Client.Pages.ProductosVIP
 {
@@ -30,25 +31,48 @@ namespace PracticaBlazor.UI.Client.Pages.ProductosVIP
         private List<Categoria> _categorias;
         private Producto _producto = new();
 
-        protected override async Task OnParametersSetAsync()
+        //USER
+        [CascadingParameter]
+        Task<AuthenticationState> authenticationStateTask { get; set; }
+        AuthenticationState authState;
+        private string userId;
+
+
+        protected override async Task OnInitializedAsync()
         {
-            _productosEspera = await ProductoVIPService.ProductosVIPEspera();
-            _productoAdmitido = await ProductoVIPService.ProductosVIPAdmitidos();
-            _productoDenegado = await ProductoVIPService.ProductosVIPDenegados();
+            //GET user Id
+            authState = await authenticationStateTask;
+            if (authState.User.Identity.IsAuthenticated)
+            {
+                userId = authState.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                await GetProductosVIP();
+            }           
             _categorias = await CategoriaService.GetCategoriaas();
 
+        }
+
+        public async Task Aceptar(EditContext formContext, ProductoVIPs productoVIP)
+        {
+            ComprobarButton(formContext);
+            _producto.Descripcion = productoVIP.Descripcion;
+            _producto.Nombre = productoVIP.Nombre;
+            _producto.Imagen = productoVIP.Imagen;
+            _producto.IsVIP = true;
+            await ProductoService.CrearProducto(_producto);
+            productoVIP.Estado = "ADMITIDO";
+            productoVIP.Categoria = _producto.Categoria;
+            productoVIP.PrecioFinal = _producto.Precio;
+            ProductoVIPService.ActualizarProducto(productoVIP);
+            await GetProductosVIP();
 
         }
 
-        public async Task Aceptar(EditContext formContext)
+        public async Task Denegar(EditContext formContext, ProductoVIPs productoVIP)
         {
             ComprobarButton(formContext);
-
-        }
-
-        public async Task Denegar(EditContext formContext)
-        {
-            ComprobarButton(formContext);
+            productoVIP.Estado = "DENEGADO";
+            await ProductoVIPService.ActualizarProducto(productoVIP);
+            await GetProductosVIP();
 
         }
 
@@ -58,6 +82,13 @@ namespace PracticaBlazor.UI.Client.Pages.ProductosVIP
             if (formIsValid == false)
                 return;
    
+        }
+
+        private async Task GetProductosVIP()
+        {
+            _productosEspera = await ProductoVIPService.ProductosVIPEspera();
+            _productoAdmitido = await ProductoVIPService.ProductosVIPAdmitidos();
+            _productoDenegado = await ProductoVIPService.ProductosVIPDenegados();
         }
     }
 }
