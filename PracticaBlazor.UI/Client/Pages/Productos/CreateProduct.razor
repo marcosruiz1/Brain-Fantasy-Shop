@@ -19,9 +19,11 @@
         <div class="form-group">
             <label>Categoria: </label>
             <InputSelect class="inputPersonalizado" @bind-Value="_producto.Categoria">
+                <option selected>Selecciona una categoría</option>
                 @foreach (var cat in _categorias)
                 {
-                    <option value="@cat.Id">@cat.Nombre</option>
+                   <option value="@cat.Id">@cat.Nombre</option>
+
                 }
             </InputSelect>
         </div>

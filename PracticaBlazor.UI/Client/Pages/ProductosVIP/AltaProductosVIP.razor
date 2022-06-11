@@ -8,7 +8,6 @@
 @inject IProductoService ProductoService
 
 
-
 <div class="container">
     <h1>EN REVISIÓN</h1>
     @if (_productosEspera == null)
@@ -36,60 +35,72 @@
                             </button>
                         </h5>
                     </div>
-                    
+
                     <div id="@collapsed" class="collapse" aria-labelledby="@head" data-parent="#accordion">
-                        <EditForm Model="@_producto" Context="formContext">
+                        <EditForm Model="@_productoAlta" Context="formContext">
                             <DataAnnotationsValidator />
-                        <div class="card-body">
-                            <div class="form-group">
-                                <div class="productosVIPdiv">
-                                    <div>
-                                        <label class="tamañoFont">Nombre: </label>
-                                        <label class="tamañoFont" style="font-weight: bold;">@_productosEspera[index].Nombre</label>
-                                    </div>
-                                    <div>
-                                        <label>Precio Min: </label>
-                                        <label class="tamañoFont" style="font-weight: bold;">@_productosEspera[index].PrecioMin €</label>
-                                        <label style="margin-left:10px;">Precio Max: </label>
-                                        <label class="tamañoFont" style="font-weight: bold;">@_productosEspera[index].PrecioMax €</label>
+                            <div class="card-body" style="padding:15px;">
+                                <div class="form-group">
+                                    <div class="productosVIPdiv">
+                                        <div>
+                                            <label class="tamañoFont">Nombre: </label>
+                                            <label class="tamañoFont" style="font-weight: bold;">@_productosEspera[index].Nombre</label>
+                                        </div>
+                                        <div>
+                                            <label>Precio Min: </label>
+                                            <label class="tamañoFont" style="font-weight: bold;">@_productosEspera[index].PrecioMin €</label>
+                                            <label style="margin-left:10px;">Precio Max: </label>
+                                            <label class="tamañoFont" style="font-weight: bold;">@_productosEspera[index].PrecioMax €</label>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <div class="productosVIPdiv">
+                                        <div>
+                                            <img style="width: 300px; height: 300px;" alt="@_productosEspera[index].Imagen" title="@_productosEspera[index].Imagen" class="img-primary" data-src="@_productosEspera[index].Imagen" src="@_productosEspera[index].Imagen" />
+                                        </div>
+                                        <div>
+                                            <div class="form-group">
+                                                <label class="tamañoFont">Categoria: </label>
+                                                <InputSelect class="inputPersonalizado" @bind-Value="_productoAlta.Categoria">
+                                                    <option selected>Selecciona una categoría</option>
+                                                    @foreach (var cat in _categorias)
+                                                    {
+                                                        <option value="@cat.Id">@cat.Nombre</option>
+
+                                                    }
+                                        </InputSelect>
+                                    </div>
+                                    <label class="tamañoFont" style="margin-left:10px;">Precio Definitivo: </label>
+                                    <InputNumber @bind-Value="_productoAlta.PrecioFinal" />
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <div class="productosVIPdiv">
+
+                        </div>
+                        <div class="form-group">
+                            <div class="productosVIPdiv">
+                                <div>
                                     <div>
-                                        <img style="width: 300px; height: 300px;" alt="@_productosEspera[index].Imagen" title="@_productosEspera[index].Imagen" class="img-primary" data-src="@_productosEspera[index].Imagen" src="@_productosEspera[index].Imagen" />
+                                        <label class="tamañoFont">Descripción: </label>
                                     </div>
                                     <div>
-                                        <label>Categoría: </label>
-                                        <InputSelect class="inputPersonalizado" @bind-Value="_producto.Categoria">
-                                            @foreach (var cat in _categorias)
-                                            {
-                                                <option value="@cat.Id" selected>@cat.Nombre</option>
-                                            }
-                                        </InputSelect>
-                                        <label style="margin-left:10px;">Precio Definitivo: </label>
-                                        <InputNumber @bind-Value="_producto.Precio" />
+                                        <label class="tamañoFont" style="font-weight: bold;">@_productosEspera[index].Descripcion</label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button type="submit" class="btn btn-primary" disabled="@(!formContext.Validate() || !formContext.IsModified())" @onclick="( () =>Aceptar(formContext, _productosEspera[index] ))">Aceptar</button>
+                                    <button type="submit" class="delBoton btn-danger" @onclick="( () =>Denegar(formContext, _productosEspera[index] ))">Denegar</button>
+                                </div>
                             </div>
+
                         </div>
 
-                    </div>
-                    <div class="form-group">
-                        <div>
-                            <label class="tamañoFont">Descripción: </label>
-                        </div>
-                        <div>
-                            <label class="tamañoFont" style="font-weight: bold;">@_productosEspera[index].Descripcion</label>
-                        </div>
-                    </div>
 
-                    <button type="submit" class="btn btn-primary" disabled="@(!formContext.Validate())"  @onclick="( () =>Aceptar(formContext, _productosEspera[index] ))" >Aceptar</button>
-                    <button type="submit" class="btn btn-primary" @onclick="( () =>Denegar(formContext, _productosEspera[index] ))">Denegar</button>
-                    
-                    
-                </div>
+
+
+                    </div>
                 </EditForm>
-            </div>           
+            </div>
         </div>
 
 
@@ -113,22 +124,20 @@
             @for (var i = 0; i < _productoAdmitido.Count; i++)
             {
                 int index = i;
-                string head = "heading" + (index+10000);
-                string collapsed = "collapse" + (index+10000);
+                string head = "heading" + (index + 10000);
+                string collapsed = "collapse" + (index + 10000);
 
                 <div class="card">
                     <div class="card-header" id="@head">
                         <h5 class="mb-0">
-                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#@collapsed" aria-expanded="false" aria-controls="@collapsed">
+                            <button class="admitidosButton  collapsed" data-toggle="collapse" data-target="#@collapsed" aria-expanded="false" aria-controls="@collapsed">
                                 @_productoAdmitido[index].Nombre
                             </button>
                         </h5>
                     </div>
-                    
+
                     <div id="@collapsed" class="collapse" aria-labelledby="@head" data-parent="#accordion">
-                        <EditForm Model="@_producto" Context="formContext">
-                            <DataAnnotationsValidator />
-                        <div class="card-body">
+                        <div class="card-body" style="padding:15px;">
                             <div class="form-group">
                                 <div class="productosVIPdiv">
                                     <div>
@@ -136,9 +145,9 @@
                                         <label class="tamañoFont" style="font-weight: bold;">@_productoAdmitido[index].Nombre</label>
                                     </div>
                                     <div>
-                                        <label>Precio Min: </label>
+                                        <label class="tamañoFont">Precio Min: </label>
                                         <label class="tamañoFont" style="font-weight: bold;">@_productoAdmitido[index].PrecioMin €</label>
-                                        <label style="margin-left:10px;">Precio Max: </label>
+                                        <label class="tamañoFont" style="margin-left:10px;">Precio Max: </label>
                                         <label class="tamañoFont" style="font-weight: bold;">@_productoAdmitido[index].PrecioMax €</label>
                                     </div>
                                 </div>
@@ -148,34 +157,28 @@
                                     <div>
                                         <img style="width: 300px; height: 300px;" alt="@_productoAdmitido[index].Imagen" title="@_productoAdmitido[index].Imagen" class="img-primary" data-src="@_productoAdmitido[index].Imagen" src="@_productoAdmitido[index].Imagen" />
                                     </div>
-                                    <div>
-                                        <label>Categoría: </label>
-                                        <InputSelect class="inputPersonalizado" @bind-Value="_producto.Categoria">
-                                            @foreach (var cat in _categorias)
-                                            {
-                                                <option value="@cat.Id" selected>@cat.Nombre</option>
-                                            }
-                                        </InputSelect>
-                                        <label style="margin-left:10px;">Precio Definitivo: </label>
-                                        <InputNumber @bind-Value="_producto.Precio" />
-                            </div>
-                        </div>
+                                    <div >
+                                        <label class="tamañoFont">Categoría: </label>
+                                        <label class="tamañoFont" style="font-weight: bold;">@_producto.Categoria</label>
+                                        <label class="tamañoFont" style="margin-left:10px;">Precio Definitivo: </label>
+                                        <label class="tamañoFont" style="font-weight: bold;">@_producto.Precio €</label>
+                                    </div>
+                                </div>
 
-                    </div>
-                    <div class="form-group">
-                        <div>
-                            <label class="tamañoFont">Descripción: </label>
+                            </div>
+                            <div class="form-group">
+                                <div>
+                                    <label class="tamañoFont">Descripción: </label>
+                                </div>
+                                <div>
+                                    <label class="tamañoFont" style="font-weight: bold;">@_productoAdmitido[index].Descripcion</label>
+                                </div>
+                            </div>
+
+
                         </div>
-                        <div>
-                            <label class="tamañoFont" style="font-weight: bold;">@_productoAdmitido[index].Descripcion</label>
-                        </div>
                     </div>
-                    
-                    
                 </div>
-                </EditForm>
-            </div>           
-        </div>
 
 
             }
@@ -201,20 +204,20 @@
             @for (var i = 0; i < _productoDenegado.Count; i++)
             {
                 int index = i;
-                string head = "heading" + (index+100000);
-                string collapsed = "collapse" + (index+100000);
+                string head = "heading" + (index + 100000);
+                string collapsed = "collapse" + (index + 100000);
 
                 <div class="card">
                     <div class="card-header" id="@head">
                         <h5 class="mb-0">
-                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#@collapsed" aria-expanded="false" aria-controls="@collapsed">
+                            <button class="delBoton btn-danger collapsed" data-toggle="collapse" data-target="#@collapsed" aria-expanded="false" aria-controls="@collapsed">
                                 @_productoDenegado[index].Nombre
                             </button>
                         </h5>
                     </div>
-                    
+
                     <div id="@collapsed" class="collapse" aria-labelledby="@head" data-parent="#accordion">
-                        <div class="card-body">
+                        <div class="card-body" style="padding:15px;">
                             <div class="form-group">
                                 <div class="productosVIPdiv">
                                     <div>
@@ -222,9 +225,9 @@
                                         <label class="tamañoFont" style="font-weight: bold;">@_productoDenegado[index].Nombre</label>
                                     </div>
                                     <div>
-                                        <label>Precio Min: </label>
+                                        <label class="tamañoFont">Precio Min: </label>
                                         <label class="tamañoFont" style="font-weight: bold;">@_productoDenegado[index].PrecioMin €</label>
-                                        <label style="margin-left:10px;">Precio Max: </label>
+                                        <label class="tamañoFont" style="margin-left:10px;">Precio Max: </label>
                                         <label class="tamañoFont" style="font-weight: bold;">@_productoDenegado[index].PrecioMax €</label>
                                     </div>
                                 </div>
@@ -232,30 +235,30 @@
                             <div class="form-group">
                                 <div class="productosVIPdiv">
                                     <div>
-                                        <img style="width: 300px; height: 300px;" alt="@_productoDenegado[index].Imagen" title="@_productoDenegado[index].Imagen" class="img-primary" data-src="@_productoDenegado[index].Imagen" src="@_productoDenegado[index].Imagen" />
+                                        <img style="width: 300px; height: 300px;" alt="@_productoAdmitido[index].Imagen" title="@_productoAdmitido[index].Imagen" class="img-primary" data-src="@_productoAdmitido[index].Imagen" src="@_productoAdmitido[index].Imagen" />
                                     </div>
-                                    <div>
-                                        <label>Categoría: </label>
-                                        <label>@_productoDenegado[index].Categoria</label>
-                                        <label style="margin-left:10px;">Precio Definitivo: </label>
-                                        <label>@_productoDenegado[index].PrecioFinal</label>
-                            </div>
-                        </div>
+                                    <div >
+                                        <label class="tamañoFont">Categoría: </label>
+                                        <label class="tamañoFont" style="font-weight: bold;">@_producto.Categoria</label>
+                                        <label class="tamañoFont" style="margin-left:10px;">Precio Definitivo: </label>
+                                        <label class="tamañoFont" style="font-weight: bold;">@_producto.Precio €</label>
+                                    </div>
+                                </div>
 
-                    </div>
-                    <div class="form-group">
-                        <div>
-                            <label class="tamañoFont">Descripción: </label>
+                            </div>
+                            <div class="form-group">
+                                <div>
+                                    <label class="tamañoFont">Descripción: </label>
+                                </div>
+                                <div>
+                                    <label class="tamañoFont" style="font-weight: bold;">@_productoAdmitido[index].Descripcion</label>
+                                </div>
+                            </div>
+
+
                         </div>
-                        <div>
-                            <label class="tamañoFont" style="font-weight: bold;">@_productoDenegado[index].Descripcion</label>
-                        </div>
                     </div>
-                    
-                    
                 </div>
-            </div>           
-        </div>
 
 
             }

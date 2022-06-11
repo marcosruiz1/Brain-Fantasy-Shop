@@ -22,17 +22,34 @@
     }
     else
     {
-        @foreach (var chunk in _productos.Chunk(4))
-        {
-            <div class="card-group" style="margin-bottom: 40px;">
-                @foreach (var producto in chunk)
+        <div class="form-group" style="display:flex; width:50%;">
+            <input class="form-control" type="text" placeholder="Filter..."
+               @bind="Filter"
+               @bind:event="oninput">
+               <select class="form-control inputPersonalizado divProductoFilter"
+               @bind="FilterCategoria"
+               @bind:event="oninput">
+               <option selected value="0">Todos</option>
+                @foreach (var cat in _categorias)
                 {
+                   <option value="@cat.Id">@cat.Nombre</option>
+
+                }
+               </select>
+        </div>
+        
+            <div class="card-group" style="margin-bottom: 40px;">
+                @foreach (var producto in _productos)
+                {
+                    if (!IsVisible(producto))
+                        continue;
+                    if (!IsVisibleCategoria(producto))
+                        continue;
                     <div class="col-sm-3">
                         <div class="product-thumb transition  options ">
                             <div class="image">
-                                <a class="lazy lazy-loaded" href="/producto/ver/@producto.Id" style="padding-bottom: 100%">
+                                <a class="lazy lazy-loaded" href="/producto/ver/@producto.Id" style="width:300px; height:250px">
                                     <img alt="@producto.Nombre" title="@producto.Nombre" class="img-primary" data-src="@producto.Imagen" src="@producto.Imagen" />
-                                    <img alt="@producto.Nombre" title="@producto.Nombre" class="img-secondary" data-src="@producto.Imagen" src="@producto.Imagen" />
                                 </a>
                             </div>
                             <div class="caption">
@@ -48,7 +65,7 @@
                                 {
                                     <div class="description">@producto.Descripcion.Substring(0,70)...</div>
                                 }
-                                
+
                                 <div class="button-group">
                                     <button type="button" class="product-btn cart-btn" data-toggle="tooltip" title="" @onclick="(() => CombrobarCarrito(producto.Id))" data-original-title="Add to Cart">
                                         <i class="linearicons-cart"></i>
@@ -62,7 +79,7 @@
                     </div>
                 }
             </div>
-        }
+        
 
 
     }

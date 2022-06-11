@@ -61,6 +61,12 @@ namespace PracticaBlazor.UI.Client.Pages.CarritoCompra
             await GetCarritos();
 
         }
+        public async Task GoProdCarrito(int idProducto)
+        {
+            Navigation.NavigateTo($"/producto/ver/{idProducto}");
+
+        }
+        
 
         public async Task DisminuirCarrito(Carrito carrito)
         {

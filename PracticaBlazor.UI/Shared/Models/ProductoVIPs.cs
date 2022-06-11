@@ -20,6 +20,7 @@ namespace PracticaBlazor.UI.Shared.Models
         [Required]
         public decimal PrecioMax { get; set; }
         public decimal? PrecioFinal { get; set; }
+        [Required]
         public string Descripcion { get; set; }
         public int? Categoria { get; set; }
         public string Imagen { get; set; }

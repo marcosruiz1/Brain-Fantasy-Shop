@@ -35,7 +35,7 @@ namespace PracticaBlazor.UI.Shared.Models
         [RegularExpression("([1-9][0-9]*)", ErrorMessage = "Tiene que ser un número natural")]
         public string Telefono { get; set; }
         public string? Direccion { get; set; }
-        public string? Rol { get; set; } = "ROLE_VISUALIZAR";
+        public string Rol { get; set; } = "ROLE_VISUALIZAR";
         public string? Imagen { get; set; } = "default_User_Img";
         //TokenPassword
         public string? ResetToken { get; set; }

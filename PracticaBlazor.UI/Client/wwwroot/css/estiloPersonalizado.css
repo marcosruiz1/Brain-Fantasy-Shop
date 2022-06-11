@@ -18,6 +18,54 @@
     background: #d9534f;
     text-decoration: none;
 }
+.delBotonClaro, .delBotonVerde {
+    position: relative;
+    overflow: hidden;
+    text-transform: capitalize;
+    padding: 5px 29px;
+    font-weight: 400;
+    line-height: 25px;
+    font-size: 14px;
+    color: #fff;
+    -moz-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    -webkit-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    display: inline-block;
+    text-decoration: none;
+}
+.delBotonClaro {
+    background: #f44336;
+}
+.delBotonVerde {
+    background: #34b1da;
+}
+.admitidosButton {
+    position: relative;
+    overflow: hidden;
+    text-transform: capitalize;
+    padding: 5px 29px;
+    font-weight: 400;
+    line-height: 25px;
+    font-size: 14px;
+    color: #fff;
+    -moz-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    -webkit-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    display: inline-block;
+    background: #36d157;
+    text-decoration: none;
+}
+    .admitidosButton:hover {
+        background: #2b9d43;
+    }
 
 .contraseñaInput {
     height: 45px;
@@ -61,4 +109,23 @@
 
 .tamañoFont {
     font-size: 15px;
+}
+
+.divButtonRight{
+    margin-top: 20px;
+    display:flex;
+    justify-content: right;
+}
+
+.divProductoCampos {
+    display: flex;
+    flex-direction: column;
+}
+.divProductoFilter {
+    width: 25%;
+    margin-left: 10px;
+}
+
+.delBotonClaro:hover {
+    background: #d73d32
 }

@@ -67,14 +67,17 @@
 
             }
         </div>
-        <button class="btn"
+        <div class="divButtonRight">
+            <button class="btn"
             @onclick="CrearProductoVIP">
             Registrar Producto
         </button>
+        </div>
+        
     }
 
 
-    <h1 style="color:#58e53f;">ADMITIDOS</h1>
+   <h1 style="color:#58e53f;">ADMITIDOS</h1>
     @if (_productoAdmitido == null)
     {
         <div id="app" class="d-flex justify-content-center">
@@ -89,21 +92,52 @@
             @for (var i = 0; i < _productoAdmitido.Count; i++)
             {
                 int index = i;
-                string head = "heading" + index;
-                string collapsed = "collapse" + index;
+                string head = "heading" + (index + 10000);
+                string collapsed = "collapse" + (index + 10000);
 
                 <div class="card">
                     <div class="card-header" id="@head">
                         <h5 class="mb-0">
-                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#@collapsed" aria-expanded="false" aria-controls="@collapsed">
-                                Collapsible Group Item #1
+                            <button class="admitidosButton  collapsed" data-toggle="collapse" data-target="#@collapsed" aria-expanded="false" aria-controls="@collapsed">
+                                @_productoAdmitido[index].Nombre
                             </button>
                         </h5>
                     </div>
 
                     <div id="@collapsed" class="collapse" aria-labelledby="@head" data-parent="#accordion">
-                        <div class="card-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                        <div class="card-body" style="padding:15px;">
+                            <div class="form-group">
+                                <div class="productosVIPdiv">
+                                    <div>
+                                        <label class="tamañoFont">Nombre: </label>
+                                        <label class="tamañoFont" style="font-weight: bold;">@_productoAdmitido[index].Nombre</label>
+                                    </div>
+                                    <div>
+                                        <label class="tamañoFont">Precio Min: </label>
+                                        <label class="tamañoFont" style="font-weight: bold;">@_productoAdmitido[index].PrecioMin €</label>
+                                        <label class="tamañoFont" style="margin-left:10px;">Precio Max: </label>
+                                        <label class="tamañoFont" style="font-weight: bold;">@_productoAdmitido[index].PrecioMax €</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="productosVIPdiv">
+                                    <div>
+                                        <img style="width: 300px; height: 300px;" alt="@_productoAdmitido[index].Imagen" title="@_productoAdmitido[index].Imagen" class="img-primary" data-src="@_productoAdmitido[index].Imagen" src="@_productoAdmitido[index].Imagen" />
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <div>
+                                    <label class="tamañoFont">Descripción: </label>
+                                </div>
+                                <div>
+                                    <label class="tamañoFont" style="font-weight: bold;">@_productoAdmitido[index].Descripcion</label>
+                                </div>
+                            </div>
+
+
                         </div>
                     </div>
                 </div>
@@ -132,22 +166,52 @@
             @for (var i = 0; i < _productoDenegado.Count; i++)
             {
                 int index = i;
-                string head = "heading" + index;
-                string collapsed = "collapse" + index;
+                string head = "heading" + (index + 100000);
+                string collapsed = "collapse" + (index + 100000);
 
                 <div class="card">
                     <div class="card-header" id="@head">
                         <h5 class="mb-0">
-                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#@collapsed" aria-expanded="false" aria-controls="@collapsed">
-                                Collapsible Group Item #1
+                            <button class="delBoton btn-danger collapsed" data-toggle="collapse" data-target="#@collapsed" aria-expanded="false" aria-controls="@collapsed">
+                                @_productoDenegado[index].Nombre
                             </button>
                         </h5>
                     </div>
 
                     <div id="@collapsed" class="collapse" aria-labelledby="@head" data-parent="#accordion">
-                        <div class="card-body">
-                            <div>
+                        <div class="card-body" style="padding:15px;">
+                            <div class="form-group">
+                                <div class="productosVIPdiv">
+                                    <div>
+                                        <label class="tamañoFont">Nombre: </label>
+                                        <label class="tamañoFont" style="font-weight: bold;">@_productoDenegado[index].Nombre</label>
+                                    </div>
+                                    <div>
+                                        <label class="tamañoFont">Precio Min: </label>
+                                        <label class="tamañoFont" style="font-weight: bold;">@_productoDenegado[index].PrecioMin €</label>
+                                        <label class="tamañoFont" style="margin-left:10px;">Precio Max: </label>
+                                        <label class="tamañoFont" style="font-weight: bold;">@_productoDenegado[index].PrecioMax €</label>
+                                    </div>
+                                </div>
                             </div>
+                            <div class="form-group">
+                                <div class="productosVIPdiv">
+                                    <div>
+                                        <img style="width: 300px; height: 300px;" alt="@_productoAdmitido[index].Imagen" title="@_productoAdmitido[index].Imagen" class="img-primary" data-src="@_productoAdmitido[index].Imagen" src="@_productoAdmitido[index].Imagen" />
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <div>
+                                    <label class="tamañoFont">Descripción: </label>
+                                </div>
+                                <div>
+                                    <label class="tamañoFont" style="font-weight: bold;">@_productoAdmitido[index].Descripcion</label>
+                                </div>
+                            </div>
+
+
                         </div>
                     </div>
                 </div>

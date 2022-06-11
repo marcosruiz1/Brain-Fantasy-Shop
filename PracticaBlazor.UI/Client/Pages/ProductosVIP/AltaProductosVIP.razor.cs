@@ -20,6 +20,7 @@ using Blazored.Toast;
 using Blazored.Toast.Services;
 using PracticaBlazor.UI.Shared.Models;
 using System.Security.Claims;
+using PracticaBlazor.UI.Shared.Models.Dto.ProductoVIP;
 
 namespace PracticaBlazor.UI.Client.Pages.ProductosVIP
 {
@@ -30,12 +31,15 @@ namespace PracticaBlazor.UI.Client.Pages.ProductosVIP
         private List<ProductoVIPs> _productoDenegado;
         private List<Categoria> _categorias;
         private Producto _producto = new();
+        private ProductoVIPAltaDto _productoAlta = new();
+
 
         //USER
         [CascadingParameter]
         Task<AuthenticationState> authenticationStateTask { get; set; }
         AuthenticationState authState;
         private string userId;
+        
 
 
         protected override async Task OnInitializedAsync()
@@ -49,6 +53,7 @@ namespace PracticaBlazor.UI.Client.Pages.ProductosVIP
             }           
             _categorias = await CategoriaService.GetCategoriaas();
 
+
         }
 
         public async Task Aceptar(EditContext formContext, ProductoVIPs productoVIP)
@@ -58,11 +63,12 @@ namespace PracticaBlazor.UI.Client.Pages.ProductosVIP
             _producto.Nombre = productoVIP.Nombre;
             _producto.Imagen = productoVIP.Imagen;
             _producto.IsVIP = true;
+            _producto.Precio = _productoAlta.PrecioFinal;
             await ProductoService.CrearProducto(_producto);
             productoVIP.Estado = "ADMITIDO";
             productoVIP.Categoria = _producto.Categoria;
             productoVIP.PrecioFinal = _producto.Precio;
-            ProductoVIPService.ActualizarProducto(productoVIP);
+            await ProductoVIPService.ActualizarProducto(productoVIP);
             await GetProductosVIP();
 
         }

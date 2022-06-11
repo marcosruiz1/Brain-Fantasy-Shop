@@ -44,27 +44,38 @@
                     <tbody>
                         @foreach (var producto in _productos)
                         {
+                            string head = "heading" + Index;
+                            string collapsed = "collapse" + Index;
                             if (!IsVisible(producto))
                                 continue;
                             <tr>
                                 <td>@producto.Id.ToString()</td>
                                 <td>@producto.Nombre</td>
                                 <td>@producto.Categoria</td>
-                                <td>@producto.Precio</td>
-                                @if(@producto.Descripcion.Length < 50){
-                                    <td>@producto.Descripcion</td>
-                                }
-                                else
-                                {
-                                    <td>@producto.Descripcion.Substring(0,50)...</td>
-                                }
-                                <td><img src="@producto.Imagen" style="width: 75px; height: 75px;"></td>
+                                <td>@producto.Precio €</td>
+                                <td>
+                                    <div class="card">
+                                        <div class="card-header" id="@head">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#@collapsed" aria-expanded="false" aria-controls="@collapsed">
+                                                    Descripción....
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="@collapsed" class="collapse" aria-labelledby="@head" data-parent="#accordion">
+                                            <div class="card-body">
+                                                @producto.Descripcion
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><img src="@producto.Imagen" style="max-width: 75px; max-height: 100px;"></td>
                                 <td>
                                     <button class="btn btn-info"
                                     @onclick="(() => Edit(producto.Id))">
                                         Edit
                                     </button>
-                                    
+
                                 </td>
                                 <td>
                                     <button class="delBoton btn-danger"
@@ -73,6 +84,7 @@
                                     </button>
                                 </td>
                             </tr>
+                            Index++;
                         }
                     </tbody>
                 </table>
@@ -91,43 +103,4 @@
 </AuthorizeView>
 
 
-@code {
-    private List<Producto>? _productos;
-    public string Filter { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        _productos = await Http.GetFromJsonAsync<List<Producto>>("/api/Productos");
-    }
-
-    private async Task Delete(int id)
-    {
-        await Http.DeleteAsync($"/api/Carritos/prod/{id}");
-        await Http.DeleteAsync($"/api/Comentarios/prod/{id}");
-        await ComentarioService.BorrarComentarioProducto(id);
-        await Http.DeleteAsync($"/api/Productos/{id}");
-        _productos = await Http.GetFromJsonAsync<List<Producto>>("/api/Productos");
-        toastService.ShowSuccess("Producto eliminado");
-        StateHasChanged();
-    }
-    private void Edit(int id)
-    {
-        Navigation.NavigateTo($"/producto/edit/{id}");
-    }
-    private void Create()
-    {
-        Navigation.NavigateTo("/producto/create");
-    }
-    public bool IsVisible(Producto producto)
-    {
-        if (string.IsNullOrEmpty(Filter))
-            return true;
-
-        if (producto.Nombre.Contains(Filter, StringComparison.OrdinalIgnoreCase))
-            return true;
-
-
-        return false;
-    }
-
-}

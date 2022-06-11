@@ -28,16 +28,23 @@ namespace PracticaBlazor.UI.Client.Pages.Productos
         [Parameter]
         public int Nombre { get; set; }
         private List<Producto> _productos;
+        public string Filter { get; set; }
+        public string FilterCategoria { get; set; }
         
+
         //User
         [CascadingParameter]
         Task<AuthenticationState> authenticationStateTask { get; set; }
         AuthenticationState authState;
         private string userId = "";
 
+        //Categorías
+        private List<Categoria> _categorias = new();
+
         protected override async Task OnInitializedAsync()
         {
             _productos = await Http.GetFromJsonAsync<List<Producto>>("/api/Productos");
+            _categorias = await Http.GetFromJsonAsync<List<Categoria>>("/api/Categorias");
             authState = await authenticationStateTask;
             if (authState.User.Identity.IsAuthenticated)
             {
@@ -62,6 +69,23 @@ namespace PracticaBlazor.UI.Client.Pages.Productos
                 Navigation.NavigateTo("/login");
             }
 
+        }
+
+        public bool IsVisible(Producto producto)
+        {
+            if (string.IsNullOrEmpty(Filter))
+                return true;
+            if (producto.Nombre.Contains(Filter, StringComparison.OrdinalIgnoreCase))
+                return true;
+            return false;
+        }
+        public bool IsVisibleCategoria(Producto producto)
+        {
+            if (producto.Categoria == Convert.ToInt32(FilterCategoria))
+                return true;
+            if (Convert.ToInt32(FilterCategoria) == 0)
+                return true;
+            return false;
         }
     }
 }

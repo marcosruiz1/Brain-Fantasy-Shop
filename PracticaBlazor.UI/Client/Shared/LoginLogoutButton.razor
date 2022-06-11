@@ -8,21 +8,21 @@
         <li class="dropdown">
             <a href="" title="My Account" class="dropdown-toggle" data-toggle="dropdown">
                 <i class="bi bi-person-circle"></i>
-                <span>My Account</span>
+                <span>Mi Cuenta</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-left">
                 <li>
                     <button @onclick="Perfil" class="dropdown-item"><i class="bi bi-person-lines-fill" style="margin-right:10px;"></i>Perfil</button>
                 </li>
                 <li>
-                    <button @onclick="Logout" class="dropdown-item text-danger"><i class="bi bi-door-closed-fill" style="margin-right:10px;"></i>Logout</button>
+                    <button @onclick="Logout" class="dropdown-item text-danger"><i class="bi bi-door-closed-fill" style="margin-right:10px;"></i>Salir</button>
                 </li>
             </ul>
         </li>
     </Authorized>
     <NotAuthorized>
-        <li><a @onclick="Login" href="/login" class=""><i class="linearicons-user" data-toggle="tooltip" title="" data-original-title="Login"></i><span>Log In</span></a></li>
-        <li><a @onclick="Register" href="/usuario/registro" class=""><i class="bi bi-person-plus-fill" data-toggle="tooltip" title="" data-original-title="Register"></i><span>Register</span></a></li>
+        <li><a @onclick="Login" href="/login" class=""><i class="linearicons-user" data-toggle="tooltip" title="" data-original-title="Login"></i><span>Inciiar Sesión</span></a></li>
+        <li><a @onclick="Register" href="/usuario/registro" class=""><i class="bi bi-person-plus-fill" data-toggle="tooltip" title="" data-original-title="Registrase"></i><span>Register</span></a></li>
     </NotAuthorized>
 </AuthorizeView>
 

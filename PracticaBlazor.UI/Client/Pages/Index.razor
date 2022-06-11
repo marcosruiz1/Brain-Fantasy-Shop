@@ -132,45 +132,60 @@
 
                                                         <div id="product_carousel_latest-0" class="col-lg-12 swiper-container-horizontal">
                                                             <div class="swiper-wrapper">
-                                                                @foreach (var producto in _productosNew)
+                                                                @if (_productos == null)
                                                                 {
-                                                                    <div class="col-sm-4" data-match-height="items-l">
-                                                                        <div class="product-thumb transition  options ">
-                                                                            <div class="new-pr">New</div>
-                                                                            <div class="sale">
-                                                                                Sale
-                                                                            </div>
-                                                                            <div class="image">
-                                                                                <a class="lazy lazy-loaded" href="/producto/ver/@producto.Id" style="padding-bottom: 100%">
-                                                                                    <img width="200" height="200" alt="Sound Bar with Wireless Subwoofer" title="Sound Bar with Wireless Subwoofer" class="img-primary" data-src="@producto.Imagen" src="@producto.Imagen">
-                                                                                    <img width="200" height="200" alt="Sound Bar with Wireless Subwoofer" title="Sound Bar with Wireless Subwoofer" class="img-secondary" data-src="@producto.Imagen" src="@producto.Imagen">
-                                                                                </a>
-                                                                            </div>
-                                                                            <div class="caption">
-                                                                                <div class="price">
-                                                                                    @producto.Precio €
-                                                                                </div>
-                                                                                <div class="name"><a href="/producto/ver/@producto.Id">@producto.Nombre</a></div>
-                                                                                @if (@producto.Descripcion.Length < 50)
-                                                                                {
-                                                                                    <div class="description">@producto.Descripcion</div>
-                                                                                }
-                                                                                else
-                                                                                {
-                                                                                    <div class="description">@producto.Descripcion.Substring(0,70)...</div>
-                                                                                }                        
-                                                                                <div class="button-group">
-                                                                                    <button type="button" class="product-btn cart-btn" data-toggle="tooltip" title="" onclick="ajaxAdd($(this),50);" data-original-title="Add to Cart">
-                                                                                        <i class="linearicons-cart"></i>
-                                                                                    </button>
-                                                                                    <button type="button" class="product-btn" data-toggle="tooltip" title="" onclick="wishlist.add('50');" data-original-title="Add to Wish List"><i class="linearicons-heart"></i></button>
-                                                                                    <button type="button" class="product-btn" data-toggle="tooltip" title="" onclick="compare.add('50');" data-original-title="Compare this Product"><i class="linearicons-tab"></i></button>
-                                                                                    <button type="button" data-rel="details" class="product-btn quickview" @onclick="(() => VerDetalle(producto.Id))" data-toggle="tooltip" title="" data-product="50" data-original-title="Quick View"><i class="linearicons-eye"></i></button>
-                                                                                </div>
+                                                                    <div class="container">
+                                                                        <div id="app" class="d-flex justify-content-center">
+                                                                            <div class="spinner-border" role="status">
+                                                                                <span class="visually-hidden">Loading...</span>
                                                                             </div>
                                                                         </div>
                                                                     </div>
+
                                                                 }
+                                                                else
+                                                                {
+                                                                    @foreach (var producto in _productosNew)
+                                                                    {
+                                                                        <div class="col-sm-4" data-match-height="items-l">
+                                                                            <div class="product-thumb transition  options ">
+                                                                                <div class="new-pr">New</div>
+                                                                                <div class="sale">
+                                                                                    Sale
+                                                                                </div>
+                                                                                <div class="image">
+                                                                                    <a class="lazy lazy-loaded" href="/producto/ver/@producto.Id" style="padding-bottom: 100%">
+                                                                                        <img width="200" height="200" alt="Sound Bar with Wireless Subwoofer" title="Sound Bar with Wireless Subwoofer" class="img-primary" data-src="@producto.Imagen" src="@producto.Imagen">
+                                                                                        <img width="200" height="200" alt="Sound Bar with Wireless Subwoofer" title="Sound Bar with Wireless Subwoofer" class="img-secondary" data-src="@producto.Imagen" src="@producto.Imagen">
+                                                                                    </a>
+                                                                                </div>
+                                                                                <div class="caption">
+                                                                                    <div class="price">
+                                                                                        @producto.Precio €
+                                                                                    </div>
+                                                                                    <div class="name"><a href="/producto/ver/@producto.Id">@producto.Nombre</a></div>
+                                                                                    @if (@producto.Descripcion.Length < 50)
+                                                                                    {
+                                                                                        <div class="description">@producto.Descripcion</div>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div class="description">@producto.Descripcion.Substring(0,70)...</div>
+                                                                                    }
+                                                                                    <div class="button-group">
+                                                                                        <button type="button" class="product-btn cart-btn" data-toggle="tooltip" title="" onclick="ajaxAdd($(this),50);" data-original-title="Add to Cart">
+                                                                                            <i class="linearicons-cart"></i>
+                                                                                        </button>
+                                                                                        <button type="button" class="product-btn" data-toggle="tooltip" title="" onclick="wishlist.add('50');" data-original-title="Add to Wish List"><i class="linearicons-heart"></i></button>
+                                                                                        <button type="button" class="product-btn" data-toggle="tooltip" title="" onclick="compare.add('50');" data-original-title="Compare this Product"><i class="linearicons-tab"></i></button>
+                                                                                        <button type="button" data-rel="details" class="product-btn quickview" @onclick="(() => VerDetalle(producto.Id))" data-toggle="tooltip" title="" data-product="50" data-original-title="Quick View"><i class="linearicons-eye"></i></button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    }
+                                                                }
+
 
 
                                                             </div>

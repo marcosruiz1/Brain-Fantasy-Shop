@@ -15,6 +15,7 @@ namespace PracticaBlazor.UI.Shared.Models
         public int Id { get; set; }
         [Required]
         public string Nombre { get; set; }
+        [Range(1, int.MaxValue, ErrorMessage ="Debes seleccionar una categoría")]
         public int Categoria { get; set; }
         public decimal Precio { get; set; }
         public string? Descripcion { get; set; }

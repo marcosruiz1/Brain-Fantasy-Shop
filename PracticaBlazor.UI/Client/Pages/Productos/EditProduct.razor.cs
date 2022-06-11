@@ -19,33 +19,35 @@ using Blazored.LocalStorage;
 using Blazored.Toast;
 using Blazored.Toast.Services;
 using PracticaBlazor.UI.Shared.Models;
-using PracticaBlazor.UI.Shared.Models.Dto;
 
 namespace PracticaBlazor.UI.Client.Pages.Productos
 {
-    public partial class CreateProduct
+    public partial class EditProduct
     {
-        private Producto _producto = new();
-        private List<Categoria> _categorias = new();
-        private async Task Post()
-        {
-            if(_producto.Imagen != null)
-            {
-                await ProductoService.CrearProducto(_producto);
-                Navigation.NavigateTo("/productos/admin");
-                toastService.ShowSuccess("Producto añadido con éxito");
-            }
-            else
-            {
-                toastService.ShowError("Selecciona una imagen");
-            }
-            
-        }
+        [Parameter]
+        public int Id { get; set; }
 
-        //Conseguir las categorías
+        private Producto _producto;
+        private List<Categoria> _categorias = new();
+
         protected override async Task OnInitializedAsync()
         {
+            _producto = await Http.GetFromJsonAsync<Producto>($"/api/Productos/{Id}");
+            //Conseguir las categorías
             _categorias = await Http.GetFromJsonAsync<List<Categoria>>("/api/Categorias");
+        }
+
+        private async Task Put()
+        {
+           // _producto.Categoria = Convert.ToInt32(CategoriaProducto);
+            await Http.PutAsJsonAsync<Producto>($"/api/Productos/{_producto.Id}", _producto);
+            Navigation.NavigateTo("/productos/admin");
+            toastService.ShowSuccess($"Producto {_producto.Nombre} editado con éxito");
+        }
+
+        private void CambiarImagen(int id)
+        {
+            Navigation.NavigateTo($"/producto/edit/img/{id}");
         }
 
         private async Task OnFileChange(InputFileChangeEventArgs ev)
