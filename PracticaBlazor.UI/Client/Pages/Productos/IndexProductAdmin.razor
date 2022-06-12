@@ -1,10 +1,14 @@
 ﻿@page "/productos/admin"
+@using PracticaBlazor.UI.Client.Services.CarroService
 @using PracticaBlazor.UI.Client.Services.ComentarioService
+@using PracticaBlazor.UI.Client.Services.ProductoService
 @using PracticaBlazor.UI.Shared.Models
 @inject HttpClient Http
 @inject NavigationManager Navigation
 @inject IComentarioService ComentarioService
 @inject IToastService toastService
+@inject IProductoService ProductoService
+@inject ICarroService CarroService
 
 
 <AuthorizeView Roles="ROLE_ADMIN, ROLE_COMPLETO">
@@ -24,7 +28,7 @@
             {
                 <h1>INDEX ADMIN PRODUCTOS</h1>
                 <div class="form-group">
-                    <input class="form-control" type="text" placeholder="Filter..."
+                    <input class="form-control" type="text" placeholder="Filtro..."
                        @bind="Filter"
                        @bind:event="oninput">
                 </div>

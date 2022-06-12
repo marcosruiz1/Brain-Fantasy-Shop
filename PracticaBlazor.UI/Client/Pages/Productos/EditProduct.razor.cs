@@ -32,15 +32,15 @@ namespace PracticaBlazor.UI.Client.Pages.Productos
 
         protected override async Task OnInitializedAsync()
         {
-            _producto = await Http.GetFromJsonAsync<Producto>($"/api/Productos/{Id}");
+            _producto = await ProductoService.GetProducto(Id);
             //Conseguir las categorías
-            _categorias = await Http.GetFromJsonAsync<List<Categoria>>("/api/Categorias");
+            _categorias = await CategoriaService.GetCategoriaas();
         }
 
         private async Task Put()
         {
            // _producto.Categoria = Convert.ToInt32(CategoriaProducto);
-            await Http.PutAsJsonAsync<Producto>($"/api/Productos/{_producto.Id}", _producto);
+            await ProductoService.ActualizarProducto(_producto);
             Navigation.NavigateTo("/productos/admin");
             toastService.ShowSuccess($"Producto {_producto.Nombre} editado con éxito");
         }

@@ -43,8 +43,8 @@ namespace PracticaBlazor.UI.Client.Pages.Productos
 
         protected override async Task OnInitializedAsync()
         {
-            _productos = await Http.GetFromJsonAsync<List<Producto>>("/api/Productos");
-            _categorias = await Http.GetFromJsonAsync<List<Categoria>>("/api/Categorias");
+            _productos = await ProductoService.GetProductos();
+            _categorias = await CategoriaService.GetCategoriaas();
             authState = await authenticationStateTask;
             if (authState.User.Identity.IsAuthenticated)
             {

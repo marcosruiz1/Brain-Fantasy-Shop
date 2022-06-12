@@ -1,8 +1,12 @@
 ﻿@page "/producto/edit/{id:int}"
+@using PracticaBlazor.UI.Client.Services.CategoriaService
+@using PracticaBlazor.UI.Client.Services.ProductoService
 @using PracticaBlazor.UI.Shared.Models
 @inject HttpClient Http
 @inject NavigationManager Navigation
 @inject IToastService toastService
+@inject ICategoriaService CategoriaService
+@inject IProductoService ProductoService
 
 <div class="container ">
     <h1>EDITAR PRODUCTO</h1>
@@ -22,6 +26,7 @@
             <div class="form-group">
                 <label>Nombre: </label>
                 <InputText class="inputPersonalizado" @bind-Value="_producto.Nombre" />
+                <ValidationMessage For="@(() => _producto.Nombre)" />
             </div>
             <div class="form-group">
                 <label>Categoria: </label>
@@ -35,10 +40,12 @@
         <div class="form-group">
             <label>Precio: </label>
             <InputNumber class="inputPersonalizado" @bind-Value="_producto.Precio" />
+            <ValidationMessage For="@(() => _producto.Precio)" />
         </div>
         <div class="form-group">
             <label>Descripcion</label>
             <InputTextArea class="inputPersonalizado" @bind-Value="_producto.Descripcion" />
+            <ValidationMessage For="@(() => _producto.Descripcion)" />
         </div>
 
         <div class="form-group">

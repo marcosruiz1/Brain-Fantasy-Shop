@@ -1,10 +1,14 @@
 ﻿@page "/productos"
 @page "/productos/{*nombre}"
 @using PracticaBlazor.UI.Client.Services.CarroService
+@using PracticaBlazor.UI.Client.Services.CategoriaService
+@using PracticaBlazor.UI.Client.Services.ProductoService
 @using PracticaBlazor.UI.Shared.Models
 @inject HttpClient Http
 @inject NavigationManager Navigation
 @inject ICarroService CarroService
+@inject IProductoService ProductoService
+@inject ICategoriaService CategoriaService
 
 <div class="container containerPers">
     <ul class="breadcrumb">
@@ -23,7 +27,7 @@
     else
     {
         <div class="form-group" style="display:flex; width:50%;">
-            <input class="form-control" type="text" placeholder="Filter..."
+            <input class="form-control" type="text" placeholder="Filtro..."
                @bind="Filter"
                @bind:event="oninput">
                <select class="form-control inputPersonalizado divProductoFilter"

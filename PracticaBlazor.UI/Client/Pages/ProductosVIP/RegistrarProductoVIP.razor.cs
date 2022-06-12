@@ -49,6 +49,7 @@ namespace PracticaBlazor.UI.Client.Pages.ProductosVIP
                 _productoVIPs.IdUsuario = Convert.ToInt32(userId);
                 await ProductoVIPService.AgregarProductoVIP(_productoVIPs);
                 Navigation.NavigateTo("/productosVIP/usuario");
+                toastService.ShowSuccess("Produto registrado exitosamente");
             }
 
         }

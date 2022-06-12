@@ -16,6 +16,7 @@ namespace PracticaBlazor.UI.Shared.Models.Dto.ProductoVIP
         public decimal PrecioFinal { get; set; }
         public string? Descripcion { get; set; }
         [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "Debes seleccionar una categoría")]
         public int Categoria { get; set; }
         public string? Imagen { get; set; }
         public string? Estado { get; set; }

@@ -1,5 +1,6 @@
 ﻿@page "/micarrito"
 @using PracticaBlazor.UI.Client.Services.CarroService
+@using PracticaBlazor.UI.Client.Services.CategoriaService
 @using PracticaBlazor.UI.Shared.Models
 @using System.Security.Claims
 @using System.Text.Json
@@ -12,6 +13,7 @@
 @inject HttpClient Http
 @inject NavigationManager Navigation
 @inject ICarroService CarroService
+@inject ICategoriaService CategoriaService
 @inject Microsoft.JSInterop.IJSRuntime JS
 
 
@@ -55,7 +57,7 @@ else
                                         <!-- Data -->
                                 <p><strong>@_carritosProd[i].Nombre</strong></p>
                                         <p>Color: blue</p>
-                                        <p>Size: M</p>
+                                        <p>Dimensiones: 85x100 cm</p>
                                         <button type="button" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip" @onclick="( () =>GoProdCarrito(_carritosProd[index].Id))"
                                         title="Remove item">
                                             <i class="bi bi-arrow-up-right-square"></i>
@@ -119,9 +121,6 @@ else
                             <img class="me-2" width="45px"
                              src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
                              alt="Mastercard" />
-                            <img class="me-2" width="45px"
-                             src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce/includes/gateways/paypal/assets/images/paypal.webp"
-                             alt="PayPal acceptance mark" />
                         </div>
                     </div>
                 </div>

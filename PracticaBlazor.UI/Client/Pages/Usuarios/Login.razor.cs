@@ -25,6 +25,10 @@ namespace PracticaBlazor.UI.Client.Pages.Usuarios
     public partial class Login
     {
         private UsuarioDto _user = new UsuarioDto();
+
+        AuthenticationState authState;
+        [CascadingParameter]
+        Task<AuthenticationState> authenticationStateTask { get; set; }
         async Task HandleLogin()
         {
             var result = await Http.PostAsJsonAsync("/api/Auth/login", _user);
@@ -34,6 +38,8 @@ namespace PracticaBlazor.UI.Client.Pages.Usuarios
             {
                 await LocalStorage.SetItemAsync("token", token);
                 await AuthStateProvider.GetAuthenticationStateAsync();
+                authState = await authenticationStateTask;
+                await CarroService.ContadorCarrito(authState);
                 Navigation.NavigateTo("/");
             }
             else

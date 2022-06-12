@@ -1,10 +1,12 @@
 ﻿@page "/producto/create"
+@using PracticaBlazor.UI.Client.Services.CategoriaService
 @using PracticaBlazor.UI.Shared.Models
 @using PracticaBlazor.UI.Shared.Models.Dto
 @using PracticaBlazor.UI.Client.Services.ProductoService
 @inject HttpClient Http
 @inject NavigationManager Navigation
 @inject IProductoService ProductoService
+@inject ICategoriaService CategoriaService
 @inject IToastService toastService
 
 <div class="container ">
@@ -15,6 +17,7 @@
         <div class="form-group">
             <label>Nombre: </label>
             <InputText class="inputPersonalizado" @bind-Value="_producto.Nombre" />
+            <ValidationMessage For="@(() => _producto.Nombre)" />
         </div>
         <div class="form-group">
             <label>Categoria: </label>
@@ -30,10 +33,12 @@
         <div class="form-group">
             <label>Precio: </label>
             <InputNumber @bind-Value="_producto.Precio" />
+            <ValidationMessage For="@(() => _producto.Precio)" />
         </div>
         <div class="form-group">
             <label>Descripcion</label>
             <InputTextArea @bind-Value="_producto.Descripcion" />
+            <ValidationMessage For="@(() => _producto.Descripcion)" />
         </div>
         <div class="form-group">
             <label>Imagen: </label>

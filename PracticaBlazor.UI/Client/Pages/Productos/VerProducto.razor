@@ -2,6 +2,7 @@
 @using PracticaBlazor.UI.Client.Services.ComentarioService
 @using PracticaBlazor.UI.Client.Services.CarroService
 @using PracticaBlazor.UI.Client.Services.CategoriaService
+@using PracticaBlazor.UI.Client.Services.ProductoService
 @using PracticaBlazor.UI.Shared.Models
 @using PracticaBlazor.UI.Shared.Models.Dto
 @using System.Security.Claims
@@ -12,6 +13,7 @@
 @inject IComentarioService ComentarioService
 @inject ICategoriaService CategoriaService
 @inject IToastService toastService
+@inject IProductoService ProductoService
 
 
 @if (_producto == null)

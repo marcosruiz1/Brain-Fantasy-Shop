@@ -1,0 +1,75 @@
+﻿@page "/usuario/crear"
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject IToastService toastService
+
+<div class="container ">
+    <h1>CREAR USUARIO</h1>
+
+    <EditForm Model="@_usuario" OnValidSubmit="Post">
+        <DataAnnotationsValidator />
+        <div class="form-group">
+            <label>Usuario: </label>
+            <InputText class="inputPersonalizado" @bind-Value="_usuario.Username" />
+            <ValidationMessage For="@(() => _usuario.Username)" />
+        </div>
+        <div class="form-group">
+            <label>Rol: </label>
+            <InputSelect class="inputPersonalizado" @bind-Value="Rol">
+                @foreach (var rol in _roles)
+                {
+                    <option value="@rol">@rol.ToString()</option>
+                }
+            </InputSelect>
+        </div>
+        <div class="form-group">
+            <label>Email: </label>
+            <InputText class="inputPersonalizado" @bind-Value="_usuario.Email" />
+            <ValidationMessage For="@(() => _usuario.Email)" />
+        </div>
+        <div class="form-group">
+            <label>Contraseña: </label>
+            <InputText  type="password" name="password" @bind-Value="_usuario.Password" placeholder="Password" id="input-password" class="form-control"/>
+            <ValidationMessage For="@(() => _usuario.Password)"/>   
+        </div>
+        <div class="form-group">
+            <label>Nombre: </label>
+            <InputText class="inputPersonalizado" @bind-Value="_usuario.Nombre" />
+            <ValidationMessage For="@(() => _usuario.Nombre)" />
+        </div>
+        <div class="form-group">
+            <label>Apellidos: </label>
+            <InputText class="inputPersonalizado" @bind-Value="_usuario.Apellidos" />
+            <ValidationMessage For="@(() => _usuario.Apellidos)" />
+        </div>
+        <div class="form-group">
+            <label>Direccion: </label>
+            <InputText class="inputPersonalizado" @bind-Value="_usuario.Direccion" />
+        </div>
+        <div class="form-group">
+            <label>Telefono: </label>
+            <InputText class="inputPersonalizado" @bind-Value="_usuario.Telefono" />
+            <ValidationMessage For="@(() => _usuario.Telefono)" />
+        </div>
+
+        <div class="form-group">
+            <label>Imagen: </label><br>
+            @if (@_usuario.Imagen == "default_User_Img")
+            {
+                <img src="/images/default_User_Img.png" style="width: 450px; height: 400px; margin-bottom:10px;">
+
+            }
+            else
+            {
+                <img src="@_usuario.Imagen" style="width: 450px; height: 400px; margin-bottom:10px;">
+            }
+
+            <InputFile OnChange="@OnFileChange" multiple="false" accept="images/jpeg" />
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-success" value="Editar Usuario" />
+        </div>
+    </EditForm>
+</div>
+
+

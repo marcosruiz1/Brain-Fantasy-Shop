@@ -27,6 +27,13 @@ namespace PracticaBlazor.UI.Client.Pages.Productos
     {
         private Producto _producto = new();
         private List<Categoria> _categorias = new();
+
+        //Conseguir las categorías
+        protected override async Task OnInitializedAsync()
+        {
+            _categorias = await CategoriaService.GetCategoriaas();
+        }
+
         private async Task Post()
         {
             if(_producto.Imagen != null)
@@ -42,12 +49,7 @@ namespace PracticaBlazor.UI.Client.Pages.Productos
             
         }
 
-        //Conseguir las categorías
-        protected override async Task OnInitializedAsync()
-        {
-            _categorias = await Http.GetFromJsonAsync<List<Categoria>>("/api/Categorias");
-        }
-
+        
         private async Task OnFileChange(InputFileChangeEventArgs ev)
         {
             //get the file

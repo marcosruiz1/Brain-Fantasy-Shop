@@ -40,6 +40,7 @@ namespace PracticaBlazor.UI.Client.Services.CarroService
                     _numCarrito += carrito.numProductos;
                 }
             }
+            CarritoChanged?.Invoke();
             return _numCarrito;
         }
         public async Task<decimal> CalcularPrecioCarrito(List<Producto> carritosProd, List<Carrito> carritosUser)
@@ -88,7 +89,14 @@ namespace PracticaBlazor.UI.Client.Services.CarroService
             _numCarrito = await ContadorCarrito(authState);
             CarritoChanged?.Invoke();
         }
-
+        public async Task BorrarCarritoProd(int idCarrito)
+        {
+            await Http.DeleteAsync($"/api/Carritos/prod/{idCarrito}");
+        }
+        public async Task BorrarCarritoUser(int idCarrito)
+        {
+            await Http.DeleteAsync($"/api/Carritos/user/{idCarrito}");
+        }
         public async Task AumentarNumCarrito(Carrito carrito, AuthenticationState authState)
         {
             carrito.numProductos++;
@@ -116,6 +124,11 @@ namespace PracticaBlazor.UI.Client.Services.CarroService
         public int TotalArticulos()
         {
             return _numCarrito;
+        }
+        public void ResetTotalArticulos()
+        {
+             _numCarrito = 0;
+            CarritoChanged?.Invoke();
         }
 
         public async Task<List<Carrito>> GetCarritoUser(int userId)
@@ -152,7 +165,6 @@ namespace PracticaBlazor.UI.Client.Services.CarroService
         public async Task<string> Checkout(int id)
         {
             var result = await Http.PostAsJsonAsync("/api/pago/checkout", await GetProductoCarritoCompleto(id));
-            Console.WriteLine("EEEEEEEEEEEEEEEEEEEEEEEEE" + await result.Content.ReadAsStringAsync()); 
             var url = await result.Content.ReadAsStringAsync();
             return url;
         }

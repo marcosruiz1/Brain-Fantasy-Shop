@@ -1,27 +1,29 @@
 ﻿@page "/login"
+@using PracticaBlazor.UI.Client.Services.CarroService
 @using PracticaBlazor.UI.Shared.Models
 @inject HttpClient Http
 @inject NavigationManager Navigation
 @inject ILocalStorageService LocalStorage
 @inject AuthenticationStateProvider AuthStateProvider
 @inject IToastService toastService
+@inject ICarroService CarroService
 @using Microsoft.AspNetCore.Authorization;
 
 
 <div id="account-login" class="container containerPers">
   <ul class="breadcrumb">
         <li><a href="/"><i class="fa fa-home"></i></a></li>
-        <li><a href="/login">Account</a></li>
-        <li><span>Login</span></li>
+        <li><a href="/login">Cuenta</a></li>
+        <li><span>Inicio Sesión</span></li>
       </ul>
       <div class="row">
                 <div id="content" class="col-sm-12">
       <div class="row">
         <div class="col-sm-6">
           <div class="well" data-match-height="items-well" style="height: 413px;">
-            <h2>New Customer</h2>
-            <p><strong>Register</strong></p>
-            <p>By creating an account you will be able to shop faster, be up to date on an order's status, and keep track of the orders you have previously made.</p>
+            <h2>Nuevo Cliente</h2>
+            <p><strong>Registro</strong></p>
+            <p>Al crear una cuenta podrá comprar más rápidamente, estar al día del estado de un pedido y hacer un seguimiento de los pedidos que haya realizado anteriormente.</p>
             <a href="/usuario/registro" class="btn btn-primary">Continue</a></div>
         </div>
         <div class="col-sm-6">

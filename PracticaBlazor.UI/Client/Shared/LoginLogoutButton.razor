@@ -1,6 +1,8 @@
-﻿@inject NavigationManager Navigation
+﻿@using PracticaBlazor.UI.Client.Services.CarroService
+@inject NavigationManager Navigation
 @inject ILocalStorageService LocalStorage
 @inject AuthenticationStateProvider AuthStateProvider
+@inject ICarroService CarroService
 
 <AuthorizeView>
     <Authorized>
@@ -21,7 +23,7 @@
         </li>
     </Authorized>
     <NotAuthorized>
-        <li><a @onclick="Login" href="/login" class=""><i class="linearicons-user" data-toggle="tooltip" title="" data-original-title="Login"></i><span>Inciiar Sesión</span></a></li>
+        <li><a @onclick="Login" href="/login" class=""><i class="linearicons-user" data-toggle="tooltip" title="" data-original-title="Login"></i><span>Iniciar Sesión</span></a></li>
         <li><a @onclick="Register" href="/usuario/registro" class=""><i class="bi bi-person-plus-fill" data-toggle="tooltip" title="" data-original-title="Registrase"></i><span>Register</span></a></li>
     </NotAuthorized>
 </AuthorizeView>
@@ -39,6 +41,7 @@
     {
         await LocalStorage.RemoveItemAsync("token");
         await AuthStateProvider.GetAuthenticationStateAsync();
+        CarroService.ResetTotalArticulos();
         Navigation.NavigateTo("/");
     }
     void Register()

@@ -1,4 +1,16 @@
 ﻿@page "/order-success"
+@using System.Text.Json
+@using PracticaBlazor.UI.Client.Services.CarroService
+@using PracticaBlazor.UI.Shared.Models
+@using Syncfusion.Pdf
+@using Syncfusion.Pdf.Grid;
+@using Syncfusion.Drawing;
+@using Syncfusion.Pdf.Graphics;
+@using System.IO;
+@using System.Data
+@inject Microsoft.JSInterop.IJSRuntime JS
+@inject ICarroService CarroService
+
 <div class="container">
     <h1>Gracias por tu compra!</h1>
     <p>
@@ -6,9 +18,8 @@
       Si usted tiene alguna duda, por favor, evíe un correo electronico a
       <a href="mailto:soporte@brainFantasyShop.com">soporte@brainFantasyShop.com</a>.
     </p>
+    <button class="btn" @onclick="@ExportToPdf">Descargar Factura</button>
 </div>
 
 
-@code {
 
-}

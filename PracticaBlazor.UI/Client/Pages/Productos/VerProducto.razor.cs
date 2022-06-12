@@ -62,7 +62,7 @@ namespace PracticaBlazor.UI.Client.Pages.Productos
             }
 
             //GET Producto
-            _producto = await Http.GetFromJsonAsync<Producto>($"/api/Productos/{Id}");
+            _producto = await ProductoService.GetProducto(Id);
 
             //GET comentarios
             _comentarios = await ComentarioService.ComentariosProducto(Id);
@@ -70,7 +70,7 @@ namespace PracticaBlazor.UI.Client.Pages.Productos
             
 
             //GET categorías
-            _categorias = await Http.GetFromJsonAsync<List<Categoria>>("/api/Categorias");
+            _categorias = await CategoriaService.GetCategoriaas();
             _categoria = await CategoriaService.GetCategoriaNombre(_producto.Categoria);
 
             

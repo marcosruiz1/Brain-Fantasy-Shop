@@ -31,16 +31,16 @@ namespace PracticaBlazor.UI.Client.Pages.Productos
 
         protected override async Task OnInitializedAsync()
         {
-            _productos = await Http.GetFromJsonAsync<List<Producto>>("/api/Productos");
+            _productos = await ProductoService.GetProductos();
         }
 
         private async Task Delete(int id)
         {
-            await Http.DeleteAsync($"/api/Carritos/prod/{id}");
-            await Http.DeleteAsync($"/api/Comentarios/prod/{id}");
+            await CarroService.BorrarCarritoProd(id);
             await ComentarioService.BorrarComentarioProducto(id);
-            await Http.DeleteAsync($"/api/Productos/{id}");
-            _productos = await Http.GetFromJsonAsync<List<Producto>>("/api/Productos");
+            await ComentarioService.BorrarComentarioProducto(id);
+            await ProductoService.DeleteProducto(id);
+            _productos = await ProductoService.GetProductos();
             toastService.ShowSuccess("Producto eliminado");
             StateHasChanged();
         }

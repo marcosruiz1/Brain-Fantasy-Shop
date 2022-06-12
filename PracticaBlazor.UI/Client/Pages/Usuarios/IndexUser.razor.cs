@@ -63,7 +63,7 @@ namespace PracticaBlazor.UI.Client.Pages.Usuarios
 
         private void Create()
         {
-            Navigation.NavigateTo("/usuario/registro");
+            Navigation.NavigateTo("/usuario/crear");
         }
 
         public bool IsVisible(Usuario usuario)

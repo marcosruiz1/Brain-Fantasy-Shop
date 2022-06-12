@@ -2,6 +2,7 @@
 @using PracticaBlazor.UI.Shared.Models
 @inject HttpClient Http
 @inject NavigationManager Navigation
+@inject IToastService toastService
 
 <div class="container ">
     <h1>EDITAR USUARIO</h1>
@@ -78,7 +79,7 @@
     public int Id { get; set; }
     private Usuario _usuario;
     private string Rol { get; set; }
-    private List<string> _roles = new() { "ROLE_VISUALIZAR", "ROLE_COMPLETO", "ROLE_ADMIN" };
+    private List<string> _roles = new() { "ROLE_VISUALIZAR", "ROLE_COMPLETO", "ROLE_ADMIN", "ROLE_VIP" };
 
 
     protected override async Task OnInitializedAsync()
@@ -91,6 +92,9 @@
         _usuario.Rol = Rol;
         await Http.PutAsJsonAsync<Usuario>($"/api/Usuarios/{_usuario.Id}", _usuario);
         Navigation.NavigateTo("/usuarios/admin");
+        toastService.ShowSuccess("Usuario actualizado con éxito");
+
+
     }
 
     private async Task OnFileChange(InputFileChangeEventArgs ev)
