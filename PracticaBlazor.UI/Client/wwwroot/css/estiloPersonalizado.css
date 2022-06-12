@@ -129,3 +129,10 @@
 .delBotonClaro:hover {
     background: #d73d32
 }
+.delBotonVerde:hover {
+    background: #00506a;
+}
+
+.borderProducto:hover {
+    box-shadow: 0px 5px 0px;
+}

@@ -17,5 +17,6 @@ namespace PracticaBlazor.UI.Client.Services.CarroService
         Task<List<Producto>> GetCarritoProd(int userId);
         Task DisminuirNumCarrito(Carrito carrito, AuthenticationState authState);
         Task AumentarNumCarrito(Carrito carrito, AuthenticationState authState);
+        Task<string> Checkout(int id);
     }
 }

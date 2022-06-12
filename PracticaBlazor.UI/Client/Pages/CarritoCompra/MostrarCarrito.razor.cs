@@ -67,7 +67,6 @@ namespace PracticaBlazor.UI.Client.Pages.CarritoCompra
 
         }
         
-
         public async Task DisminuirCarrito(Carrito carrito)
         {
             await CarroService.DisminuirNumCarrito(carrito, authState);
@@ -92,6 +91,17 @@ namespace PracticaBlazor.UI.Client.Pages.CarritoCompra
         {
             _carritosUser = await CarroService.GetCarritoUser(Convert.ToInt32(userId));
             _carritosProd = await CarroService.GetCarritoProd(Convert.ToInt32(userId));
+        }
+
+        private async Task CheckOut()
+        {
+
+            string chekoutUrl = await CarroService.Checkout(Convert.ToInt32(userId));
+            Console.WriteLine("AAAAAAAAAAAAAAA");
+            Console.WriteLine(chekoutUrl);
+            Console.WriteLine("BBBBBBBBBBBB");
+            Navigation.NavigateTo(chekoutUrl);
+
         }
         void ExportToPdf()
         {

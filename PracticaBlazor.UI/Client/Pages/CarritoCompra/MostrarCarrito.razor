@@ -103,13 +103,13 @@ else
                     </div>
                     <div class="card mb-4">
                         <div class="card-body">
-                            <p><strong>Expected shipping delivery</strong></p>
-                            <p class="mb-0">12.10.2020 - 14.10.2020</p>
+                            <p><strong>Entrega del envío prevista</strong></p>
+                            <p class="mb-0">@DateTime.Now.ToString("dd/MM/yyyy") - @DateTime.Now.AddDays(4).ToString("dd/MM/yyyy")</p>
                         </div>
                     </div>
                     <div class="card mb-4 mb-lg-0">
                         <div class="card-body">
-                            <p><strong>We accept</strong></p>
+                            <p><strong>Aceptamos</strong></p>
                             <img class="me-2" width="45px"
                              src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
                              alt="Visa" />
@@ -151,7 +151,7 @@ else
                                 </li>
                             </ul>
 
-                            <button type="button" class="btn btn-primary btn-lg btn-block" @onclick="@ExportToPdf">
+                            <button type="button" class="btn btn-primary btn-lg btn-block" @onclick="@CheckOut">
                                 Comprar
                             </button>
                         </div>

@@ -11,6 +11,7 @@ using PracticaBlazor.UI.Client.Services.ComentarioService;
 using PracticaBlazor.UI.Client.Services.CategoriaService;
 using PracticaBlazor.UI.Client.Services.UsuarioService;
 using PracticaBlazor.UI.Client.Services.ProductoVIPService;
+using PracticaBlazor.UI.Client.Services.PagoService;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -29,6 +30,7 @@ builder.Services.AddScoped<ICategoriaService, CategoriaService>();
 builder.Services.AddScoped<ICategoriaService, CategoriaService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IProductoVIPService, ProductoVIPService>();
+builder.Services.AddScoped<IPagoService, PagoService>();
 
 
 

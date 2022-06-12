@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using PracticaBlazor.UI.Shared.Models;
+using PracticaBlazor.UI.Shared.Models.Dto.Producto;
 using System.Net.Http.Json;
 using System.Security.Claims;
 
@@ -127,6 +128,33 @@ namespace PracticaBlazor.UI.Client.Services.CarroService
             return await Http.GetFromJsonAsync<List<Producto>>($"/api/Carritos/Prod/{userId}");
 
         }
+        public async Task<List<ProductoCarritoDto>> GetProductoCarritoCompleto(int userId)
+        {
+            List<Producto> productos = await GetCarritoProd(userId);
+            List<Carrito> productosCarr = await GetCarritoUser(userId);
+            List<ProductoCarritoDto> productoCompleto = new();
 
+            for (int i = 0; i < productosCarr.Count; i++)
+            {
+                productoCompleto.Add(new ProductoCarritoDto
+                {
+                    Nombre = productos[i].Nombre,
+                    Precio = productos[i].Precio,
+                    Imagen = productos[i].Imagen,
+                    Cantidad = productosCarr[i].numProductos
+                }); ;
+            }
+            
+            return productoCompleto;
+
+        }
+
+        public async Task<string> Checkout(int id)
+        {
+            var result = await Http.PostAsJsonAsync("/api/pago/checkout", await GetProductoCarritoCompleto(id));
+            Console.WriteLine("EEEEEEEEEEEEEEEEEEEEEEEEE" + await result.Content.ReadAsStringAsync()); 
+            var url = await result.Content.ReadAsStringAsync();
+            return url;
+        }
     }
 }
